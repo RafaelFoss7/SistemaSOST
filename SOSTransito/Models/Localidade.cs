@@ -17,7 +17,7 @@ namespace SOSTransito.Models
 
         [DisplayName("Região")]
         [Required(ErrorMessage = "O campo região é obrigatório.")]
-        [StringLength(3, ErrorMessage = "O campo região precisa ter de 3 a 60 caracteres", MinimumLength = 60)]
+        [StringLength(60, ErrorMessage = "O campo região precisa ter de 3 a 60 caracteres", MinimumLength = 3)]
         public string Regiao { get; set; }
 
         //Informações de controle...

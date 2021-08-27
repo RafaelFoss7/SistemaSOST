@@ -1,0 +1,67 @@
+﻿@model IEnumerable<SOSTransito.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Lista de Usuários Cadastrados";
+}
+
+<h1><i class="fas fa-users"></i> Lista de Usuários Cadastrados</h1>
+
+<strong class="text-success"> @TempData["message"]</strong>
+
+<p>
+    <a asp-action="Create"><button class="btn btn-primary btn-sm"><i class="fas fa-user-plus"></i> Novo Usuário</button></a>
+</p>
+
+@section Styles
+{
+    <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
+}
+<table id="Table" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                Ações
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.UsuarioID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.UsuarioID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.UsuarioID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts
+{
+    <script src="~/lib/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#Table').DataTable();
+        });
+    </script>
+}

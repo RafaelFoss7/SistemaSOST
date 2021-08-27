@@ -6,6 +6,8 @@
     <title>@ViewData["Title"] - SOSTransito</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css" rel="stylesheet" />
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <header>
@@ -24,6 +26,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuários</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -40,9 +45,14 @@
             &copy; 2021 - SOSTransito - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.js"></script>
+    <script src="https://kit.fontawesome.com/a8c27a1ba9.js" crossorigin="anonymous"></script>
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>

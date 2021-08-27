@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SOSTransito.Models;
 
 namespace SOSTransito.Data
 {
@@ -12,6 +13,7 @@ namespace SOSTransito.Data
         {
 
         }
+        public DbSet<SOSTransito.Models.Usuario> Usuario { get; set; }
 
         //public DbSet<Usuario> Usuario { get; set; }
         //public DbSet<Cliente> Cliente { get; set; }

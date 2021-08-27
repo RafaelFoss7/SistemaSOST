@@ -17,7 +17,7 @@ namespace SOSTransito.Models
 
         [DisplayName("Nome")]
         [Required(ErrorMessage = "O campo nome é obrigatório.")]
-        [StringLength(6, ErrorMessage = "O campo nome precisa ter de 6 a 100 caracteres", MinimumLength = 100)]
+        [StringLength(100, ErrorMessage = "O campo nome precisa ter de 6 a 100 caracteres", MinimumLength = 6)]
         public string Nome { get; set; }
 
         [DisplayName("Tipo de Acesso")]
@@ -26,7 +26,7 @@ namespace SOSTransito.Models
 
         [DisplayName("E-mail")]
         [Required(ErrorMessage = "O campo email é obrigatório.")]
-        [StringLength(6, ErrorMessage = "O campo e-mail precisa ter de 6 a 60 caracteres", MinimumLength = 60)]
+        [StringLength(60, ErrorMessage = "O campo e-mail precisa ter de 6 a 60 caracteres", MinimumLength = 6)]
         public string Email { get; set; }
 
         [DisplayName("Senha")]
@@ -35,10 +35,8 @@ namespace SOSTransito.Models
 
         //Informações de controle...
         [DisplayName("Status de Controle")]
-        [Required]
         public string StatusSistema { get; set; }
 
-        [Required]
         public string LocalizadorHash { get; set; }
 
         //Relacionamentos...

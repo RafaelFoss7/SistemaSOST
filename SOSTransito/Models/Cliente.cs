@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace SOSTransito.Models
 
         [DisplayName("Nome")]
         [Required(ErrorMessage = "O campo nome é obrigatório.")]
-        [StringLength(6, ErrorMessage = "O campo nome precisa ter de 6 a 60 caracteres", MinimumLength = 100)]
+        [StringLength(100, ErrorMessage = "O campo nome precisa ter de 6 a 60 caracteres", MinimumLength = 6)]
         public string Nome { get; set; }
 
         [DisplayName("CPF")]
@@ -29,17 +30,17 @@ namespace SOSTransito.Models
 
         [DisplayName("Endereço")]
         [Required(ErrorMessage = "O campo endereço é obrigatório.")]
-        [StringLength(6, ErrorMessage = "O campo endereço precisa ter de 6 a 60 caracteres", MinimumLength = 60)]
+        [StringLength(60, ErrorMessage = "O campo endereço precisa ter de 6 a 60 caracteres", MinimumLength = 6)]
         public string Endereco { get; set; }
 
         [DisplayName("Telefone")]
         [Required(ErrorMessage = "O campo telefone é obrigatório.")]
-        [StringLength(10, ErrorMessage = "O campo telefone precisa ter de 11 caracteres", MinimumLength = 11)]
+        [StringLength(11, ErrorMessage = "O campo telefone precisa ter de 11 caracteres", MinimumLength = 10)]
         public string Telefone { get; set; }
 
         [DisplayName("E-mail")]
         [Required(ErrorMessage = "O campo e-mail é obrigatório.")]
-        [StringLength(6, ErrorMessage = "O campo e-mail precisa ter de 6 a 60 caracteres", MinimumLength = 60)]
+        [StringLength(60, ErrorMessage = "O campo e-mail precisa ter de 6 a 60 caracteres", MinimumLength = 6)]
         public string email { get; set; }
 
         //Informações de controle...

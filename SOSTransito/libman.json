@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "font-awesome@5.15.4",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "datatables.net@2.1.1",
+      "destination": "wwwroot/lib/datatables.net/"
+    },
+    {
+      "library": "datatables.net-bs4@1.10.21",
+      "destination": "wwwroot/lib/datatables.net-bs4/",
+      "files": [
+        "dataTables.bootstrap4.min.js",
+        "dataTables.bootstrap4.min.css"
+      ]
+    }
+  ]
+}
