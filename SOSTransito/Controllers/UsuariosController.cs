@@ -26,23 +26,6 @@ namespace SOSTransito.Controllers
             return View(await _context.Usuario.ToListAsync());
         }
 
-        // GET: Usuarios/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var usuario = await _context.Usuario
-                .FirstOrDefaultAsync(m => m.UsuarioID == id);
-            if (usuario == null)
-            {
-                return NotFound();
-            }
-
-            return View(usuario);
-        }
 
         // GET: Usuarios/Create
         public IActionResult Create()
@@ -57,39 +40,108 @@ namespace SOSTransito.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UsuarioID,Nome,Tipo,Email,Senha,StatusSistema,LocalizadorHash")] Usuario usuario, string ConfirmSenha)
         {
-            if (ConfirmSenha != null)
+            var NomeUser = _context.Usuario.Any(x => x.Nome == usuario.Nome);
+            var EmailUser = _context.Usuario.Any(x => x.Email == usuario.Email);
+            if (NomeUser == false && EmailUser == false)
             {
-                if (usuario.Senha == ConfirmSenha)
+                if (ConfirmSenha != null)
                 {
-                    usuario.Senha = Repositories.Md5Hash.CalculaHash(usuario.Senha);
-                    usuario.StatusSistema = "Ativo";
-                    usuario.LocalizadorHash = Repositories.Md5Hash.CalculaHash(Convert.ToString(randNum.Next()) + System.DateTime.Now);
-                    if (ModelState.IsValid)
+                    if (usuario.Senha == ConfirmSenha)
                     {
-                        _context.Add(usuario);
-                        await _context.SaveChangesAsync();
-                        TempData["message"] = "Muito bem! Cadastro de usuário realizado com sucesso!";
-                        return RedirectToAction(nameof(Index));
+                        usuario.Senha = Repositories.Md5Hash.CalculaHash(usuario.Senha);
+                        usuario.StatusSistema = "Ativo";
+                        usuario.LocalizadorHash = Repositories.Md5Hash.CalculaHash(Convert.ToString(randNum.Next()) + System.DateTime.Now);
+                        if (ModelState.IsValid)
+                        {
+                            _context.Add(usuario);
+                            await _context.SaveChangesAsync();
+                            TempData["message"] = "Muito bem! Cadastro do usuário " + usuario.Nome + " realizado com sucesso!";
+                            return RedirectToAction(nameof(Index));
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.ConfirmSenha = "Confirmação de senha incorreta.";
+                        return View(usuario);
                     }
                 }
-                else
-                {
-                    ViewBag.ConfirmSenha = "Confirmação de senha incorreta.";
-                    return View(usuario);
-                }
+            }
+            else
+            {
+                TempData["message"] = "Atenção! Nome ou e-mail de usuário já cadastrados no sistema.";
+                return View(usuario);
             }
             return View(usuario);
         }
 
-        // GET: Usuarios/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // Change Password Usuários...
+        public IActionResult ChangePassword(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var usuario = await _context.Usuario.FindAsync(id);
+            var usuario = _context.Usuario.Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            usuario.Senha = "";
+            return View(usuario);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(string id, [Bind("UsuarioID,Nome,Tipo,Email,Senha,StatusSistema,LocalizadorHash")] Usuario usuario, string ConfirmSenha)
+        {
+            if (id != usuario.LocalizadorHash)
+            {
+                return NotFound();
+            }
+
+            if (usuario.Senha == ConfirmSenha)
+            {
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        usuario.Senha = Repositories.Md5Hash.CalculaHash(usuario.Senha);
+                        _context.Update(usuario);
+                        TempData["message"] = "Muito bem! Alteração de senha do usuário " + usuario.Nome + " realizado com sucesso!";
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!UsuarioExists(usuario.UsuarioID))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            else
+            {
+                ViewBag.ConfirmSenha = "Senha de confirmação incorreta.";
+                return View(usuario);
+            }
+            return View(usuario);
+        }
+
+        // GET: Usuarios/Edit/5
+        public IActionResult Edit(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var usuario = _context.Usuario.Where(x => x.LocalizadorHash == id).FirstOrDefault();
             if (usuario == null)
             {
                 return NotFound();
@@ -102,9 +154,9 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UsuarioID,Nome,Tipo,Email,Senha,StatusSistema,LocalizadorHash")] Usuario usuario)
+        public async Task<IActionResult> Edit(string id, [Bind("UsuarioID,Nome,Tipo,Email,Senha,StatusSistema,LocalizadorHash")] Usuario usuario)
         {
-            if (id != usuario.UsuarioID)
+            if (id != usuario.LocalizadorHash)
             {
                 return NotFound();
             }
@@ -114,6 +166,7 @@ namespace SOSTransito.Controllers
                 try
                 {
                     _context.Update(usuario);
+                    TempData["message"] = "Muito bem! Alteração das informações do usuário " + usuario.Nome + " realizado com sucesso!";
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -157,6 +210,7 @@ namespace SOSTransito.Controllers
         {
             var usuario = await _context.Usuario.FindAsync(id);
             _context.Usuario.Remove(usuario);
+            TempData["message"] = "Muito bem! Exclusão do usuário " + usuario.Nome + " realizado com sucesso!";
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

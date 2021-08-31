@@ -1,0 +1,47 @@
+﻿@model SOSTransito.Models.Atribuicao_Localidade
+
+@{
+    ViewData["Title"] = "Cadastro de Atribuição de Localidade";
+}
+
+<h1>Cadastro</h1>
+
+<h4>Atribuição de Localidade <i class="fas fa-map-marked-alt"></i></h4>
+<strong class="text-warning"> @TempData["message"]</strong>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Cidade</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-map-marker-alt"></i></div>
+                    </div>
+                    <select asp-for="LocalidadeId" class="form-control" asp-items="ViewBag.LocalidadeId"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Usuário</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-user"></i></div>
+                    </div>
+                    <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId"></select>
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <a href="/Atribuicao_Localidade/Index" class="btn btn-danger"><i class="far fa-times-circle"></i> Cancelar</a>
+                    <button type="submit" class="btn btn-success save"><i class="fas fa-save"></i> Confirmar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

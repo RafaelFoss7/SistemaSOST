@@ -21,11 +21,13 @@ namespace SOSTransito.Models
 
         [DisplayName("CPF")]
         [Required(ErrorMessage = "O campo CPF é obrigatório.")]
-        [StringLength(11, ErrorMessage = "O campo CPF precisa ter de 11 caracteres", MinimumLength = 11)]
+        [StringLength(14, ErrorMessage = "O campo CPF precisa ter de 11 caracteres", MinimumLength = 14)]
         public string CPF { get; set; }
 
+        [DataType(DataType.Date)]
         [DisplayName("Data de Nascimento")]
         [Required(ErrorMessage = "O campo data de nascimento é obrigatório.")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataNascimento { get; set; }
 
         [DisplayName("Endereço")]
@@ -33,30 +35,26 @@ namespace SOSTransito.Models
         [StringLength(60, ErrorMessage = "O campo endereço precisa ter de 6 a 60 caracteres", MinimumLength = 6)]
         public string Endereco { get; set; }
 
-        [DisplayName("Telefone")]
-        [Required(ErrorMessage = "O campo telefone é obrigatório.")]
-        [StringLength(11, ErrorMessage = "O campo telefone precisa ter de 11 caracteres", MinimumLength = 10)]
+        [DisplayName("Celular")]
+        [StringLength(14, ErrorMessage = "O campo telefone precisa ter de 11 caracteres", MinimumLength = 14)] 
         public string Telefone { get; set; }
 
         [DisplayName("E-mail")]
-        [Required(ErrorMessage = "O campo e-mail é obrigatório.")]
         [StringLength(60, ErrorMessage = "O campo e-mail precisa ter de 6 a 60 caracteres", MinimumLength = 6)]
+        [RegularExpression(".+\\@.+\\..+", ErrorMessage = "Informe um e-mail válido...")]
         public string email { get; set; }
 
         //Informações de controle...
         [DisplayName("Status de Controle")]
-        [Required]
         public string StatusSistema { get; set; }
 
-        [Required]
         public string LocalizadorHash { get; set; }
 
         //Relacionamentos...
         public virtual Localidade Localidades { get; set; }
         public int LocalidadeId { get; set; }
 
-        public virtual CNH CNH { get; set; }
-
         public virtual ICollection<Veiculo> Veiculos { get; set; }
+        public virtual ICollection<CNH> CNH { get; set; }
     }
 }

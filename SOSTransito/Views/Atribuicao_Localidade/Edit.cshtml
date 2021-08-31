@@ -1,53 +1,39 @@
-﻿@model SOSTransito.Models.Usuario
+﻿@model SOSTransito.Models.Atribuicao_Localidade
 
 @{
-    ViewData["Title"] = "Editar Usuário";
+    ViewData["Title"] = "Editar Atribuição de Localidade";
 }
 
 <h1>Editar</h1>
 
-<h4>Usuário <i class="fas fa-user-edit"></i></h4>
+<h4>Atribuição de Localidade <i class="fas fa-map-marked"></i></h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="UsuarioID" />
-            <input type="hidden" asp-for="Senha" />
+            <input type="hidden" asp-for="ATRLOCId" />
             <input type="hidden" asp-for="LocalizadorHash" />
+
             <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
+                <label class="control-label">Cidade</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-globe-americas"></i></div>
+                    </div>
+                    <select asp-for="LocalidadeId" class="form-control" asp-items="ViewBag.LocalidadeId"></select>
+                </div>
+                <span asp-validation-for="LocalidadeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Usuário</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-user"></i></div>
                     </div>
-                    <input asp-for="Nome" class="form-control" placeholder="Digite o nome..." />
+                    <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId"></select>
                 </div>
-                <span asp-validation-for="Nome" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Tipo" class="control-label"></label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-chalkboard-teacher"></i></div>
-                    </div>
-                    <select asp-for="Tipo" class="form-control">
-                        <option value="" disabled>Selecione o tipo de acesso...</option>
-                        <option value="ADM">Administrador</option>
-                        <option value="SCT">Secretário(a)</option>
-                    </select>
-                </div>
-                <span asp-validation-for="Tipo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-envelope-open-text"></i></div>
-                    </div>
-                    <input asp-for="Email" class="form-control" readonly />
-                </div>
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <span asp-validation-for="UsuarioId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StatusSistema" class="control-label"></label>
@@ -66,14 +52,13 @@
             <br />
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <a href="/Usuarios/Index" class="btn btn-danger"><i class="far fa-times-circle"></i> Cancelar</a>
+                    <a href="/Atribuicao_Localidade/Index" class="btn btn-danger"><i class="far fa-times-circle"></i> Cancelar</a>
                     <button type="submit" class="btn btn-success save"><i class="fas fa-save"></i> Confirmar</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

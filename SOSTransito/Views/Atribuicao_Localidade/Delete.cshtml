@@ -1,0 +1,45 @@
+﻿@model SOSTransito.Models.Atribuicao_Localidade
+
+@{
+    ViewData["Title"] = "Excluir Atribuição de Localidade";
+}
+
+<h1>Excluir</h1>
+
+<h3>Você realmente deseja excluir essa atribuição?</h3>
+<div>
+    <h4>Atribuição de Localidade <i class="fas fa-map"></i></h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Localidades.Regiao)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Localidades.Regiao)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Usuario.Nome)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Usuario.Nome)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Usuario.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Usuario.Email)
+        </dd class>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StatusSistema)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StatusSistema)
+        </dd class>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ATRLOCId" />
+        <a href="/Atribuicao_Localidade/Index" class="btn btn-danger"><i class="far fa-times-circle"></i> Cancelar</a>
+        <button type="submit" value="Delete" class="btn btn-success save"><i class="fas fa-save"></i> Confirmar</button>
+    </form>
+</div>

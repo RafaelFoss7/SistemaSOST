@@ -13,24 +13,21 @@ namespace SOSTransito.Models
     {
         //atributos...
         [Key]
-        public int LocalidadeID { get; set; }
+        public int LocalidadeId { get; set; }
 
-        [DisplayName("Região")]
-        [Required(ErrorMessage = "O campo região é obrigatório.")]
+        [DisplayName("Cidade")]
+        [Required(ErrorMessage = "O campo cidade é obrigatório.")]
         [StringLength(60, ErrorMessage = "O campo região precisa ter de 3 a 60 caracteres", MinimumLength = 3)]
         public string Regiao { get; set; }
 
         //Informações de controle...
         [DisplayName("Status de Controle")]
-        [Required]
         public string StatusSistema { get; set; }
 
-        [Required]
         public string LocalizadorHash { get; set; }
 
         //Relacionamentos...
-        public virtual Usuario Usuarios { get; set; }
-        public int UsuarioId { get; set; }
+        public virtual ICollection<Atribuicao_Localidade> Atribuicao_Localidade { get; set; }
 
         public virtual ICollection<Cliente> Clientes { get; set; }
     }

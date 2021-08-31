@@ -27,9 +27,11 @@ namespace SOSTransito.Models
         [DisplayName("E-mail")]
         [Required(ErrorMessage = "O campo email é obrigatório.")]
         [StringLength(60, ErrorMessage = "O campo e-mail precisa ter de 6 a 60 caracteres", MinimumLength = 6)]
+        [RegularExpression(".+\\@.+\\..+", ErrorMessage = "Informe um e-mail válido...")]
         public string Email { get; set; }
 
         [DisplayName("Senha")]
+        [DataType(DataType.Password)]
         [Required(ErrorMessage = "O campo senha é obrigatório.")]
         public string Senha { get; set; }
 

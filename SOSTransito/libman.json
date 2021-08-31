@@ -17,6 +17,10 @@
         "dataTables.bootstrap4.min.js",
         "dataTables.bootstrap4.min.css"
       ]
+    },
+    {
+      "library": "jquery.mask@1.14.16",
+      "destination": "wwwroot/lib/jquery.mask/"
     }
   ]
 }

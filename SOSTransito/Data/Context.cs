@@ -14,6 +14,9 @@ namespace SOSTransito.Data
 
         }
         public DbSet<SOSTransito.Models.Usuario> Usuario { get; set; }
+        public DbSet<SOSTransito.Models.Localidade> Localidade { get; set; }
+        public DbSet<SOSTransito.Models.Atribuicao_Localidade> Atribuicao_Localidade { get; set; }
+        public DbSet<SOSTransito.Models.Cliente> Cliente { get; set; }
 
         //public DbSet<Usuario> Usuario { get; set; }
         //public DbSet<Cliente> Cliente { get; set; }

@@ -6,11 +6,11 @@
 
 <h1><i class="fas fa-users"></i> Lista de Usuários Cadastrados</h1>
 
-<strong class="text-success"> @TempData["message"]</strong>
-
 <p>
     <a asp-action="Create"><button class="btn btn-primary btn-sm"><i class="fas fa-user-plus"></i> Novo Usuário</button></a>
 </p>
+
+<strong class="text-success"> @TempData["message"]</strong>
 
 @section Styles
 {
@@ -29,6 +29,9 @@
                 @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.StatusSistema)
+            </th>
+            <th width="5%" class="text-center">
                 Ações
             </th>
         </tr>
@@ -47,14 +50,40 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.UsuarioID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.UsuarioID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.UsuarioID">Delete</a>
+                    @Html.DisplayFor(modelItem => item.StatusSistema)
+                </td>
+                <td width="5%" class="text-center">
+                    <a style="color:#000000" href="@Url.Action("Edit", "Usuarios", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
+                    <a style="color:#000000" href="@Url.Action("ChangePassword", "Usuarios", new { id = item.LocalizadorHash })" title="Alterar Senha"><i class="fas fa-key"></i></a>
+                    <a style="color:#000000" asp-action="Delete" asp-route-id="@item.UsuarioID" title="Excluir"><i class="fas fa-trash-alt"></i></a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="toggle_content">
+            <div class="col-md">
+                <i class="fa fa-list-alt"></i> <label><b> LEGENDAS </b></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 zoom">
+            <i class='fas fa-edit'></i> <label class="label-primary"> Editar Usuário </label>
+        </div>
+        <div class="col-lg-4 zoom">
+            <i class='fas fa-key'></i> <label class="label-primary"> Alterar Senha </label>
+        </div>
+        <div class="col-lg-4 zoom">
+            <i class="fas fa-trash-alt"></i> <label class="label-primary"> Excluir Usuário </label>
+        </div>
+    </div>
+</div>
+
 @section Scripts
 {
     <script src="~/lib/datatables.net/jquery.dataTables.js"></script>

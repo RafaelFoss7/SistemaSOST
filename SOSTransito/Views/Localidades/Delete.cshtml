@@ -1,0 +1,33 @@
+﻿@model SOSTransito.Models.Localidade
+
+@{
+    ViewData["Title"] = "Deletar Localidade";
+}
+
+<h1>Excluir</h1>
+
+<h3>Deseja realmente excluir essa localidade?</h3>
+<div>
+    <h4>Localidade <i class="fas fa-map-marker"></i></h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Regiao)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Regiao)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StatusSistema)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StatusSistema)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="LocalidadeId" />
+        <a href="/Localidades/Index" class="btn btn-danger"><i class="far fa-times-circle"></i> Cancelar</a>
+        <button type="submit" value="Delete" class="btn btn-success save"><i class="fas fa-save"></i> Confirmar</button>
+    </form>
+</div>

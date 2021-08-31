@@ -19,6 +19,34 @@ namespace SOSTransito.Migrations
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("SOSTransito.Models.Atribuicao_Localidade", b =>
+                {
+                    b.Property<int>("ATRLOCId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("LocalidadeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LocalizadorHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatusSistema")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ATRLOCId");
+
+                    b.HasIndex("LocalidadeId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Atribuicao_Localidade");
+                });
+
             modelBuilder.Entity("SOSTransito.Models.CNH", b =>
                 {
                     b.Property<int>("CNHId")
@@ -55,8 +83,7 @@ namespace SOSTransito.Migrations
 
                     b.HasKey("CNHId");
 
-                    b.HasIndex("ClienteId")
-                        .IsUnique();
+                    b.HasIndex("ClienteId");
 
                     b.ToTable("CNH");
                 });
@@ -70,8 +97,8 @@ namespace SOSTransito.Migrations
 
                     b.Property<string>("CPF")
                         .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
@@ -85,7 +112,6 @@ namespace SOSTransito.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LocalizadorHash")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
@@ -94,16 +120,13 @@ namespace SOSTransito.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("StatusSistema")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("email")
-                        .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
@@ -116,13 +139,12 @@ namespace SOSTransito.Migrations
 
             modelBuilder.Entity("SOSTransito.Models.Localidade", b =>
                 {
-                    b.Property<int>("LocalidadeID")
+                    b.Property<int>("LocalidadeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("LocalizadorHash")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Regiao")
@@ -131,15 +153,14 @@ namespace SOSTransito.Migrations
                         .HasColumnType("nvarchar(60)");
 
                     b.Property<string>("StatusSistema")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
+                    b.Property<int?>("UsuarioID")
                         .HasColumnType("int");
 
-                    b.HasKey("LocalidadeID");
+                    b.HasKey("LocalidadeId");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("UsuarioID");
 
                     b.ToTable("Localidade");
                 });
@@ -197,7 +218,6 @@ namespace SOSTransito.Migrations
                         .HasColumnType("nvarchar(60)");
 
                     b.Property<string>("LocalizadorHash")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
@@ -210,7 +230,6 @@ namespace SOSTransito.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StatusSistema")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Tipo")
@@ -257,11 +276,30 @@ namespace SOSTransito.Migrations
                     b.ToTable("Veiculo");
                 });
 
+            modelBuilder.Entity("SOSTransito.Models.Atribuicao_Localidade", b =>
+                {
+                    b.HasOne("SOSTransito.Models.Localidade", "Localidades")
+                        .WithMany("Atribuicao_Localidade")
+                        .HasForeignKey("LocalidadeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SOSTransito.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Localidades");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("SOSTransito.Models.CNH", b =>
                 {
                     b.HasOne("SOSTransito.Models.Cliente", "Clientes")
-                        .WithOne("CNH")
-                        .HasForeignKey("SOSTransito.Models.CNH", "ClienteId")
+                        .WithMany("CNH")
+                        .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -281,13 +319,9 @@ namespace SOSTransito.Migrations
 
             modelBuilder.Entity("SOSTransito.Models.Localidade", b =>
                 {
-                    b.HasOne("SOSTransito.Models.Usuario", "Usuarios")
+                    b.HasOne("SOSTransito.Models.Usuario", null)
                         .WithMany("Localidades")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Usuarios");
+                        .HasForeignKey("UsuarioID");
                 });
 
             modelBuilder.Entity("SOSTransito.Models.PAT", b =>
@@ -326,6 +360,8 @@ namespace SOSTransito.Migrations
 
             modelBuilder.Entity("SOSTransito.Models.Localidade", b =>
                 {
+                    b.Navigation("Atribuicao_Localidade");
+
                     b.Navigation("Clientes");
                 });
 

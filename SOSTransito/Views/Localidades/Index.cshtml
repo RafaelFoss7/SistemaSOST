@@ -1,0 +1,80 @@
+﻿@model IEnumerable<SOSTransito.Models.Localidade>
+
+@{
+    ViewData["Title"] = "Lista de Localidades Cadastradas";
+}
+
+<h1><i class="fas fa-globe-americas"></i> Lista de Localidades Cadastradas</h1>
+
+<p>
+    <a asp-action="Create"><button class="btn btn-primary btn-sm"><i class="fas fa-globe-americas"></i> Nova Localidade</button></a>
+</p>
+
+<strong class="text-success"> @TempData["message"]</strong>
+
+@section Styles
+{
+    <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
+}
+<table id="Table" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Regiao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StatusSistema)
+            </th>
+            <th class="text-center" width="5%">
+                Ações
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Regiao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusSistema)
+                </td>
+                <td class="text-center" width="5%">
+                    <a style="color:#000000" href="@Url.Action("Edit", "Localidades", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
+                    <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalidadeId" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="toggle_content">
+            <div class="col-md">
+                <i class="fa fa-list-alt"></i> <label><b> LEGENDAS </b></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 zoom">
+            <i class='fas fa-edit'></i> <label class="label-primary"> Editar Localidade </label>
+        </div>
+        <div class="col-lg-4 zoom">
+            <i class="fas fa-trash-alt"></i> <label class="label-primary"> Excluir Localidade </label>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#Table').DataTable();
+        });
+    </script>
+}

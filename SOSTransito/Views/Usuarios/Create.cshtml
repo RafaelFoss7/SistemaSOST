@@ -7,6 +7,7 @@
 <h1>Cadastrar</h1>
 
 <h4>Usuário <i class="fas fa-user-plus"></i></h4>
+<strong class="text-warning"> @TempData["message"]</strong>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -31,7 +32,7 @@
                     <select asp-for="Tipo" class="form-control">
                         <option value="" disabled selected>Selecione o tipo de acesso...</option>
                         <option value="ADM">Administrador</option>
-                        <option value="SCT">Secretario</option>
+                        <option value="SCT">Secretário(a)</option>
                     </select>
                 </div>
                 <span asp-validation-for="Tipo" class="text-danger"></span>

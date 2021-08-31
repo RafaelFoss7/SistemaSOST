@@ -1,0 +1,104 @@
+﻿@model SOSTransito.Models.Cliente
+
+@{
+    ViewData["Title"] = "Cadastrar Cliente";
+}
+
+<h1>Cadastro</h1>
+
+<h4>Cliente <i class="fas fa-user-plus"></i></h4>
+<strong class="text-warning"> @TempData["message"]</strong>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-user"></i></div>
+                    </div>
+                    <input asp-for="Nome" class="form-control" placeholder="Digite o nome..." />
+                </div>
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CPF" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="far fa-address-book"></i></div>
+                    </div>
+                    <input asp-for="CPF" id="cpf" class="form-control" placeholder="Digite o CPF 000.000.00-00..." />
+                </div>
+                <span asp-validation-for="CPF" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataNascimento" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-calendar-alt"></i></div>
+                    </div>
+                    <input asp-for="DataNascimento" class="form-control" placeholder="Selecione a data de nascimento..." />
+                </div>
+                <span asp-validation-for="DataNascimento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Endereco" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-map-pin"></i></div>
+                    </div>
+                    <input asp-for="Endereco" class="form-control" placeholder="Digite a rua, nº e bairro..." />
+                </div>
+                <span asp-validation-for="Endereco" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Cidade</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-map-marker-alt"></i></div>
+                    </div>
+                    <select asp-for="LocalidadeId" class="form-control" asp-items="ViewBag.LocalidadeId"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Telefone" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-phone"></i></div>
+                    </div>
+                    <input asp-for="Telefone" id="telefone" class="form-control" placeholder="Digite o telefone (00)00000-0000..." />
+                </div>
+                <span asp-validation-for="Telefone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="email" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-envelope-open-text"></i></div>
+                    </div>
+                    <input asp-for="email" class="form-control" placeholder="Digite o e-mail..." />
+                </div>
+                <span asp-validation-for="email" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <a href="/Clientes/Index" class="btn btn-danger"><i class="far fa-times-circle"></i> Cancelar</a>
+                    <button type="submit" class="btn btn-success save"><i class="fas fa-save"></i> Confirmar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#telefone').mask('(00)00000-0000');
+              $('#cpf').mask('000.000.000-00');
+        });
+    </script>
+}

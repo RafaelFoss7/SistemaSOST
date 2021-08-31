@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SOSTransito.Migrations
 {
-    public partial class firtMigration : Migration
+    public partial class novo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,8 +17,8 @@ namespace SOSTransito.Migrations
                     Tipo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     Senha = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,18 +29,46 @@ namespace SOSTransito.Migrations
                 name: "Localidade",
                 columns: table => new
                 {
-                    LocalidadeID = table.Column<int>(type: "int", nullable: false)
+                    LocalidadeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Regiao = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UsuarioID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Localidade", x => x.LocalidadeId);
+                    table.ForeignKey(
+                        name: "FK_Localidade_Usuario_UsuarioID",
+                        column: x => x.UsuarioID,
+                        principalTable: "Usuario",
+                        principalColumn: "UsuarioID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Atribuicao_Localidade",
+                columns: table => new
+                {
+                    ATRLOCId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LocalidadeId = table.Column<int>(type: "int", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Localidade", x => x.LocalidadeID);
+                    table.PrimaryKey("PK_Atribuicao_Localidade", x => x.ATRLOCId);
                     table.ForeignKey(
-                        name: "FK_Localidade_Usuario_UsuarioId",
+                        name: "FK_Atribuicao_Localidade_Localidade_LocalidadeId",
+                        column: x => x.LocalidadeId,
+                        principalTable: "Localidade",
+                        principalColumn: "LocalidadeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Atribuicao_Localidade_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuario",
                         principalColumn: "UsuarioID",
@@ -54,13 +82,13 @@ namespace SOSTransito.Migrations
                     ClienteId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CPF = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    CPF = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
                     DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Endereco = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    Telefone = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
-                    email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Telefone = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: true),
+                    email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LocalidadeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -70,7 +98,7 @@ namespace SOSTransito.Migrations
                         name: "FK_Cliente_Localidade_LocalidadeId",
                         column: x => x.LocalidadeId,
                         principalTable: "Localidade",
-                        principalColumn: "LocalidadeID",
+                        principalColumn: "LocalidadeId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -148,6 +176,16 @@ namespace SOSTransito.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Atribuicao_Localidade_LocalidadeId",
+                table: "Atribuicao_Localidade",
+                column: "LocalidadeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Atribuicao_Localidade_UsuarioId",
+                table: "Atribuicao_Localidade",
+                column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Cliente_LocalidadeId",
                 table: "Cliente",
                 column: "LocalidadeId");
@@ -155,13 +193,12 @@ namespace SOSTransito.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_CNH_ClienteId",
                 table: "CNH",
-                column: "ClienteId",
-                unique: true);
+                column: "ClienteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Localidade_UsuarioId",
+                name: "IX_Localidade_UsuarioID",
                 table: "Localidade",
-                column: "UsuarioId");
+                column: "UsuarioID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PAT_CNHId",
@@ -176,6 +213,9 @@ namespace SOSTransito.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Atribuicao_Localidade");
+
             migrationBuilder.DropTable(
                 name: "PAT");
 
