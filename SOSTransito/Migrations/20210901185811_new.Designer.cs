@@ -10,8 +10,8 @@ using SOSTransito.Data;
 namespace SOSTransito.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20210831183824_novo")]
-    partial class novo
+    [Migration("20210901185811_new")]
+    partial class @new
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,11 +56,14 @@ namespace SOSTransito.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Categoria")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
                     b.Property<string>("LocalizadorHash")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Processo")
@@ -77,7 +80,6 @@ namespace SOSTransito.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StatusSistema")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ValidadeCNH")
@@ -167,9 +169,9 @@ namespace SOSTransito.Migrations
                     b.ToTable("Localidade");
                 });
 
-            modelBuilder.Entity("SOSTransito.Models.PAT", b =>
+            modelBuilder.Entity("SOSTransito.Models.Multa", b =>
                 {
-                    b.Property<int>("PATId")
+                    b.Property<int>("MultaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -200,11 +202,11 @@ namespace SOSTransito.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("PATId");
+                    b.HasKey("MultaId");
 
                     b.HasIndex("CNHId");
 
-                    b.ToTable("PAT");
+                    b.ToTable("Multa");
                 });
 
             modelBuilder.Entity("SOSTransito.Models.Usuario", b =>
@@ -326,10 +328,10 @@ namespace SOSTransito.Migrations
                         .HasForeignKey("UsuarioID");
                 });
 
-            modelBuilder.Entity("SOSTransito.Models.PAT", b =>
+            modelBuilder.Entity("SOSTransito.Models.Multa", b =>
                 {
                     b.HasOne("SOSTransito.Models.CNH", "CNH")
-                        .WithMany("PATs")
+                        .WithMany("Multas")
                         .HasForeignKey("CNHId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -350,7 +352,7 @@ namespace SOSTransito.Migrations
 
             modelBuilder.Entity("SOSTransito.Models.CNH", b =>
                 {
-                    b.Navigation("PATs");
+                    b.Navigation("Multas");
                 });
 
             modelBuilder.Entity("SOSTransito.Models.Cliente", b =>

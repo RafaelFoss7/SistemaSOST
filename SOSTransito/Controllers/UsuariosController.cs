@@ -186,15 +186,13 @@ namespace SOSTransito.Controllers
         }
 
         // GET: Usuarios/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var usuario = await _context.Usuario
-                .FirstOrDefaultAsync(m => m.UsuarioID == id);
+            var usuario = _context.Usuario.Where(x => x.LocalizadorHash == id).FirstOrDefault();
             if (usuario == null)
             {
                 return NotFound();
@@ -206,12 +204,12 @@ namespace SOSTransito.Controllers
         // POST: Usuarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(string id)
         {
-            var usuario = await _context.Usuario.FindAsync(id);
+            var usuario = _context.Usuario.Where(x => x.LocalizadorHash == id).FirstOrDefault();
             _context.Usuario.Remove(usuario);
+            _context.SaveChanges();
             TempData["message"] = "Muito bem! Exclusão do usuário " + usuario.Nome + " realizado com sucesso!";
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

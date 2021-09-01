@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SOSTransito.Migrations
 {
-    public partial class novo : Migration
+    public partial class @new : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -109,11 +109,12 @@ namespace SOSTransito.Migrations
                     CNHId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RegistroCNH = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
+                    Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ValidadeCNH = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StatusCNH = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Processo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClienteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -151,10 +152,10 @@ namespace SOSTransito.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PAT",
+                name: "Multa",
                 columns: table => new
                 {
-                    PATId = table.Column<int>(type: "int", nullable: false)
+                    MultaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrgAtuador = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Veiculo = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -166,9 +167,9 @@ namespace SOSTransito.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PAT", x => x.PATId);
+                    table.PrimaryKey("PK_Multa", x => x.MultaId);
                     table.ForeignKey(
-                        name: "FK_PAT_CNH_CNHId",
+                        name: "FK_Multa_CNH_CNHId",
                         column: x => x.CNHId,
                         principalTable: "CNH",
                         principalColumn: "CNHId",
@@ -201,8 +202,8 @@ namespace SOSTransito.Migrations
                 column: "UsuarioID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PAT_CNHId",
-                table: "PAT",
+                name: "IX_Multa_CNHId",
+                table: "Multa",
                 column: "CNHId");
 
             migrationBuilder.CreateIndex(
@@ -217,7 +218,7 @@ namespace SOSTransito.Migrations
                 name: "Atribuicao_Localidade");
 
             migrationBuilder.DropTable(
-                name: "PAT");
+                name: "Multa");
 
             migrationBuilder.DropTable(
                 name: "Veiculo");

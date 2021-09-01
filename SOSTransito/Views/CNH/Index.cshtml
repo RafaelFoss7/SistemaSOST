@@ -1,14 +1,10 @@
-﻿@model IEnumerable<SOSTransito.Models.Usuario>
+﻿@model IEnumerable<SOSTransito.Models.CNH>
 
 @{
-    ViewData["Title"] = "Lista de Usuários Cadastrados";
+    ViewData["Title"] = "Lista de CNH";
 }
 
-<h1><i class="fas fa-users"></i> Lista de Usuários Cadastrados</h1>
-
-<p>
-    <a asp-action="Create"><button class="btn btn-primary btn-sm"><i class="fas fa-user-plus"></i> Novo Usuário</button></a>
-</p>
+<h1><i class="fas fa-id-card"></i> Lista de CNH's Cadastradas</h1>
 
 <strong class="text-success"> @TempData["message"]</strong>
 
@@ -16,17 +12,21 @@
 {
     <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
+
 <table id="Table" class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nome)
+                @Html.DisplayNameFor(model => model.Clientes.Nome)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tipo)
+                @Html.DisplayNameFor(model => model.RegistroCNH)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                @Html.DisplayNameFor(model => model.StatusCNH)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Processo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.StatusSistema)
@@ -41,20 +41,23 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
+                    @Html.DisplayFor(modelItem => item.Clientes.Nome)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Tipo)
+                    @Html.DisplayFor(modelItem => item.RegistroCNH)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
+                    @Html.DisplayFor(modelItem => item.StatusCNH)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Processo)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StatusSistema)
                 </td>
                 <td width="5%" class="text-center">
-                    <a style="color:#000000" href="@Url.Action("Edit", "Usuarios", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
-                    <a style="color:#000000" href="@Url.Action("ChangePassword", "Usuarios", new { id = item.LocalizadorHash })" title="Alterar Senha"><i class="fas fa-key"></i></a>
+                    <a style="color:#000000" href="@Url.Action("Edit", "CNH", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
+                    <a style="color:#000000" href="@Url.Action("Details", "CNH", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
                     <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
                 </td>
             </tr>
@@ -73,13 +76,13 @@
 
     <div class="row">
         <div class="col-lg-4 zoom">
-            <i class='fas fa-edit'></i> <label class="label-primary"> Editar Usuário </label>
+            <i class='fas fa-edit'></i> <label class="label-primary"> Editar cCNH </label>
         </div>
         <div class="col-lg-4 zoom">
-            <i class='fas fa-key'></i> <label class="label-primary"> Alterar Senha </label>
+            <i class="fas fa-bars"></i> <label class="label-primary"> Detalhes da CNH </label>
         </div>
         <div class="col-lg-4 zoom">
-            <i class="fas fa-trash-alt"></i> <label class="label-primary"> Excluir Usuário </label>
+            <i class="fas fa-trash-alt"></i> <label class="label-primary"> Excluir CNH </label>
         </div>
     </div>
 </div>

@@ -16,6 +16,7 @@
 {
     <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
+
 <table id="Table" class="table">
     <thead>
         <tr>
@@ -26,12 +27,15 @@
                 @Html.DisplayNameFor(model => model.email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Endereco)
+                @Html.DisplayNameFor(model => model.DataNascimento)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Localidades.Regiao)
             </th>
-            <th class="text-center" width="5%">
+            <th>
+                @Html.DisplayNameFor(model => model.StatusSistema)
+            </th>
+            <th class="text-center" width="10%">
                 Ações
             </th>
         </tr>
@@ -47,14 +51,19 @@
                     @Html.DisplayFor(modelItem => item.email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Endereco)
+                    @Html.DisplayFor(modelItem => item.DataNascimento)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Localidades.Regiao)
                 </td>
-                <td class="text-center" width="5%">
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusSistema)
+                </td>
+                <td class="text-center" width="10%">
+                    <a style="color:#000000" href="@Url.Action("Create", "CNH", new { id = item.LocalizadorHash })" title="Cadastrar CNH"><i class="fas fa-id-card"></i></a>
                     <a style="color:#000000" href="@Url.Action("Edit", "Clientes", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
-                    <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalidadeId" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                    <a style="color:#000000" href="@Url.Action("Details", "Clientes", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
+                    <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
                 </td>
             </tr>
         }
@@ -72,7 +81,13 @@
 
     <div class="row">
         <div class="col-lg-4 zoom">
+            <i class="fas fa-id-card"></i> <label class="label-primary"> Cadastrar CNH </label>
+        </div>
+        <div class="col-lg-4 zoom">
             <i class='fas fa-edit'></i> <label class="label-primary"> Editar Cliente </label>
+        </div>
+        <div class="col-lg-4 zoom">
+            <i class="fas fa-bars"></i> <label class="label-primary"> Detalhes do Cliente </label>
         </div>
         <div class="col-lg-4 zoom">
             <i class="fas fa-trash-alt"></i> <label class="label-primary"> Excluir Cliente </label>

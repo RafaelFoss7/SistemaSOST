@@ -112,15 +112,13 @@ namespace SOSTransito.Controllers
         }
 
         // GET: Localidades/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var localidade = await _context.Localidade
-                .FirstOrDefaultAsync(m => m.LocalidadeId == id);
+            var localidade = _context.Localidade.Where(x => x.LocalizadorHash == id).FirstOrDefault();
             if (localidade == null)
             {
                 return NotFound();
@@ -132,12 +130,12 @@ namespace SOSTransito.Controllers
         // POST: Localidades/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(string id)
         {
-            var localidade = await _context.Localidade.FindAsync(id);
+            var localidade = _context.Localidade.Where(x => x.LocalizadorHash == id).FirstOrDefault();
             _context.Localidade.Remove(localidade);
+            _context.SaveChanges();
             TempData["message"] = "Muito bem! Exclusão da localidade " + localidade.Regiao + " realizado com sucesso!";
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

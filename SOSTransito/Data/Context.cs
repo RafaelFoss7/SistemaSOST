@@ -17,12 +17,8 @@ namespace SOSTransito.Data
         public DbSet<SOSTransito.Models.Localidade> Localidade { get; set; }
         public DbSet<SOSTransito.Models.Atribuicao_Localidade> Atribuicao_Localidade { get; set; }
         public DbSet<SOSTransito.Models.Cliente> Cliente { get; set; }
+        public DbSet<SOSTransito.Models.CNH> CNH { get; set; }
+        public DbSet<SOSTransito.Models.Multa> Multas { get; set; }
 
-        //public DbSet<Usuario> Usuario { get; set; }
-        //public DbSet<Cliente> Cliente { get; set; }
-        //public DbSet<CNH> CNH { get; set; }
-        //public DbSet<Localidade> Localidade { get; set; }
-        //public DbSet<PAT> PAT { get; set; }
-        //public DbSet<Veiculo> Veiculo { get; set; }
     }
 }

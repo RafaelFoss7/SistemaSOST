@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace SOSTransito.Models
 {
-    [Table("PAT")]
-    public class PAT
+    [Table("Multa")]
+    public class Multa
     {   //atributos...
         [Key]
-        public int PATId { get; set; }
+        public int MultaId { get; set; }
 
         [DisplayName("Org. Atuador")]
         [Required(ErrorMessage = "O campo org. atuador é obrigatório.")]
@@ -32,10 +32,8 @@ namespace SOSTransito.Models
 
         //Informações de controle...
         [DisplayName("Status de Controle")]
-        [Required]
         public string StatusSistema { get; set; }
 
-        [Required]
         public string LocalizadorHash { get; set; }
 
         //Relacionamentos...

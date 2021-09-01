@@ -43,7 +43,7 @@ namespace SOSTransito.Controllers
         public async Task<IActionResult> Create([Bind("ATRLOCId,StatusSistema,LocalizadorHash,LocalidadeId,UsuarioId")] Atribuicao_Localidade atribuicao_Localidade)
         {
             var AtrUser = _context.Atribuicao_Localidade.Any(x => x.UsuarioId == atribuicao_Localidade.UsuarioId && x.LocalidadeId == atribuicao_Localidade.LocalidadeId);
-            
+
             var loc = _context.Localidade.Find(atribuicao_Localidade.LocalidadeId);
             var user = _context.Usuario.Find(atribuicao_Localidade.UsuarioId);
 
@@ -79,7 +79,7 @@ namespace SOSTransito.Controllers
                 return NotFound();
             }
 
-            var atribuicao_Localidade =  _context.Atribuicao_Localidade.Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            var atribuicao_Localidade = _context.Atribuicao_Localidade.Where(x => x.LocalizadorHash == id).FirstOrDefault();
             if (atribuicao_Localidade == null)
             {
                 return NotFound();
@@ -131,17 +131,17 @@ namespace SOSTransito.Controllers
         }
 
         // GET: Atribuicao_Localidade/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var atribuicao_Localidade = await _context.Atribuicao_Localidade
+            var atribuicao_Localidade = _context.Atribuicao_Localidade
                 .Include(a => a.Localidades)
-                .Include(a => a.Usuario)
-                .FirstOrDefaultAsync(m => m.ATRLOCId == id);
+                .Include(a => a.Usuario).Where(x => x.LocalizadorHash == id)
+                .FirstOrDefault();
             if (atribuicao_Localidade == null)
             {
                 return NotFound();
@@ -153,14 +153,14 @@ namespace SOSTransito.Controllers
         // POST: Atribuicao_Localidade/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(string id)
         {
-            var atribuicao_Localidade = await _context.Atribuicao_Localidade.FindAsync(id);
+            var atribuicao_Localidade = _context.Atribuicao_Localidade.Where(x => x.LocalizadorHash == id).FirstOrDefault();
             var loc = _context.Localidade.Find(atribuicao_Localidade.LocalidadeId);
             var user = _context.Usuario.Find(atribuicao_Localidade.UsuarioId);
             _context.Atribuicao_Localidade.Remove(atribuicao_Localidade);
+            _context.SaveChanges();
             TempData["message"] = "Muito bem! Exclusão de atribuição da localidade " + loc.Regiao + " para o usuário " + user.Nome + " realizado com sucesso!";
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

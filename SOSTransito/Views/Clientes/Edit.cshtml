@@ -13,6 +13,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ClienteId" />
+            <input type="hidden" asp-for="LocalizadorHash" />
             <div class="form-group">
                 <label asp-for="Nome" class="control-label"></label>
                 <div class="input-group">
@@ -39,7 +40,7 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-calendar-alt"></i></div>
                     </div>
-                    <input asp-for="DataNascimento" class="form-control" />
+                    <input asp-for="DataNascimento" class="form-control" placeholder="Digite a Data de Nascimento..." />
                 </div>
                 <span asp-validation-for="DataNascimento" class="text-danger"></span>
             </div>
@@ -49,7 +50,7 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-map-pin"></i></div>
                     </div>
-                    <input asp-for="Endereco" class="form-control" />
+                    <input asp-for="Endereco" class="form-control" placeholder="Digite a rua, nº e bairro..." />
                 </div>
                 <span asp-validation-for="Endereco" class="text-danger"></span>
             </div>
@@ -69,7 +70,7 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-phone"></i></div>
                     </div>
-                    <input asp-for="Telefone" id="telefone" class="form-control" />
+                    <input asp-for="Telefone" id="telefone" class="form-control" placeholder="Digite o celular (00)00000-0000..." />
                 </div>
                 <span asp-validation-for="Telefone" class="text-danger"></span>
             </div>
@@ -79,7 +80,7 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-envelope-open-text"></i></div>
                     </div>
-                    <input asp-for="email" class="form-control" />
+                    <input asp-for="email" class="form-control" placeholder="Digite o e-mail..." />
                 </div>
                 <span asp-validation-for="email" class="text-danger"></span>
             </div>

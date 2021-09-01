@@ -28,16 +28,15 @@ namespace SOSTransito.Controllers
         }
 
         // GET: Clientes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente
-                .Include(c => c.Localidades)
-                .FirstOrDefaultAsync(m => m.ClienteId == id);
+            var cliente = _context.Cliente
+                .Include(c => c.Localidades).Where(x => x.LocalizadorHash == id).FirstOrDefault();
             if (cliente == null)
             {
                 return NotFound();
@@ -138,16 +137,16 @@ namespace SOSTransito.Controllers
         }
 
         // GET: Clientes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente
-                .Include(c => c.Localidades)
-                .FirstOrDefaultAsync(m => m.ClienteId == id);
+            var cliente = _context.Cliente
+                .Include(c => c.Localidades).Where(x => x.LocalizadorHash == id)
+                .FirstOrDefault();
             if (cliente == null)
             {
                 return NotFound();
@@ -159,11 +158,12 @@ namespace SOSTransito.Controllers
         // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(string id)
         {
-            var cliente = await _context.Cliente.FindAsync(id);
+            var cliente = _context.Cliente.Where(x => x.LocalizadorHash == id).FirstOrDefault();
             _context.Cliente.Remove(cliente);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
+            TempData["message"] = "Muito bem! Exclusão do cliente " + cliente.Nome + " realizado com sucesso!";
             return RedirectToAction(nameof(Index));
         }
 

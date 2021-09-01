@@ -27,7 +27,7 @@ namespace SOSTransito.Models
         [DataType(DataType.Date)]
         [DisplayName("Data de Nascimento")]
         [Required(ErrorMessage = "O campo data de nascimento é obrigatório.")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataNascimento { get; set; }
 
         [DisplayName("Endereço")]

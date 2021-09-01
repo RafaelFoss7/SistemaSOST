@@ -15,7 +15,7 @@ namespace SOSTransito.Models
         [Key]
         public int LocalidadeId { get; set; }
 
-        [DisplayName("Cidade")]
+        [DisplayName("Localidade")]
         [Required(ErrorMessage = "O campo cidade é obrigatório.")]
         [StringLength(60, ErrorMessage = "O campo região precisa ter de 3 a 60 caracteres", MinimumLength = 3)]
         public string Regiao { get; set; }
