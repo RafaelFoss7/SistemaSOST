@@ -1,62 +1,117 @@
 ﻿@model SOSTransito.Models.CNH
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar";
 }
 
-<h1>Edit</h1>
+<h1>Editar</h1>
 
-<h4>CNH</h4>
+<h4>CNH - @ViewBag.Cliente <i class="fas fa-id-card"></i></h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CNHId" />
+            <input type="hidden" asp-for="ClienteId" />
+            <input type="hidden" asp-for="LocalizadorHash" />
             <div class="form-group">
                 <label asp-for="RegistroCNH" class="control-label"></label>
-                <input asp-for="RegistroCNH" class="form-control" />
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-id-card"></i></div>
+                    </div>
+                    <input asp-for="RegistroCNH" class="form-control" readonly />
+                </div>
                 <span asp-validation-for="RegistroCNH" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Categoria" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-id-card-alt"></i></div>
+                    </div>
+                    <select asp-for="Categoria" class="form-control">
+                        <option value="" disabled selected>Selecione a categoria da CNH...</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="AB">AB</option>
+                        <option value="AC">AC</option>
+                        <option value="AD">AD</option>
+                        <option value="AE">AE</option>
+                    </select>
+                </div>
+                <span asp-validation-for="Categoria" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="ValidadeCNH" class="control-label"></label>
-                <input asp-for="ValidadeCNH" class="form-control" />
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-calendar-check"></i></div>
+                    </div>
+                    <input asp-for="ValidadeCNH" class="form-control" />
+                </div>
                 <span asp-validation-for="ValidadeCNH" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StatusCNH" class="control-label"></label>
-                <input asp-for="StatusCNH" class="form-control" />
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-toggle-on"></i></div>
+                    </div>
+                    <select asp-for="StatusCNH" class="form-control">
+                        <option value="" disabled>Selecione o status da CNH...</option>
+                        <option value="Regularizada">Regularizada</option>
+                        <option value="Bloqueada">Bloqueada</option>
+                        <option value="Suspensa">Suspensa</option>
+                        <option value="Cassada">Cassada</option>
+                        <option value="Reciclagem">Reciclagem</option>
+                        <option value="Reabilitação">Reabilitação</option>
+                    </select>
+                </div>
                 <span asp-validation-for="StatusCNH" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Processo" class="control-label"></label>
-                <input asp-for="Processo" class="form-control" />
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-balance-scale"></i></div>
+                    </div>
+                    <select asp-for="Processo" class="form-control">
+                        <option value="" disabled>Selecione a etapa do processo...</option>
+                        <option value="DETRAN">DETRAN</option>
+                        <option value="JARI">JARI</option>
+                        <option value="CETRAN">CETRAN</option>
+                    </select>
+                </div>
                 <span asp-validation-for="Processo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StatusSistema" class="control-label"></label>
-                <input asp-for="StatusSistema" class="form-control" />
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-toggle-on"></i></div>
+                    </div>
+                    <select asp-for="StatusSistema" class="form-control">
+                        <option value="" disabled>Selecione o status de controle...</option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+                </div>
                 <span asp-validation-for="StatusSistema" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
-                <label asp-for="LocalizadorHash" class="control-label"></label>
-                <input asp-for="LocalizadorHash" class="form-control" />
-                <span asp-validation-for="LocalizadorHash" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ClienteId" class="control-label"></label>
-                <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
-                <span asp-validation-for="ClienteId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <div class="col-md-offset-2 col-md-10">
+                    <a href="/CNH/Index" class="btn btn-danger"><i class="far fa-times-circle"></i> Cancelar</a>
+                    <button type="submit" class="btn btn-success save"><i class="fas fa-save"></i> Confirmar</button>
+                </div>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

@@ -1,0 +1,45 @@
+﻿@model SOSTransito.Models.Veiculo
+
+@{
+    ViewData["Title"] = "Excluir";
+}
+
+<h1>Excluir</h1>
+
+<h3>Deseja realmente excluir esse veículo?</h3>
+<div>
+    <h4>Veículo <i class="fas fa-car"></i></h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Clientes.Nome)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Clientes.Nome)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Placa)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Placa)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RENAVAN)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RENAVAN)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StatusSistema)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StatusSistema)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="VeiculoId" />
+        <a href="/Veiculos/Index" class="btn btn-danger"><i class="far fa-times-circle"></i> Cancelar</a>
+        <button type="submit" value="Delete" class="btn btn-success save"><i class="fas fa-save"></i> Confirmar</button>
+    </form>
+</div>

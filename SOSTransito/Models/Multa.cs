@@ -18,6 +18,15 @@ namespace SOSTransito.Models
         [Required(ErrorMessage = "O campo org. atuador é obrigatório.")]
         public string OrgAtuador { get; set; }
 
+        [DisplayName("Nº AIT")]
+        [Required(ErrorMessage = "O campo Nº AIT é obrigatório.")]
+        public string NAIT { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayName("Data da Infração")]
+        [Required(ErrorMessage = "O campo data da infração é obrigatório.")]
+        public DateTime DataInfracao { get; set; }
+
         [DisplayName("Veículo")]
         [Required(ErrorMessage = "O campo veículo é obrigatório.")]
         public string Veiculo { get; set; }
@@ -35,6 +44,8 @@ namespace SOSTransito.Models
         public string StatusSistema { get; set; }
 
         public string LocalizadorHash { get; set; }
+
+        public string Arquivo { get; set; }
 
         //Relacionamentos...
         public virtual CNH CNH { get; set; }

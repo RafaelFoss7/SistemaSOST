@@ -1,0 +1,66 @@
+﻿@model SOSTransito.Models.Veiculo
+
+@{
+    ViewData["Title"] = "Editar Veículo";
+}
+
+<h1>Editar</h1>
+
+<h4>Veículo <i class="fas fa-car"></i></h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="VeiculoId" />
+            <input type="hidden" asp-for="ClienteId" />
+            <input type="hidden" asp-for="LocalizadorHash" />
+            <div class="form-group">
+                <label asp-for="Placa" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-car"></i></div>
+                    </div>
+                    <input asp-for="Placa" class="form-control" placeholder="Digite a placa do veículo..." />
+                </div>
+                <span asp-validation-for="Placa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RENAVAN" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-file-alt"></i></div>
+                    </div>
+                    <input asp-for="RENAVAN" class="form-control" placeholder="Digite o RENAVAN do veículo..." />
+                </div>
+                <span asp-validation-for="RENAVAN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StatusSistema" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-toggle-on"></i></div>
+                    </div>
+                    <select asp-for="StatusSistema" class="form-control">
+                        <option value="" disabled>Selecione o status de controle...</option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+                </div>
+                <span asp-validation-for="StatusSistema" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <a href="/Veiculos/Index" class="btn btn-danger"><i class="far fa-times-circle"></i> Cancelar</a>
+                    <button type="submit" class="btn btn-success save"><i class="fas fa-save"></i> Confirmar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

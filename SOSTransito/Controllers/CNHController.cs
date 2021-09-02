@@ -28,22 +28,19 @@ namespace SOSTransito.Controllers
         }
 
         // GET: CNH/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var cNH = await _context.CNH
-                .Include(c => c.Clientes)
-                .FirstOrDefaultAsync(m => m.CNHId == id);
-            if (cNH == null)
+            var cnh = _context.CNH.Include(c => c.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            if (cnh == null)
             {
                 return NotFound();
             }
 
-            return View(cNH);
+            return View(cnh);
         }
 
         // GET: CNH/Create
@@ -67,7 +64,8 @@ namespace SOSTransito.Controllers
             {
                 cnh.StatusSistema = "Ativo";
                 cnh.LocalizadorHash = Repositories.Md5Hash.CalculaHash(Convert.ToString(randNum.Next()) + System.DateTime.Now);
-                cnh.Processo = "Aguardando Processo";
+                if (cnh.Processo == null)
+                    cnh.Processo = "Em Andamento...";
                 if (ModelState.IsValid)
                 {
                     _context.Add(cnh);
@@ -87,20 +85,22 @@ namespace SOSTransito.Controllers
         }
 
         // GET: CNH/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cNH = await _context.CNH.FindAsync(id);
-            if (cNH == null)
+            var cnh = _context.CNH.Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            if (cnh == null)
             {
                 return NotFound();
             }
-            ViewData["ClienteId"] = new SelectList(_context.Cliente, "ClienteId", "CPF", cNH.ClienteId);
-            return View(cNH);
+            var cliente = _context.Cliente.Find(cnh.ClienteId);
+            ViewBag.Cliente = cliente.Nome;
+            ViewData["ClienteId"] = new SelectList(_context.Cliente, "ClienteId", "Nome", cnh.ClienteId);
+            return View(cnh);
         }
 
         // POST: CNH/Edit/5
@@ -108,9 +108,10 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,StatusCNH,Processo,StatusSistema,LocalizadorHash,ClienteId")] CNH cNH)
+        public async Task<IActionResult> Edit(string id, [Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,StatusCNH,Processo,StatusSistema,LocalizadorHash,ClienteId")] CNH cnh)
         {
-            if (id != cNH.CNHId)
+            var cliente = _context.Cliente.Find(cnh.ClienteId);
+            if (id != cnh.LocalizadorHash)
             {
                 return NotFound();
             }
@@ -119,12 +120,13 @@ namespace SOSTransito.Controllers
             {
                 try
                 {
-                    _context.Update(cNH);
+                    TempData["message"] = "Muito bem! Edição da CNH " + cnh.RegistroCNH + " do cliente " + cliente.Nome + " realizado com sucesso!";
+                    _context.Update(cnh);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CNHExists(cNH.CNHId))
+                    if (!CNHExists(cnh.CNHId))
                     {
                         return NotFound();
                     }
@@ -135,37 +137,36 @@ namespace SOSTransito.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.Cliente, "ClienteId", "CPF", cNH.ClienteId);
-            return View(cNH);
+            ViewData["ClienteId"] = new SelectList(_context.Cliente, "ClienteId", "CPF", cnh.ClienteId);
+            return View(cnh);
         }
 
         // GET: CNH/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cNH = await _context.CNH
-                .Include(c => c.Clientes)
-                .FirstOrDefaultAsync(m => m.CNHId == id);
-            if (cNH == null)
+            var cnh = _context.CNH.Include(c => c.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            if (cnh == null)
             {
                 return NotFound();
             }
 
-            return View(cNH);
+            return View(cnh);
         }
 
         // POST: CNH/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(string id)
         {
-            var cNH = await _context.CNH.FindAsync(id);
-            _context.CNH.Remove(cNH);
-            await _context.SaveChangesAsync();
+            var cnh = _context.CNH.Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            _context.CNH.Remove(cnh);
+            _context.SaveChanges();
+            TempData["message"] = "Muito bem! Exclusão da CNH " + cnh.RegistroCNH + " realizado com sucesso!";
             return RedirectToAction(nameof(Index));
         }
 

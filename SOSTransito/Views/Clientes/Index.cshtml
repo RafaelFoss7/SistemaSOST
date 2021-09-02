@@ -35,7 +35,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.StatusSistema)
             </th>
-            <th class="text-center" width="10%">
+            <th class="text-center" width="12%">
                 Ações
             </th>
         </tr>
@@ -59,8 +59,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.StatusSistema)
                 </td>
-                <td class="text-center" width="10%">
+                <td class="text-center" width="12%">
                     <a style="color:#000000" href="@Url.Action("Create", "CNH", new { id = item.LocalizadorHash })" title="Cadastrar CNH"><i class="fas fa-id-card"></i></a>
+                    <a style="color:#000000" href="@Url.Action("Create", "Veiculos", new { id = item.LocalizadorHash })" title="Cadastrar Veículo"><i class="fas fa-car-alt"></i></a>
                     <a style="color:#000000" href="@Url.Action("Edit", "Clientes", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
                     <a style="color:#000000" href="@Url.Action("Details", "Clientes", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
                     <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
@@ -82,6 +83,9 @@
     <div class="row">
         <div class="col-lg-4 zoom">
             <i class="fas fa-id-card"></i> <label class="label-primary"> Cadastrar CNH </label>
+        </div>
+        <div class="col-lg-4 zoom">
+            <i class="fas fa-car"></i> <label class="label-primary"> Cadastrar Veículo </label>
         </div>
         <div class="col-lg-4 zoom">
             <i class='fas fa-edit'></i> <label class="label-primary"> Editar Cliente </label>

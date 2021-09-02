@@ -8,6 +8,7 @@
 
 <h4>CNH - @ViewBag.Cliente <i class="fas fa-id-card"></i></h4>
 <strong class="text-warning"> @TempData["message"]</strong>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -26,7 +27,6 @@
                 </div>
                 <span asp-validation-for="RegistroCNH" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="Categoria" class="control-label"></label>
                 <div class="input-group">
@@ -48,7 +48,6 @@
                 </div>
                 <span asp-validation-for="Categoria" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="ValidadeCNH" class="control-label"></label>
                 <div class="input-group">
@@ -59,7 +58,6 @@
                 </div>
                 <span asp-validation-for="ValidadeCNH" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="StatusCNH" class="control-label"></label>
                 <div class="input-group">
@@ -72,13 +70,27 @@
                         <option value="Bloqueada">Bloqueada</option>
                         <option value="Suspensa">Suspensa</option>
                         <option value="Cassada">Cassada</option>
-                        <option value="Reciclada">Reciclada</option>
-                        <option value="Reabilitada">Reabilitada</option>
+                        <option value="Reciclagem">Reciclagem</option>
+                        <option value="Reabilitação">Reabilitação</option>
                     </select>
                 </div>
                 <span asp-validation-for="StatusCNH" class="text-danger"></span>
             </div>
-
+            <div class="form-group">
+                <label asp-for="Processo" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-balance-scale"></i></div>
+                    </div>
+                    <select asp-for="Processo" class="form-control">
+                        <option value="" disabled selected>Selecione a etapa do processo...</option>
+                        <option value="DETRAN">DETRAN</option>
+                        <option value="JARI">JARI</option>
+                        <option value="CETRAN">CETRAN</option>
+                    </select>
+                </div>
+                <span asp-validation-for="Processo" class="text-danger"></span>
+            </div>
             <br />
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">

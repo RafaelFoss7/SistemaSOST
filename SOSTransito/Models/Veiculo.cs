@@ -26,10 +26,8 @@ namespace SOSTransito.Models
 
         //Informações de controle...
         [DisplayName("Status de Controle")]
-        [Required]
         public string StatusSistema { get; set; }
 
-        [Required]
         public string LocalizadorHash { get; set; }
 
         //Relacionamentos...

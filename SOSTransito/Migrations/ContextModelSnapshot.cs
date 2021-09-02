@@ -65,7 +65,6 @@ namespace SOSTransito.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Processo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegistroCNH")
@@ -174,10 +173,19 @@ namespace SOSTransito.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Arquivo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CNHId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DataInfracao")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("LocalizadorHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NAIT")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -193,7 +201,6 @@ namespace SOSTransito.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StatusSistema")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Veiculo")
@@ -254,7 +261,6 @@ namespace SOSTransito.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LocalizadorHash")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Placa")
@@ -268,7 +274,6 @@ namespace SOSTransito.Migrations
                         .HasColumnType("nvarchar(11)");
 
                     b.Property<string>("StatusSistema")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("VeiculoId");
