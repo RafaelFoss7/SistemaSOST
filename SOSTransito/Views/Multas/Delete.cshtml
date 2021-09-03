@@ -1,0 +1,75 @@
+﻿@model SOSTransito.Models.Multa
+
+@{
+    ViewData["Title"] = "Excluir";
+}
+
+<h1>Excluir</h1>
+
+<h3>Desejá realmente excluir essa multa?</h3>
+<div>
+    <h4>Multa <i class="fas fa-file-excel"></i></h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CNH.Clientes.Nome)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CNH.Clientes.Nome)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CNH.RegistroCNH)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CNH.RegistroCNH)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrgAtuador)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrgAtuador)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NAIT)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NAIT)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DataInfracao)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DataInfracao)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Veiculo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Veiculo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Pontuacao)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Pontuacao)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Processo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Processo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StatusSistema)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StatusSistema)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="MultaId" />
+        <a href="/Localidades/Index" class="btn btn-danger"><i class="far fa-times-circle"></i> Cancelar</a>
+        <button type="submit" value="Delete" class="btn btn-success save"><i class="fas fa-save"></i> Confirmar</button>
+    </form>
+</div>

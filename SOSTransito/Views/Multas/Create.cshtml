@@ -1,0 +1,104 @@
+﻿@model SOSTransito.Models.Multa
+
+@{
+    ViewData["Title"] = "Cadastrar Multas";
+}
+
+<h1>Cadastrar</h1>
+
+<h4>Multa <i class="fas fa-file-excel"></i></h4>
+<strong class="text-warning"> @TempData["message"]</strong>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <select asp-for="CNHId" hidden class="form-control" asp-items="ViewBag.CNHId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrgAtuador" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-university"></i></div>
+                    </div>
+                    <select asp-for="OrgAtuador" class="form-control">
+                        <option value="" disabled selected>Selecione o órg. autuador...</option>
+                        <option value="PRF">PRF</option>
+                        <option value="DNIT">DNIT</option>
+                        <option value="ANTT">ANTT</option>
+                        <option value="DETRAN">DETRAN</option>
+                        <option value="Prefeitura">Prefeitura</option>
+                    </select>
+                </div>
+                <span asp-validation-for="OrgAtuador" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NAIT" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="far fa-file-alt"></i></div>
+                    </div>
+                    <input asp-for="NAIT" class="form-control" placeholder="Digite o Nº do AIT..." />
+                </div>
+                <span asp-validation-for="NAIT" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataInfracao" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-calendar-alt"></i></div>
+                    </div>
+                    <input asp-for="DataInfracao" class="form-control" placeholder="Selecione a data da infração..." />
+                </div>
+                <span asp-validation-for="DataInfracao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Veiculo" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-car"></i></div>
+                    </div>
+                    <select asp-for="Veiculo" class="form-control" asp-items="ViewBag.Veiculo"></select>
+                </div>
+                <span asp-validation-for="Veiculo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pontuacao" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-id-card-alt"></i></div>
+                    </div>
+                    <input asp-for="Pontuacao" class="form-control" placeholder="Digite a pontuação da autuação..." />
+                </div>
+                <span asp-validation-for="Pontuacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Processo" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-balance-scale"></i></div>
+                    </div>
+                    <select asp-for="Processo" class="form-control">
+                        <option value="" disabled selected>Selecione a etapa do processo...</option>
+                        <option value="DETRAN">DETRAN</option>
+                        <option value="JARI">JARI</option>
+                        <option value="CETRAN">CETRAN</option>
+                    </select>
+                </div>
+                <span asp-validation-for="Processo" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <a href="/Multas/Index" class="btn btn-danger"><i class="far fa-times-circle"></i> Cancelar</a>
+                    <button type="submit" class="btn btn-success save"><i class="fas fa-save"></i> Confirmar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

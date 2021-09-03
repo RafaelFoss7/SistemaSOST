@@ -1,10 +1,10 @@
-﻿@model IEnumerable<SOSTransito.Models.CNH>
+﻿@model IEnumerable<SOSTransito.Models.Multa>
 
 @{
-    ViewData["Title"] = "Lista de CNH";
+    ViewData["Title"] = "Lista de Multas Cadastradas";
 }
 
-<h1><i class="fas fa-id-card"></i> Lista de CNH's Cadastradas</h1>
+<h1><i class="fas fa-file-excel"></i> Lista de Multas Cadastradas</h1>
 
 <strong class="text-success"> @TempData["message"]</strong>
 
@@ -17,13 +17,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Clientes.Nome)
+                @Html.DisplayNameFor(model => model.CNH.Clientes.Nome)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RegistroCNH)
+                @Html.DisplayNameFor(model => model.CNH.RegistroCNH)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StatusCNH)
+                @Html.DisplayNameFor(model => model.OrgAtuador)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Processo)
@@ -31,7 +31,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.StatusSistema)
             </th>
-            <th width="5%" class="text-center">
+            <th class="text-center" width="5%">
                 Ações
             </th>
         </tr>
@@ -41,13 +41,13 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Clientes.Nome)
+                    @Html.DisplayFor(modelItem => item.CNH.Clientes.Nome)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RegistroCNH)
+                    @Html.DisplayFor(modelItem => item.CNH.RegistroCNH)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StatusCNH)
+                    @Html.DisplayFor(modelItem => item.OrgAtuador)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Processo)
@@ -55,10 +55,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.StatusSistema)
                 </td>
-                <td width="5%" class="text-center">
-                    <a style="color:#000000" href="@Url.Action("Create", "Multas", new { id = item.LocalizadorHash })" title="Cadastrar Multa"><i class="fas fa-file-excel"></i></a>
-                    <a style="color:#000000" href="@Url.Action("Edit", "CNH", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
-                    <a style="color:#000000" href="@Url.Action("Details", "CNH", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
+                <td class="text-center" width="5%">
+                    <a style="color:#000000" href="@Url.Action("Edit", "Multas", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
+                    <a style="color:#000000" href="@Url.Action("Details", "Multas", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
                     <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
                 </td>
             </tr>
@@ -77,16 +76,13 @@
 
     <div class="row">
         <div class="col-lg-4 zoom">
-            <i class="fas fa-file-excel"></i> <label class="label-primary"> Cadastrar Multa </label>
+            <i class='fas fa-edit'></i> <label class="label-primary"> Editar Multa </label>
         </div>
         <div class="col-lg-4 zoom">
-            <i class='fas fa-edit'></i> <label class="label-primary"> Editar CNH </label>
+            <i class="fas fa-bars"></i> <label class="label-primary"> Detalhes da Multa </label>
         </div>
         <div class="col-lg-4 zoom">
-            <i class="fas fa-bars"></i> <label class="label-primary"> Detalhes da CNH </label>
-        </div>
-        <div class="col-lg-4 zoom">
-            <i class="fas fa-trash-alt"></i> <label class="label-primary"> Excluir CNH </label>
+            <i class="fas fa-trash-alt"></i> <label class="label-primary"> Excluir Multa </label>
         </div>
     </div>
 </div>

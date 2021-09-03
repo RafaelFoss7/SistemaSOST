@@ -14,7 +14,7 @@ namespace SOSTransito.Models
         [Key]
         public int MultaId { get; set; }
 
-        [DisplayName("Org. Atuador")]
+        [DisplayName("Órg. Autuador")]
         [Required(ErrorMessage = "O campo org. atuador é obrigatório.")]
         public string OrgAtuador { get; set; }
 
@@ -35,8 +35,8 @@ namespace SOSTransito.Models
         [Required(ErrorMessage = "O campo pontuação é obrigatório.")]
         public int Pontuacao { get; set; }
 
-        [DisplayName("Processo PAT")]
-        [Required(ErrorMessage = "O campo processo PAT é obrigatório.")]
+        [DisplayName("Processo da Multa")]
+        [Required(ErrorMessage = "O campo processo da multa é obrigatório.")]
         public string Processo { get; set; }
 
         //Informações de controle...
