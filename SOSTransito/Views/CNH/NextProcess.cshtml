@@ -1,0 +1,51 @@
+﻿@model SOSTransito.Models.CNH
+
+@{
+    ViewData["Title"] = "Processo da CNH";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title"><i class="fas fa-balance-scale-right"></i> Alterar Processo - CNH - @ViewBag.CNH</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+@using (Html.BeginForm("ChangeProcess", "CNH", FormMethod.Post, new { id = "myform" }))
+{
+    <div class="modal-body">
+        <div class="col-md-12">
+            <input type="hidden" asp-for="CNHId" />
+            <input type="hidden" asp-for="ClienteId" />
+            <input type="hidden" asp-for="LocalizadorHash" />
+            <input type="hidden" asp-for="RegistroCNH" />
+            <input type="hidden" asp-for="Categoria" />
+            <input type="hidden" asp-for="ValidadeCNH" />
+            <input type="hidden" asp-for="StatusCNH" />
+            <input type="hidden" asp-for="StatusSistema" />
+
+            <input style="display:none" value="@ViewBag.CNHId" id="id" name="id" />
+
+            <div class="form-group">
+                <label asp-for="Processo" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-balance-scale"></i></div>
+                    </div>
+                    <select asp-for="Processo" class="form-control">
+                        <option value="" disabled>Selecione a etapa do processo...</option>
+                        <option value="DETRAN">DETRAN</option>
+                        <option value="JARI">JARI</option>
+                        <option value="CETRAN">CETRAN</option>
+                    </select>
+                </div>
+                <span asp-validation-for="Processo" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancelar</button>
+        <button type="submit" class="btn btn-success save"><i class="far fa-check-circle"></i> Confirmar</button>
+    </div>
+}

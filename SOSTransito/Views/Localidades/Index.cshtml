@@ -10,7 +10,13 @@
     <a asp-action="Create"><button class="btn btn-primary btn-sm"><i class="fas fa-globe-americas"></i> Nova Localidade</button></a>
 </p>
 
-<strong class="text-success"> @TempData["message"]</strong>
+@if (@TempData["message"] != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @TempData["message"]
+    </div>
+}
 
 @section Styles
 {

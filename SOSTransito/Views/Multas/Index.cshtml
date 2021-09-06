@@ -6,7 +6,13 @@
 
 <h1><i class="fas fa-file-excel"></i> Lista de Multas Cadastradas</h1>
 
-<strong class="text-success"> @TempData["message"]</strong>
+@if (@TempData["message"] != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @TempData["message"]
+    </div>
+}
 
 @section Styles
 {
@@ -31,7 +37,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.StatusSistema)
             </th>
-            <th class="text-center" width="5%">
+            <th class="text-center" width="10%">
                 Ações
             </th>
         </tr>
@@ -55,7 +61,8 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.StatusSistema)
                 </td>
-                <td class="text-center" width="5%">
+                <td class="text-center" width="10%">
+                    <a href="#" style="color:#000000" class="nextProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalNextProcess" id="@item.LocalizadorHash" title="Alterar Processo da Multa"> <i class="fas fa-balance-scale-right"></i></a>
                     <a style="color:#000000" href="@Url.Action("Edit", "Multas", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
                     <a style="color:#000000" href="@Url.Action("Details", "Multas", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
                     <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
@@ -87,6 +94,15 @@
     </div>
 </div>
 
+@*MODAL*@
+<div class="modal" id="modalNextProcess" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="conteudoModal"></div>
+        </div>
+    </div>
+</div>
+
 @section Scripts
 {
     <script src="~/lib/datatables.net/jquery.dataTables.js"></script>
@@ -95,5 +111,15 @@
         $(document).ready(function () {
             $('#Table').DataTable();
         });
+    </script>
+    <script>
+        $(function () {
+            $(".nextProcess").click(function () {
+                var id = $(this).attr("id");
+                $("#conteudoModal").load("/Multas/NextProcess/" + id, function () {
+                    $("#NextProcess").modal('show');
+                });
+            });
+        })
     </script>
 }

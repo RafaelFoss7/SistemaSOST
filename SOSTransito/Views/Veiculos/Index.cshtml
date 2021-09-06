@@ -6,7 +6,13 @@
 
 <h1><i class="fas fa-car-alt"></i> Lista de Veículos Cadastrados</h1>
 
-<strong class="text-success"> @TempData["message"]</strong>
+@if (@TempData["message"] != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @TempData["message"]
+    </div>
+}
 
 @section Styles
 {

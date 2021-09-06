@@ -23,8 +23,50 @@ namespace SOSTransito.Controllers
         // GET: Multas
         public async Task<IActionResult> Index()
         {
-            var context = _context.Multas.Include(m => m.CNH).Include(c => c.CNH.Clientes);
+            var context = _context.Multa.Include(m => m.CNH).Include(c => c.CNH.Clientes);
             return View(await context.ToListAsync());
+        }
+
+        public IActionResult NextProcess(string id)
+        {
+            var multas = _context.Multa.Include(x => x.CNH).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            ViewBag.Multa = multas.NAIT;
+            ViewBag.MultaId = multas.LocalizadorHash;
+            return PartialView(multas);
+        }
+
+        [HttpPost]
+        public IActionResult ChangeProcess(string id, Multa multa)
+        {
+            if (id != multa.LocalizadorHash)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    TempData["message"] = "Muito bem! Alteração do processo da multa " + multa.NAIT + " realizado com sucesso!";
+                    _context.Update(multa);
+                    _context.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MultaExists(multa.CNHId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.Multa = multa.NAIT;
+            ViewBag.MultaId = multa.LocalizadorHash;
+            return PartialView(multa);
         }
 
         // GET: Multas/Details/5
@@ -34,7 +76,7 @@ namespace SOSTransito.Controllers
             {
                 return NotFound();
             }
-            var multa = _context.Multas.Include(m => m.CNH).Include(c => c.CNH.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            var multa = _context.Multa.Include(m => m.CNH).Include(c => c.CNH.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
             if (multa == null)
             {
                 return NotFound();
@@ -58,7 +100,7 @@ namespace SOSTransito.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MultaId,OrgAtuador,NAIT,DataInfracao,Veiculo,Pontuacao,Processo,StatusSistema,LocalizadorHash,Arquivo,CNHId")] Multa multa)
         {
-            var MultUser = _context.Multas.Any(x => x.NAIT == multa.NAIT);
+            var MultUser = _context.Multa.Any(x => x.NAIT == multa.NAIT);
             if (MultUser == false)
             {
                 multa.StatusSistema = "Ativo";
@@ -91,7 +133,7 @@ namespace SOSTransito.Controllers
                 return NotFound();
             }
 
-            var multa = _context.Multas.Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            var multa = _context.Multa.Where(x => x.LocalizadorHash == id).FirstOrDefault();
             if (multa == null)
             {
                 return NotFound();
@@ -146,7 +188,7 @@ namespace SOSTransito.Controllers
             {
                 return NotFound();
             }
-            var multa = _context.Multas.Include(m => m.CNH).Include(c => c.CNH.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            var multa = _context.Multa.Include(m => m.CNH).Include(c => c.CNH.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
             if (multa == null)
             {
                 return NotFound();
@@ -160,8 +202,8 @@ namespace SOSTransito.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(string id)
         {
-            var multa = _context.Multas.Where(x => x.LocalizadorHash == id).FirstOrDefault();
-            _context.Multas.Remove(multa);
+            var multa = _context.Multa.Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            _context.Multa.Remove(multa);
             _context.SaveChanges();
             TempData["message"] = "Muito bem! Exclusão da multa " + multa.NAIT + " realizado com sucesso!";
             return RedirectToAction(nameof(Index));
@@ -169,7 +211,7 @@ namespace SOSTransito.Controllers
 
         private bool MultaExists(int id)
         {
-            return _context.Multas.Any(e => e.MultaId == id);
+            return _context.Multa.Any(e => e.MultaId == id);
         }
     }
 }

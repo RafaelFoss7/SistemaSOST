@@ -10,8 +10,13 @@
     <a asp-action="Create"><button class="btn btn-primary btn-sm"><i class="fas fa-map-marked-alt"></i> Nova Atribuição de Localidade</button></a>
 </p>
 
-<strong class="text-success"> @TempData["message"]</strong>
-
+@if (@TempData["message"] != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @TempData["message"]
+    </div>
+}
 @section Styles
 {
     <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
@@ -37,21 +42,21 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Localidades.Regiao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Usuario.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StatusSistema)
-            </td>
-            <td class="text-center" width="5%">
-                <a style="color:#000000" href="@Url.Action("Edit", "Atribuicao_Localidade", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
-                <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Localidades.Regiao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuario.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusSistema)
+                </td>
+                <td class="text-center" width="5%">
+                    <a style="color:#000000" href="@Url.Action("Edit", "Atribuicao_Localidade", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
+                    <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

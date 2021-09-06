@@ -27,6 +27,48 @@ namespace SOSTransito.Controllers
             return View(await context.ToListAsync());
         }
 
+        public IActionResult NextProcess(string id)
+        {
+            var cnh = _context.CNH.Include(x => x.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            ViewBag.CNH = cnh.RegistroCNH;
+            ViewBag.CNHId = cnh.LocalizadorHash;
+            return PartialView(cnh);
+        }
+
+        [HttpPost]
+        public IActionResult ChangeProcess(string id, CNH cnh)
+        {
+            if (id != cnh.LocalizadorHash)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    TempData["message"] = "Muito bem! Alteração do processo da CNH " + cnh.RegistroCNH + " realizado com sucesso!";
+                    _context.Update(cnh);
+                    _context.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CNHExists(cnh.CNHId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.CNH = cnh.RegistroCNH;
+            ViewBag.CNHId = cnh.LocalizadorHash;
+            return PartialView(cnh);
+        }
+
         // GET: CNH/Details/5
         public IActionResult Details(string id)
         {
