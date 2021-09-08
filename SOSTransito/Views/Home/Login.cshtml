@@ -1,0 +1,61 @@
+﻿
+@{
+    var returnUrl = ViewData["ReturnUrl"] as string;
+    var error = TempData["Error"] as string;
+}
+
+<link rel="stylesheet" href="~/css/login-page.css" />
+
+<div class="container-fluid ps-md-0">
+    <div class="row g-0">
+        <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+        <div class="col-md-8 col-lg-6">
+            <div class="login d-flex align-items-center py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-9 col-lg-8 mx-auto">
+                            <h3 class="login-heading mb-4">Bem Vindo(a)!</h3>
+
+                            <!-- Sign In Form -->
+                            <form action="/login?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" name="email" id="floatingInput" placeholder="Digite seu e-mail...">
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control" name="senha" id="floatingPassword" placeholder="Digite sua senha...">
+                                </div>
+
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="rememberPasswordCheck" name="manterLogado">
+                                    <label class="form-check-label" for="rememberPasswordCheck">
+                                        Manter Logado
+                                    </label>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Entrar</button>
+                                    <div class="text-center">
+                                        <a class="small" href="#">Esqueceu sua senha?</a>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<h1>Login</h1>
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <h2 class="alert-danger" style="padding:20px;">@error</h2>
+    }
+    <form action="/login?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
+        <input type="text" name="email" placeholder="Digite seu email..." />
+        <input type="password" name="senha" placeholder="Digite sua senha..." />
+        <input type="submit" value="login" />
+    </form>*@

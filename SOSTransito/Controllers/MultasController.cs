@@ -32,7 +32,7 @@ namespace SOSTransito.Controllers
             var multas = _context.Multa.Include(x => x.CNH).Where(x => x.LocalizadorHash == id).FirstOrDefault();
             ViewBag.Multa = multas.NAIT;
             ViewBag.MultaId = multas.LocalizadorHash;
-            return PartialView(multas);
+            return PartialView(multas);       
         }
 
         [HttpPost]

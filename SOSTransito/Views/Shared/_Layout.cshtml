@@ -42,6 +42,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Multas" asp-action="Index"><i class="fas fa-file-excel"></i> Multas</a>
                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

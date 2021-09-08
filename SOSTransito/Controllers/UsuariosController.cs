@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace SOSTransito.Controllers
         }
 
         // GET: Usuarios
+        [Authorize(Roles = "ADM")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Usuario.ToListAsync());
@@ -28,6 +30,7 @@ namespace SOSTransito.Controllers
 
 
         // GET: Usuarios/Create
+        [Authorize(Roles = "ADM")]
         public IActionResult Create()
         {
             return View();
@@ -37,6 +40,7 @@ namespace SOSTransito.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "ADM")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UsuarioID,Nome,Tipo,Email,Senha,StatusSistema,LocalizadorHash")] Usuario usuario, string ConfirmSenha)
         {
@@ -75,6 +79,7 @@ namespace SOSTransito.Controllers
         }
 
         // Change Password Usuários...
+        [Authorize(Roles = "ADM")]
         public IActionResult ChangePassword(string id)
         {
             if (id == null)
@@ -92,6 +97,7 @@ namespace SOSTransito.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ADM")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(string id, [Bind("UsuarioID,Nome,Tipo,Email,Senha,StatusSistema,LocalizadorHash")] Usuario usuario, string ConfirmSenha)
         {
@@ -134,6 +140,7 @@ namespace SOSTransito.Controllers
         }
 
         // GET: Usuarios/Edit/5
+        [Authorize(Roles = "ADM")]
         public IActionResult Edit(string id)
         {
             if (id == null)
@@ -153,6 +160,7 @@ namespace SOSTransito.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "ADM")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("UsuarioID,Nome,Tipo,Email,Senha,StatusSistema,LocalizadorHash")] Usuario usuario)
         {
@@ -186,6 +194,7 @@ namespace SOSTransito.Controllers
         }
 
         // GET: Usuarios/Delete/5
+        [Authorize(Roles = "ADM")]
         public IActionResult Delete(string id)
         {
             if (id == null)
@@ -203,6 +212,7 @@ namespace SOSTransito.Controllers
 
         // POST: Usuarios/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "ADM")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(string id)
         {
