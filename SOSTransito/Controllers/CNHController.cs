@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using SOSTransito.Models;
 
 namespace SOSTransito.Controllers
 {
+    [Authorize(Roles = "ADM, SCT")]
     public class CNHController : Controller
     {
         private readonly Context _context;
@@ -23,8 +25,24 @@ namespace SOSTransito.Controllers
         // GET: CNH
         public async Task<IActionResult> Index()
         {
-            var context = _context.CNH.Include(c => c.Clientes);
-            return View(await context.ToListAsync());
+            var userId = User.Identity.Name;
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId).ToList();
+            var listCNH = _context.CNH.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).ToList();
+
+            List<CNH> cnhs = new List<CNH>();
+
+            foreach (var objLoc in listLocalidades)
+            {
+                foreach (var objCNH in listCNH)
+                {
+                    if (objLoc.LocalidadeId == objCNH.Clientes.LocalidadeId)
+                    {
+                        cnhs.Add(_context.CNH.Find(objCNH.CNHId));
+                    }
+                }
+            }
+
+            return View(cnhs.ToList());
         }
 
         public IActionResult NextProcess(string id)

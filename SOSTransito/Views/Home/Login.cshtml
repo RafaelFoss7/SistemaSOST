@@ -19,10 +19,20 @@
                             <!-- Sign In Form -->
                             <form action="/login?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" name="email" id="floatingInput" placeholder="Digite seu e-mail...">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-envelope-open-text"></i></div>
+                                        </div>
+                                        <input type="email" class="form-control" name="email" id="floatingInput" placeholder="Digite seu e-mail...">
+                                    </div>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="password" class="form-control" name="senha" id="floatingPassword" placeholder="Digite sua senha...">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-key"></i></div>
+                                        </div>
+                                        <input type="password" class="form-control" name="senha" id="floatingPassword" placeholder="Digite sua senha...">
+                                    </div>
                                 </div>
 
                                 <div class="form-check mb-3">
@@ -33,7 +43,7 @@
                                 </div>
 
                                 <div class="d-grid">
-                                    <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Entrar</button>
+                                    <button class="btn btn-primary text-uppercase fw-bold mb-2" type="submit"><i class="fas fa-sign-in-alt"></i> Entrar</button>
                                     <div class="text-center">
                                         <a class="small" href="#">Esqueceu sua senha?</a>
                                     </div>

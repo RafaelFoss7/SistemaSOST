@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using SOSTransito.Models;
 
 namespace SOSTransito.Controllers
 {
+    [Authorize(Roles = "ADM, SCT")]
     public class ClientesController : Controller
     {
         private readonly Context _context;
@@ -21,10 +23,25 @@ namespace SOSTransito.Controllers
         }
 
         // GET: Clientes
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var context = _context.Cliente.Include(c => c.Localidades);
-            return View(await context.ToListAsync());
+            var userId = User.Identity.Name;
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId).ToList();
+            var listClientes = _context.Cliente.Include(x => x.Localidades).ToList();
+            List<Cliente> Clientes = new List<Cliente>();
+
+            foreach (var objLoc in listLocalidades)
+            {
+                foreach (var objCli in listClientes)
+                {
+                    if (objLoc.LocalidadeId == objCli.LocalidadeId)
+                    {
+                        Clientes.Add(_context.Cliente.Find(objCli.ClienteId));
+                    }
+                }
+            }
+
+            return View(Clientes.ToList());
         }
 
         // GET: Clientes/Details/5

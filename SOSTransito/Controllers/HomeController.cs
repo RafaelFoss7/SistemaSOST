@@ -80,7 +80,7 @@ namespace SOSTransito.Controllers
             return View();
         }
 
-        [Authorize(Roles = "ADM")]
+        [Authorize(Roles = "ADM, SCT")]
         public IActionResult Index()
         {
             return View();
