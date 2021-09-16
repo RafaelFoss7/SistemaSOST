@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,10 +32,14 @@
     <Compile Remove="Migrations\20210901182426_newMigration.Designer.cs" />
     <Compile Remove="Migrations\20210901185811_new.cs" />
     <Compile Remove="Migrations\20210901185811_new.Designer.cs" />
+    <Compile Remove="Migrations\20210902161451_migraçãoAtualizada.cs" />
+    <Compile Remove="Migrations\20210902161451_migraçãoAtualizada.Designer.cs" />
+    <Compile Remove="Migrations\20210916171522_notificationYear.cs" />
+    <Compile Remove="Migrations\20210916171522_notificationYear.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.6" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.9">
       <PrivateAssets>all</PrivateAssets>
@@ -45,7 +52,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="positus-api-csharp-client" Version="1.0.5" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

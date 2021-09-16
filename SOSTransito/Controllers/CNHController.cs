@@ -23,7 +23,7 @@ namespace SOSTransito.Controllers
         }
 
         // GET: CNH
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var userId = User.Identity.Name;
             var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId).ToList();
@@ -43,6 +43,113 @@ namespace SOSTransito.Controllers
             }
 
             return View(cnhs.ToList());
+        }
+
+        public IActionResult IndexRenovacao()
+        {
+            //informações do usuário logado...
+            var userId = User.Identity.Name;
+            var usuario = _context.Usuario.Where(x => x.Nome == userId).FirstOrDefault();
+
+            //datas atuais...
+            var AnoAtual = System.DateTime.Now.Year;
+            var MesAtual = System.DateTime.Now.Month;
+            var DiaAtual = System.DateTime.Now.Day;
+
+            //alertas de CNH...
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId).ToList();
+            var listCNH = _context.CNH.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).ToList();
+            List<CNH> cnhs = new List<CNH>();
+
+            foreach (var objLoc in listLocalidades)
+            {
+                foreach (var objCNH in listCNH)
+                {
+                    if (objLoc.LocalidadeId == objCNH.Clientes.LocalidadeId)
+                    {
+                        cnhs.Add(_context.CNH.Find(objCNH.CNHId));
+                    }
+                }
+            }
+
+            List<CNH> renovacoes = new List<CNH>();
+            foreach (var objCNH in cnhs)
+            {
+                var UserAno = objCNH.ValidadeCNH.Year;
+                var UserMes = objCNH.ValidadeCNH.Month - 1;
+                var UserDia = objCNH.ValidadeCNH.Day;
+
+                if (UserAno == AnoAtual && UserMes == MesAtual)
+                {
+                    renovacoes.Add(objCNH);
+                }
+            }
+
+            return View(renovacoes.ToList());
+        }
+
+        public IActionResult WppTexto(string id)
+        {
+            var cnh = _context.CNH.Include(x => x.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            ViewBag.ClienteNome = cnh.Clientes.Nome;
+            ViewBag.CNHId = cnh.LocalizadorHash;
+            return PartialView();
+        }
+
+        [HttpPost]
+        public IActionResult EnviarWhatsapp(string id, string texto)
+        {
+            var cnh = _context.CNH.Include(x => x.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            var result = Repositories.whatsapp.sendWpp(cnh.Clientes.Telefone, texto);
+
+            if (result == false)
+            {
+                TempData["error"] = result;
+                TempData["msg"] = "Erro ao realizar o envio de mensagem pelo whatsapp.";
+                return RedirectToAction("IndexRenovacao");
+            }
+
+            TempData["msg"] = "Mensagem enviada com sucesso!";
+            return RedirectToAction("IndexRenovacao");
+        }
+
+        public IActionResult MailTexto(string id)
+        {
+            var cnh = _context.CNH.Include(x => x.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            ViewBag.ClienteNome = cnh.Clientes.Nome;
+            ViewBag.CNHId = cnh.LocalizadorHash;
+            return PartialView();
+        }
+
+        [HttpPost]
+        public IActionResult EnviarEmail(string id, string titulo, string texto, bool result)
+        {
+            var cnh = _context.CNH.Include(x => x.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            try
+            {
+                cnh.NotificationYear = Convert.ToString(System.DateTime.Now.Year);
+                _context.Update(cnh);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
+                return RedirectToAction("IndexRenovacao");
+            }
+            finally
+            {
+                result = Repositories.MailService.sendMail(cnh.Clientes.email, titulo, texto);
+            }
+
+            if (result == false)
+            {
+                TempData["error"] = result;
+                TempData["msg"] = "Erro ao realizar o envio de mensagem pelo whatsapp.";
+                return RedirectToAction("IndexRenovacao");
+            }
+
+            TempData["msg"] = "Mensagem enviada com sucesso!";
+            return RedirectToAction("IndexRenovacao");
         }
 
         public IActionResult NextProcess(string id)
@@ -116,7 +223,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,StatusCNH,Processo,StatusSistema,LocalizadorHash,ClienteId")] CNH cnh)
+        public async Task<IActionResult> Create([Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,StatusCNH,Processo,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] CNH cnh)
         {
             var cliente = _context.Cliente.Find(cnh.ClienteId);
             var CNHUser = _context.CNH.Any(x => x.ClienteId == cnh.ClienteId);
@@ -168,7 +275,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,StatusCNH,Processo,StatusSistema,LocalizadorHash,ClienteId")] CNH cnh)
+        public async Task<IActionResult> Edit(string id, [Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,StatusCNH,Processo,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] CNH cnh)
         {
             var cliente = _context.Cliente.Find(cnh.ClienteId);
             if (id != cnh.LocalizadorHash)

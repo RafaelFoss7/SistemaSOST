@@ -14,7 +14,11 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-9 col-lg-8 mx-auto">
-                            <h3 class="login-heading mb-4">Bem Vindo(a)!</h3>
+                            <div class="text-center">
+                                <img src="~/images/logomarcavatatebemvindo.png" alt="E-Lock" width="300" height="280" title="Página Inicial - E-Lock" />
+                            </div>
+                            <br />
+                            @*<h3 class="login-heading mb-4 text-center">Bem Vindo(a)!</h3>*@
 
                             <!-- Sign In Form -->
                             <form action="/login?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
@@ -33,6 +37,7 @@
                                         </div>
                                         <input type="password" class="form-control" name="senha" id="floatingPassword" placeholder="Digite sua senha...">
                                     </div>
+                                    <p class="text-danger">@TempData["Error"]</p>
                                 </div>
 
                                 <div class="form-check mb-3">

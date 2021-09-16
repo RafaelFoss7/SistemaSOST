@@ -62,9 +62,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Localidades.Regiao)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StatusSistema)
-                </td>
+                @if (item.StatusSistema == "Ativo")
+                {
+                    <td class="text-success">
+                        <b> @Html.DisplayFor(modelItem => item.StatusSistema)</b>
+                    </td>
+                }
+                @if (item.StatusSistema == "Inativo")
+                {
+                    <td class="text-danger">
+                        <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
+                    </td>
+                }
                 <td class="text-center" width="12%">
                     <a style="color:#000000" href="@Url.Action("Create", "CNH", new { id = item.LocalizadorHash })" title="Cadastrar CNH"><i class="fas fa-id-card"></i></a>
                     <a style="color:#000000" href="@Url.Action("Create", "Veiculos", new { id = item.LocalizadorHash })" title="Cadastrar Veículo"><i class="fas fa-car-alt"></i></a>

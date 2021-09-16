@@ -2,7 +2,56 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="container-fluid text-center">
+    @*<img class="mx-auto d-block" src="~/images/VatateSOSTransitoSemFundo.jpg" width="400" height="230" />*@
+    <h1> Bem-vindo(a) ao Sistema Vatate Trânsito</h1>
+    <p> Sistema para gestão e controle dos processos administrativos de trânsito do seus clientes.</p>
+</div>
+<hr />
+<br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-user"></i> Informações de Perfil</h6>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><b>Nome:</b> @ViewBag.NOME</p>
+                    <p class="card-text"><b>E-mail:</b> @ViewBag.EMAIL</p>
+                    <p class="card-text"><b>Acesso:</b> @ViewBag.TIPO</p>
+                    <p class="card-text"><b>Status:</b> @ViewBag.STATUS</p>
+                    <hr />
+                    <div align="right">
+                        <a class="btn btn-primary" href="@Url.Action("ChangePassword", "Usuarios", new { id = ViewBag.HASH })"><i class="fas fa-key"></i> Alterar Senha</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-bell"></i> Avisos</h6>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a asp-controller="Clientes" asp-action="IndexAniversariantes"><i class="fas fa-search"></i></a>
+                        Aniversariantes do dia
+                        <span class="badge bg-primary badge-pill">@ViewBag.ANIVERSARIANTES</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a asp-controller="Veiculos" asp-action="IndexLicenciamentos"><i class="fas fa-search"></i></a>
+                        Próximos licenciamentos
+                        <span class="badge bg-primary badge-pill">@ViewBag.LICENCIAMENTOS</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a asp-controller="CNH" asp-action="IndexRenovacao"><i class="fas fa-search"></i></a>
+                        Próximas renovações
+                        <span class="badge bg-primary badge-pill">@ViewBag.RENOVACOES</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>

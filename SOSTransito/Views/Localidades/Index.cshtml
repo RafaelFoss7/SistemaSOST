@@ -43,9 +43,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Regiao)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StatusSistema)
-                </td>
+                @if (item.StatusSistema == "Ativo")
+                {
+                    <td class="text-success">
+                        <b> @Html.DisplayFor(modelItem => item.StatusSistema)</b>
+                    </td>
+                }
+                @if (item.StatusSistema == "Inativo")
+                {
+                    <td class="text-danger">
+                        <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
+                    </td>
+                }
                 <td class="text-center" width="5%">
                     <a style="color:#000000" href="@Url.Action("Edit", "Localidades", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
                     <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>

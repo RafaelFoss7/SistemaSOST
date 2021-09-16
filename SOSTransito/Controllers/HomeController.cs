@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SOSTransito.Data;
 using SOSTransito.Models;
@@ -83,6 +84,157 @@ namespace SOSTransito.Controllers
         [Authorize(Roles = "ADM, SCT")]
         public IActionResult Index()
         {
+            //informações do usuário logado...
+            var userId = User.Identity.Name;
+            var usuario = _context.Usuario.Where(x => x.Nome == userId).FirstOrDefault();
+
+            ViewBag.NOME = usuario.Nome;
+            ViewBag.EMAIL = usuario.Email;
+            ViewBag.STATUS = usuario.StatusSistema;
+            ViewBag.TIPO = usuario.Tipo;
+            ViewBag.HASH = usuario.LocalizadorHash;
+
+            //datas atuais...
+            var AnoAtual = System.DateTime.Now.Year;
+            var MesAtual = System.DateTime.Now.Month;
+            var DiaAtual = System.DateTime.Now.Day;
+
+            //alertas de aniversário...
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId).ToList();
+            var listClientes = _context.Cliente.Include(x => x.Localidades).ToList();
+            List<Cliente> Clientes = new List<Cliente>();
+
+            foreach (var objLoc in listLocalidades)
+            {
+                foreach (var objCli in listClientes)
+                {
+                    if (objLoc.LocalidadeId == objCli.LocalidadeId)
+                    {
+                        Clientes.Add(_context.Cliente.Find(objCli.ClienteId));
+                    }
+                }
+            }
+
+            int aniversariantes = 0;
+            foreach (var objCli in Clientes)
+            {
+                var UserMes = objCli.DataNascimento.Month;
+                var UserDia = objCli.DataNascimento.Day;
+
+                if (UserMes == MesAtual && UserDia == DiaAtual)
+                {
+                    aniversariantes++;
+                }
+            }
+
+            //alertas de CNH...
+            var listCNH = _context.CNH.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).ToList();
+            List<CNH> cnhs = new List<CNH>();
+
+            foreach (var objLoc in listLocalidades)
+            {
+                foreach (var objCNH in listCNH)
+                {
+                    if (objLoc.LocalidadeId == objCNH.Clientes.LocalidadeId)
+                    {
+                        cnhs.Add(_context.CNH.Find(objCNH.CNHId));
+                    }
+                }
+            }
+            int renovacoes = 0;
+            foreach (var objCNH in cnhs)
+            {
+                var UserAno = objCNH.ValidadeCNH.Year;
+                var UserMes = objCNH.ValidadeCNH.Month-1;
+                var UserDia = objCNH.ValidadeCNH.Day;
+
+                if (UserAno == AnoAtual && UserMes == MesAtual)
+                {
+                    renovacoes++;
+                }
+            }
+
+            //alertas de licenciamentos...
+            var listVeiculos = _context.Veiculo.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).ToList();
+            List<Veiculo> Veiculos = new List<Veiculo>();
+
+            foreach (var objLoc in listLocalidades)
+            {
+                foreach (var objVeic in listVeiculos)
+                {
+                    if (objLoc.LocalidadeId == objVeic.Clientes.LocalidadeId)
+                    {
+                        Veiculos.Add(_context.Veiculo.Find(objVeic.VeiculoId));
+                    }
+                }
+            }
+            int licenciamentos = 0;
+            foreach (var objVeic in Veiculos)
+            {
+                var placa = objVeic.Placa.Substring(objVeic.Placa.Length - 1, 1);
+
+                if (Convert.ToInt32(placa) == 1 || Convert.ToInt32(placa) == 2 || Convert.ToInt32(placa) == 3)
+                {
+                    if (MesAtual == 3)
+                    {
+                        licenciamentos++;
+                    }
+                }
+                if (Convert.ToInt32(placa) == 4)
+                {
+                    if (MesAtual == 4)
+                    {
+                        licenciamentos++;
+                    }
+                }
+                if (Convert.ToInt32(placa) == 5)
+                {
+                    if (MesAtual == 5)
+                    {
+                        licenciamentos++;
+                    }
+                }
+                if (Convert.ToInt32(placa) == 6)
+                {
+                    if (MesAtual == 6)
+                    {
+                        licenciamentos++;
+                    }
+                }
+                if (Convert.ToInt32(placa) == 7)
+                {
+                    if (MesAtual == 7)
+                    {
+                        licenciamentos++;
+                    }
+                }
+                if (Convert.ToInt32(placa) == 8)
+                {
+                    if (MesAtual == 8)
+                    {
+                        licenciamentos++;
+                    }
+                }
+                if (Convert.ToInt32(placa) == 9)
+                {
+                    if (MesAtual == 9)
+                    {
+                        licenciamentos++;
+                    }
+                }
+                if (Convert.ToInt32(placa) == 0)
+                {
+                    if (MesAtual == 10)
+                    {
+                        licenciamentos++;
+                    }
+                }
+            }
+
+            ViewBag.ANIVERSARIANTES = aniversariantes;
+            ViewBag.LICENCIAMENTOS = licenciamentos;
+            ViewBag.RENOVACOES = renovacoes;
+
             return View();
         }
 

@@ -14,7 +14,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-car"></i> Vatate SOS Trânsito</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@*<i class="fas fa-car"></i>*@ <img src="~/images/VatateSOSTransitoSemFundo.png" width="50" height="50" title="Página Inicial - Vatate Trânsito" /> Vatate Trânsito</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -28,7 +28,6 @@
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-tie"></i> Administrativo</a>
                                     <div class="dropdown-menu" data-bs-popper="none">
                                         <a class="dropdown-item" asp-controller="Usuarios" asp-action="Index"><i class="fas fa-users"></i> Usuários</a>
-                                        <a class="dropdown-item" asp-controller="Localidades" asp-action="Index"><i class="fas fa-globe-americas"></i> Localidades</a>
                                         <a class="dropdown-item" asp-controller="Atribuicao_Localidade" asp-action="Index"><i class="fas fa-street-view"></i> Atribuições</a>
                                     </div>
                                 </li>
@@ -78,7 +77,7 @@
     <br />
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - Vatate SOSTransito - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - Vatate Trânsito
         </div>
     </footer>
 

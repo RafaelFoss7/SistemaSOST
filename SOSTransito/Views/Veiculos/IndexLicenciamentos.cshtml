@@ -1,0 +1,203 @@
+﻿@model IEnumerable<SOSTransito.Models.Veiculo>
+
+@{
+    ViewData["Title"] = "Lista de Licenciamentos";
+    var error = TempData["error"];
+    //datas atuais...
+    var AnoAtual = System.DateTime.Now.Year;
+    var MesAtual = System.DateTime.Now.Month;
+    var DiaAtual = System.DateTime.Now.Day;
+    var placa = "";
+    var mesVencimento = "";
+}
+
+<h1><i class="fas fa-car-alt"></i> Lista de Próximos Licenciamentos</h1>
+
+@if (TempData["msg"] != null)
+{
+    if (error == null)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["msg"]
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["msg"]
+        </div>
+    }
+}
+
+@section Styles
+{
+    <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
+}
+
+
+<table id="Table" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Clientes.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Placa)
+            </th>
+            <th>
+                Mês de Licenciamento
+            </th>
+            <th class="text-center" width="5%">
+                Ações
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Clientes.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Placa)
+                </td>
+                <td>
+                    @{
+                        placa = item.Placa.Substring(item.Placa.Length - 1, 1);
+                    }
+                    @if (Convert.ToInt32(placa) == 1 || Convert.ToInt32(placa) == 2 || Convert.ToInt32(placa) == 3)
+                    {
+                        if (MesAtual == 3)
+                        {
+                            mesVencimento = "Março";
+                        }
+                    }
+                    @if (Convert.ToInt32(placa) == 4)
+                    {
+                        if (MesAtual == 4)
+                        {
+                            mesVencimento = "Abril";
+                        }
+                    }
+                    @if (Convert.ToInt32(placa) == 5)
+                    {
+                        if (MesAtual == 5)
+                        {
+                            mesVencimento = "Maio";
+                        }
+                    }
+                    @if (Convert.ToInt32(placa) == 6)
+                    {
+                        if (MesAtual == 6)
+                        {
+                            mesVencimento = "Junho";
+                        }
+                    }
+                    @if (Convert.ToInt32(placa) == 7)
+                    {
+                        if (MesAtual == 7)
+                        {
+                            mesVencimento = "Julho";
+                        }
+                    }
+                    @if (Convert.ToInt32(placa) == 8)
+                    {
+                        if (MesAtual == 8)
+                        {
+                            mesVencimento = "Agosto";
+                        }
+                    }
+                    @if (Convert.ToInt32(placa) == 9)
+                    {
+                        if (MesAtual == 9)
+                        {
+                            mesVencimento = "Setembro";
+                        }
+                    }
+                    @if (Convert.ToInt32(placa) == 0)
+                    {
+                        if (MesAtual == 10)
+                        {
+                            mesVencimento = "Outubro";
+                        }
+                    }
+                    <b>@mesVencimento</b>
+                </td>
+                <td class="text-center" width="5%">
+                    <a href="#" style="color:#000000" class="whats" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#whatsModal" id="@item.LocalizadorHash" title="Enviar Menssagem whatsapp"> <i class="fab fa-whatsapp"></i></a>
+                    <a href="#" style="color:#000000" class="mail" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#MailModal" id="@item.LocalizadorHash" title="Enviar Menssagem e-mail"> <i class="fas fa-mail-bulk"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="toggle_content">
+            <div class="col-md">
+                <i class="fa fa-list-alt"></i> <label><b> LEGENDAS </b></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 zoom">
+            <i class="fab fa-whatsapp"></i> <label class="label-primary"> Enviar Whatsapp </label>
+        </div>
+        <div class="col-lg-4 zoom">
+            <i class="fas fa-mail-bulk"></i> <label class="label-primary"> Enviar E-mail </label>
+        </div>
+    </div>
+</div>
+
+@*MODAL*@
+<div class="modal" id="whatsModal" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="conteudoModal1"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="MailModal" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="conteudoModal2"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#Table').DataTable();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".whats").click(function () {
+                var id = $(this).attr("id");
+                $("#conteudoModal1").load("/Veiculos/WppTexto/" + id, function () {
+                    $("#WppTexto").modal('show');
+                });
+            });
+        })
+
+
+        $(function () {
+            $(".mail").click(function () {
+                var id = $(this).attr("id");
+                $("#conteudoModal2").load("/Veiculos/MailTexto/" + id, function () {
+                    $("#MailTexto").modal('show');
+                });
+            });
+        })
+    </script>
+}

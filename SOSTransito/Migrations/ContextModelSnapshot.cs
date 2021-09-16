@@ -64,6 +64,9 @@ namespace SOSTransito.Migrations
                     b.Property<string>("LocalizadorHash")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NotificationYear")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Processo")
                         .HasColumnType("nvarchar(max)");
 
@@ -119,6 +122,9 @@ namespace SOSTransito.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NotificationYear")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StatusSistema")
                         .HasColumnType("nvarchar(max)");
@@ -261,6 +267,9 @@ namespace SOSTransito.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LocalizadorHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NotificationYear")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Placa")

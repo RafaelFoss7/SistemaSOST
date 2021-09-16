@@ -58,9 +58,24 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Processo)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StatusSistema)
-                </td>
+                @if (item.StatusSistema == "Ativo")
+                {
+                    <td class="text-success">
+                        <b> @Html.DisplayFor(modelItem => item.StatusSistema)</b>
+                    </td>
+                }
+                @if (item.StatusSistema == "Inativo")
+                {
+                    <td class="text-danger">
+                        <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
+                    </td>
+                }
+                @if (item.StatusSistema == "Finalizado")
+                {
+                    <td class="text-info">
+                        <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
+                    </td>
+                }
                 <td width="15%" class="text-center">
                     <a href="#" style="color:#000000" class="nextProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalNextProcess" id="@item.LocalizadorHash" title="Alterar Processo CNH"> <i class="fas fa-balance-scale-right"></i></a>
                     <a style="color:#000000" href="@Url.Action("Create", "Multas", new { id = item.LocalizadorHash })" title="Cadastrar Multa"><i class="fas fa-file-excel"></i></a>

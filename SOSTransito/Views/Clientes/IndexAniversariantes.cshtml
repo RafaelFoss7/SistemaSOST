@@ -1,0 +1,143 @@
+﻿@model IEnumerable<SOSTransito.Models.Cliente>
+
+@{
+    ViewData["Title"] = "Lista de Aniversariantes do dia";
+    var error = TempData["error"];
+}
+
+<h1><i class="fas fa-birthday-cake"></i> Lista de Aniversariantes</h1>
+
+@if (TempData["msg"] != null)
+{
+    if (error == null)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["msg"]
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["msg"]
+        </div>
+    }
+}
+
+@section Styles
+{
+    <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
+}
+
+<table id="Table" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataNascimento)
+            </th>
+            <th class="text-center" width="12%">
+                Ações
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefone)
+                </td>
+                <td>
+                    <b>@Html.DisplayFor(modelItem => item.DataNascimento)</b>
+                </td>
+                <td class="text-center" width="12%">
+                    <a href="#" style="color:#000000" class="whats" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#whatsModal" id="@item.LocalizadorHash" title="Enviar Menssagem whatsapp"> <i class="fab fa-whatsapp"></i></a>
+                    <a href="#" style="color:#000000" class="mail" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#MailModal" id="@item.LocalizadorHash" title="Enviar Menssagem e-mail"> <i class="fas fa-mail-bulk"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="toggle_content">
+            <div class="col-md">
+                <i class="fa fa-list-alt"></i> <label><b> LEGENDAS </b></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 zoom">
+            <i class="fab fa-whatsapp"></i> <label class="label-primary"> Enviar Whatsapp </label>
+        </div>
+        <div class="col-lg-4 zoom">
+            <i class="fas fa-mail-bulk"></i> <label class="label-primary"> Enviar E-mail </label>
+        </div>
+    </div>
+</div>
+
+@*MODAL*@
+<div class="modal" id="whatsModal" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="conteudoModal1"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="MailModal" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="conteudoModal2"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#Table').DataTable();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".whats").click(function () {
+                var id = $(this).attr("id");
+                $("#conteudoModal1").load("/Clientes/WppTexto/" + id, function () {
+                    $("#WppTexto").modal('show');
+                });
+            });
+        })
+
+
+        $(function () {
+            $(".mail").click(function () {
+                var id = $(this).attr("id");
+                $("#conteudoModal2").load("/Clientes/MailTexto/" + id, function () {
+                    $("#MailTexto").modal('show');
+                });
+            });
+        })
+    </script>
+}

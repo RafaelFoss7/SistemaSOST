@@ -23,10 +23,26 @@ namespace SOSTransito.Controllers
         }
 
         // GET: Multas
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var context = _context.Multa.Include(m => m.CNH).Include(c => c.CNH.Clientes);
-            return View(await context.ToListAsync());
+            var userId = User.Identity.Name;
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId).ToList();
+            var listMultas = _context.Multa.Include(x => x.CNH).Include(y => y.CNH.Clientes).Include(z => z.CNH.Clientes.Localidades).ToList();
+
+            List<Multa> multas = new List<Multa>();
+
+            foreach (var objLoc in listLocalidades)
+            {
+                foreach (var objMult in listMultas)
+                {
+                    if (objLoc.LocalidadeId == objMult.CNH.Clientes.LocalidadeId)
+                    {
+                        multas.Add(_context.Multa.Find(objMult.MultaId));
+                    }
+                }
+            }
+
+            return View(multas.ToList());
         }
 
         public IActionResult NextProcess(string id)

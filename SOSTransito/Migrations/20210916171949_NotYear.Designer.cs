@@ -10,8 +10,8 @@ using SOSTransito.Data;
 namespace SOSTransito.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20210902161451_migraçãoAtualizada")]
-    partial class migraçãoAtualizada
+    [Migration("20210916171949_NotYear")]
+    partial class NotYear
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,6 +64,9 @@ namespace SOSTransito.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LocalizadorHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NotificationYear")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Processo")
@@ -121,6 +124,9 @@ namespace SOSTransito.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NotificationYear")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StatusSistema")
                         .HasColumnType("nvarchar(max)");
@@ -263,6 +269,9 @@ namespace SOSTransito.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LocalizadorHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NotificationYear")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Placa")

@@ -23,10 +23,171 @@ namespace SOSTransito.Controllers
         }
 
         // GET: Veiculos
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var context = _context.Veiculo.Include(v => v.Clientes);
-            return View(await context.ToListAsync());
+            var userId = User.Identity.Name;
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId).ToList();
+            var listVeiculos = _context.Veiculo.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).ToList();
+            List<Veiculo> Veiculos = new List<Veiculo>();
+
+            foreach (var objLoc in listLocalidades)
+            {
+                foreach (var objVeic in listVeiculos)
+                {
+                    if (objLoc.LocalidadeId == objVeic.Clientes.LocalidadeId)
+                    {
+                        Veiculos.Add(_context.Veiculo.Find(objVeic.VeiculoId));
+                    }
+                }
+            }
+
+            return View(Veiculos.ToList());
+        }
+
+        public IActionResult IndexLicenciamentos()
+        {
+            //informações do usuário logado...
+            var userId = User.Identity.Name;
+            var usuario = _context.Usuario.Where(x => x.Nome == userId).FirstOrDefault();
+
+            //datas atuais...
+            var AnoAtual = System.DateTime.Now.Year;
+            var MesAtual = System.DateTime.Now.Month;
+            var DiaAtual = System.DateTime.Now.Day;
+
+            //alertas de CNH...
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId).ToList();
+            var listVeiculos = _context.Veiculo.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).ToList();
+            List<Veiculo> veiculos = new List<Veiculo>();
+
+            List<Veiculo> licenciamentos = new List<Veiculo>();
+            foreach (var objVeic in listVeiculos)
+            {
+                var placa = objVeic.Placa.Substring(objVeic.Placa.Length - 1, 1);
+
+                if (Convert.ToInt32(placa) == 1 || Convert.ToInt32(placa) == 2 || Convert.ToInt32(placa) == 3)
+                {
+                    if (MesAtual == 3)
+                    {
+                        licenciamentos.Add(objVeic);
+                    }
+                }
+                if (Convert.ToInt32(placa) == 4)
+                {
+                    if (MesAtual == 4)
+                    {
+                        licenciamentos.Add(objVeic);
+                    }
+                }
+                if (Convert.ToInt32(placa) == 5)
+                {
+                    if (MesAtual == 5)
+                    {
+                        licenciamentos.Add(objVeic);
+                    }
+                }
+                if (Convert.ToInt32(placa) == 6)
+                {
+                    if (MesAtual == 6)
+                    {
+                        licenciamentos.Add(objVeic);
+                    }
+                }
+                if (Convert.ToInt32(placa) == 7)
+                {
+                    if (MesAtual == 7)
+                    {
+                        licenciamentos.Add(objVeic);
+                    }
+                }
+                if (Convert.ToInt32(placa) == 8)
+                {
+                    if (MesAtual == 8)
+                    {
+                        licenciamentos.Add(objVeic);
+                    }
+                }
+                if (Convert.ToInt32(placa) == 9)
+                {
+                    if (MesAtual == 9)
+                    {
+                        licenciamentos.Add(objVeic);
+                    }
+                }
+                if (Convert.ToInt32(placa) == 0)
+                {
+                    if (MesAtual == 10)
+                    {
+                        licenciamentos.Add(objVeic);
+                    }
+                }
+            }
+
+            return View(licenciamentos.ToList());
+        }
+
+        public IActionResult WppTexto(string id)
+        {
+            var veic = _context.Veiculo.Include(x => x.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            ViewBag.ClienteNome = veic.Clientes.Nome;
+            ViewBag.VeiculoId = veic.LocalizadorHash;
+            return PartialView();
+        }
+
+        [HttpPost]
+        public IActionResult EnviarWhatsapp(string id, string texto)
+        {
+            var veic = _context.Veiculo.Include(x => x.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            var result = Repositories.whatsapp.sendWpp(veic.Clientes.Telefone, texto);
+
+            if (result == false)
+            {
+                TempData["error"] = result;
+                TempData["msg"] = "Erro ao realizar o envio de mensagem pelo whatsapp.";
+                return RedirectToAction("IndexLicenciamentos");
+            }
+
+            TempData["msg"] = "Mensagem enviada com sucesso!";
+            return RedirectToAction("IndexLicenciamentos");
+        }
+
+        public IActionResult MailTexto(string id)
+        {
+            var veic = _context.Veiculo.Include(x => x.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            ViewBag.ClienteNome = veic.Clientes.Nome;
+            ViewBag.VeiculoId = veic.LocalizadorHash;
+            return PartialView();
+        }
+
+        [HttpPost]
+        public IActionResult EnviarEmail(string id, string titulo, string texto, bool result)
+        {
+            var veic = _context.Veiculo.Include(x => x.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+
+            try
+            {
+                veic.NotificationYear = Convert.ToString(System.DateTime.Now.Year);
+                _context.Update(veic);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
+            }
+            finally
+            {
+                result = Repositories.MailService.sendMail(veic.Clientes.email, titulo, texto);
+            }
+         
+            if (result == false)
+            {
+                TempData["error"] = result;
+                TempData["msg"] = "Erro ao realizar o envio de mensagem pelo whatsapp.";
+                return RedirectToAction("IndexLicenciamentos");
+            }
+
+            TempData["msg"] = "Mensagem enviada com sucesso!";
+            return RedirectToAction("IndexLicenciamentos");
         }
 
         // GET: Veiculos/Create
@@ -42,7 +203,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("VeiculoId,Placa,RENAVAN,StatusSistema,LocalizadorHash,ClienteId")] Veiculo veiculo)
+        public async Task<IActionResult> Create([Bind("VeiculoId,Placa,RENAVAN,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] Veiculo veiculo)
         {
             var cliente = _context.Cliente.Find(veiculo.ClienteId);
             var VeiculoUser = _context.Veiculo.Any(x => x.ClienteId == veiculo.ClienteId && x.Placa == veiculo.Placa);
@@ -90,7 +251,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("VeiculoId,Placa,RENAVAN,StatusSistema,LocalizadorHash,ClienteId")] Veiculo veiculo)
+        public async Task<IActionResult> Edit(string id, [Bind("VeiculoId,Placa,RENAVAN,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] Veiculo veiculo)
         {
             var cliente = _context.Cliente.Find(veiculo.ClienteId);
             if (id != veiculo.LocalizadorHash)

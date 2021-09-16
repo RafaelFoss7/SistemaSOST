@@ -50,6 +50,8 @@ namespace SOSTransito.Models
 
         public string LocalizadorHash { get; set; }
 
+        public string NotificationYear { get; set; }
+
         //Relacionamentos...
         public virtual Localidade Localidades { get; set; }
         public int LocalidadeId { get; set; }

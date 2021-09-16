@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "Whatsapp mensagem";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title"><i class="fab fa-whatsapp"></i> Enviar Whatsapp para @ViewBag.ClienteNome</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@using (Html.BeginForm("EnviarWhatsapp", "Clientes", FormMethod.Post, new { id = "myform" }))
+{
+    <div class="modal-body">
+        <input class="form-control" style="display:none" value="@ViewBag.ClienteId" name="id" />
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fas fa-align-justify"></i></div>
+            </div>
+            <textarea class="form-control" rows="3" name="texto" placeholder="Digite a mensagem..."></textarea>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="far fa-times-circle"></i> Cancelar</button>
+        <button type="submit" class="btn btn-success save"><i class="far fa-check-circle"></i> Confirmar</button>
+    </div>
+}
