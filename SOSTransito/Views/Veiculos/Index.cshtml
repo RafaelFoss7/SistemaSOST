@@ -16,12 +16,14 @@
     </div>
 }
 
+<hr />
+
 @section Styles
 {
     <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
 
-<table id="Table" class="table table-hover">
+<table id="Table" class="table table-hover text-center">
     <thead>
         <tr>
             <th>
@@ -36,7 +38,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.StatusSistema)
             </th>
-            <th class="text-center" width="5%">
+            <th width="5%">
                 Ações
             </th>
         </tr>
@@ -66,15 +68,16 @@
                         <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
                     </td>
                 }
-                <td class="text-center" width="5%">
-                    <a style="color:#000000" href="@Url.Action("Edit", "Veiculos", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
-                    <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
-                </td>
+            <td width="5%">
+                <a style="color:#000000" href="@Url.Action("Edit", "Veiculos", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
+                <a style="color:#000000" href="@Url.Action("Details", "Veiculos", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
+                <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+            </td>
             </tr>
         }
     </tbody>
 </table>
-
+<br />
 <div class="container-fluid">
     <div class="row">
         <div class="toggle_content">
@@ -87,6 +90,9 @@
     <div class="row">
         <div class="col-lg-4 zoom">
             <i class='fas fa-edit'></i> <label class="label-primary"> Editar Veículo </label>
+        </div>
+        <div class="col-lg-4 zoom">
+            <i class="fas fa-bars"></i> <label class="label-primary"> Detalhes do Veículo </label>
         </div>
         <div class="col-lg-4 zoom">
             <i class="fas fa-trash-alt"></i> <label class="label-primary"> Excluir Veículo </label>

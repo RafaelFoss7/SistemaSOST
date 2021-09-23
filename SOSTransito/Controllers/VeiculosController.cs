@@ -284,6 +284,22 @@ namespace SOSTransito.Controllers
             return View(veiculo);
         }
 
+        // GET: CNH/Details/5
+        public IActionResult Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var veiculo = _context.Veiculo.Include(c => c.Clientes).Include(l => l.Clientes.Localidades).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            if (veiculo == null)
+            {
+                return NotFound();
+            }
+
+            return View(veiculo);
+        }
+
         // GET: Veiculos/Delete/5
         public IActionResult Delete(string id)
         {

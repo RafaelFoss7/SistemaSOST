@@ -1,13 +1,13 @@
-﻿@model SOSTransito.Models.CNH
+﻿@model SOSTransito.Models.Veiculo
 
 @{
-    ViewData["Title"] = "Detalhes da CNH";
+    ViewData["Title"] = "Detalhes do Veículo";
 }
 
 <h1>Detalhes</h1>
 
 <div>
-    <h4>CNH <i class="fas fa-bars"></i></h4>
+    <h4>Veículo</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -53,34 +53,16 @@
             @Html.DisplayFor(model => model.Clientes.Telefone)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RegistroCNH)
+            @Html.DisplayNameFor(model => model.Placa)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RegistroCNH)
+            @Html.DisplayFor(model => model.Placa)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Categoria)
+            @Html.DisplayNameFor(model => model.RENAVAN)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Categoria)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ValidadeCNH)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ValidadeCNH)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StatusCNH)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StatusCNH)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Processo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Processo)
+            @Html.DisplayFor(model => model.RENAVAN)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StatusSistema)
@@ -91,6 +73,6 @@
     </dl>
 </div>
 <div>
-    <a href="/CNH/Index" class="btn btn-warning"><i class="fas fa-arrow-left"></i> Voltar</a>
+    <a href="/Veiculos/Index" class="btn btn-warning"><i class="fas fa-arrow-left"></i> Voltar</a>
     <a asp-action="Edit" asp-route-id="@Model.LocalizadorHash" class="btn btn-dark"><i class="fas fa-user-edit"></i> Editar</a>
 </div>

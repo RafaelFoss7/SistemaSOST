@@ -201,7 +201,7 @@ namespace SOSTransito.Controllers
             {
                 return NotFound();
             }
-            var cnh = _context.CNH.Include(c => c.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            var cnh = _context.CNH.Include(c => c.Clientes).Include(l => l.Clientes.Localidades).Where(x => x.LocalizadorHash == id).FirstOrDefault();
             if (cnh == null)
             {
                 return NotFound();

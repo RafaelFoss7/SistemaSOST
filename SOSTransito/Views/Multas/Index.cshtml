@@ -21,14 +21,16 @@
     <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
 
-<table id="Table" class="table table-hover">
+<hr />
+
+<table id="Table" class="table table-hover text-center">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CNH.Clientes.Nome)
+                @Html.DisplayNameFor(model => model.CNH.RegistroCNH)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CNH.RegistroCNH)
+                @Html.DisplayNameFor(model => model.NAIT)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.OrgAtuador)
@@ -39,7 +41,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.StatusSistema)
             </th>
-            <th class="text-center" width="10%">
+            <th width="15%">
                 Ações
             </th>
         </tr>
@@ -49,17 +51,32 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CNH.Clientes.Nome)
+                    @Html.DisplayFor(modelItem => item.CNH.RegistroCNH)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CNH.RegistroCNH)
+                    <b>@Html.DisplayFor(modelItem => item.NAIT)</b>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.OrgAtuador)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Processo)
-                </td>
+                @if (item.Processo == "Deferido")
+                {
+                    <td class="text-success">
+                        <b>@Html.DisplayFor(modelItem => item.Processo)</b>
+                    </td>
+                }
+                else if (item.Processo == "Indeferido")
+                {
+                    <td class="text-danger">
+                        <b>@Html.DisplayFor(modelItem => item.Processo)</b>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Processo)
+                    </td>
+                }
                 @if (item.StatusSistema == "Ativo")
                 {
                     <td class="text-success">
@@ -78,8 +95,9 @@
                         <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
                     </td>
                 }
-                <td class="text-center" width="10%">
+                <td width="15%">
                     <a href="#" style="color:#000000" class="nextProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalNextProcess" id="@item.LocalizadorHash" title="Alterar Processo da Multa"> <i class="fas fa-balance-scale-right"></i></a>
+                    <a href="#" style="color:#000000" class="finalProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalFinalProcess" id="@item.LocalizadorHash" title="Finalizar Processo da Multa"> <i class="fas fa-arrow-alt-circle-down"></i></a>
                     <a style="color:#000000" href="@Url.Action("Edit", "Multas", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
                     <a style="color:#000000" href="@Url.Action("Details", "Multas", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
                     <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
@@ -88,7 +106,7 @@
         }
     </tbody>
 </table>
-
+<br />
 <div class="container-fluid">
     <div class="row">
         <div class="toggle_content">
@@ -99,6 +117,12 @@
     </div>
 
     <div class="row">
+        <div class="col-lg-4 zoom">
+            <i class="fas fa-balance-scale-right"></i> <label class="label-primary"> Avançar Processo </label>
+        </div>
+        <div class="col-lg-4 zoom">
+            <i class="fas fa-arrow-alt-circle-down"></i> <label class="label-primary"> Finalizar Processo </label>
+        </div>
         <div class="col-lg-4 zoom">
             <i class='fas fa-edit'></i> <label class="label-primary"> Editar Multa </label>
         </div>
@@ -115,7 +139,15 @@
 <div class="modal" id="modalNextProcess" role="dialog" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div id="conteudoModal"></div>
+            <div id="conteudoModal1"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modalFinalProcess" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="conteudoModal2"></div>
         </div>
     </div>
 </div>
@@ -133,8 +165,17 @@
         $(function () {
             $(".nextProcess").click(function () {
                 var id = $(this).attr("id");
-                $("#conteudoModal").load("/Multas/NextProcess/" + id, function () {
+                $("#conteudoModal1").load("/Multas/NextProcess/" + id, function () {
                     $("#NextProcess").modal('show');
+                });
+            });
+        })
+
+        $(function () {
+            $(".finalProcess").click(function () {
+                var id = $(this).attr("id");
+                $("#conteudoModal2").load("/Multas/FinalProcess/" + id, function () {
+                    $("#FinalProcess").modal('show');
                 });
             });
         })

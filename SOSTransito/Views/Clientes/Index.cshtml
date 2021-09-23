@@ -18,12 +18,14 @@
     </div>
 }
 
+<hr />
+
 @section Styles
 {
     <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
 
-<table id="Table" class="table table-hover">
+<table id="Table" class="table table-hover text-center">
     <thead>
         <tr>
             <th>
@@ -41,7 +43,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.StatusSistema)
             </th>
-            <th class="text-center" width="12%">
+            <th width="12%">
                 Ações
             </th>
         </tr>
@@ -74,7 +76,7 @@
                         <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
                     </td>
                 }
-                <td class="text-center" width="12%">
+                <td width="12%">
                     <a style="color:#000000" href="@Url.Action("Create", "CNH", new { id = item.LocalizadorHash })" title="Cadastrar CNH"><i class="fas fa-id-card"></i></a>
                     <a style="color:#000000" href="@Url.Action("Create", "Veiculos", new { id = item.LocalizadorHash })" title="Cadastrar Veículo"><i class="fas fa-car-alt"></i></a>
                     <a style="color:#000000" href="@Url.Action("Edit", "Clientes", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
@@ -85,7 +87,7 @@
         }
     </tbody>
 </table>
-
+<br />
 <div class="container-fluid">
     <div class="row">
         <div class="toggle_content">

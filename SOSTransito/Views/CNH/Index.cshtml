@@ -16,12 +16,14 @@
     </div>
 }
 
+<hr />
+
 @section Styles
 {
     <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
 
-<table id="Table" class="table table-hover">
+<table id="Table" class="table table-hover text-center">
     <thead>
         <tr>
             <th>
@@ -39,7 +41,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.StatusSistema)
             </th>
-            <th width="15%" class="text-center">
+            <th width="15%">
                 Ações
             </th>
         </tr>
@@ -52,7 +54,7 @@
                     @Html.DisplayFor(modelItem => item.Clientes.Nome)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RegistroCNH)
+                    <b>@Html.DisplayFor(modelItem => item.RegistroCNH)</b>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StatusCNH)
@@ -78,7 +80,7 @@
                         <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
                     </td>
                 }
-                <td width="15%" class="text-center">
+                <td width="15%">
                     <a href="#" style="color:#000000" class="nextProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalNextProcess" id="@item.LocalizadorHash" title="Alterar Processo CNH"> <i class="fas fa-balance-scale-right"></i></a>
                     <a style="color:#000000" href="@Url.Action("Create", "Multas", new { id = item.LocalizadorHash })" title="Cadastrar Multa"><i class="fas fa-file-excel"></i></a>
                     <a style="color:#000000" href="@Url.Action("Edit", "CNH", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
@@ -89,7 +91,7 @@
         }
     </tbody>
 </table>
-
+<br />
 <div class="container-fluid">
     <div class="row">
         <div class="toggle_content">

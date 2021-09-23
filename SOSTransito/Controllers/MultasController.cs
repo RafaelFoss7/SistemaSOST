@@ -87,14 +87,58 @@ namespace SOSTransito.Controllers
             return PartialView(multa);
         }
 
-        // GET: Multas/Details/5
-        public IActionResult Details(string id)
+        public IActionResult FinalProcess(string id)
+        {
+            var multas = _context.Multa.Include(x => x.CNH).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            ViewBag.Multa = multas.NAIT;
+            ViewBag.MultaId = multas.LocalizadorHash;
+            return PartialView(multas);
+        }
+
+        [HttpPost]
+        public IActionResult FinalizarProcesso(string id, Multa multa)
+        {
+            if (id != multa.LocalizadorHash)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    TempData["message"] = "Muito bem! Finalização do processo da multa " + multa.NAIT + " realizado com sucesso!";
+                    multa.StatusSistema = "Finalizado";
+                    _context.Update(multa);
+                    _context.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MultaExists(multa.CNHId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.Multa = multa.NAIT;
+            ViewBag.MultaId = multa.LocalizadorHash;
+            return PartialView(multa);
+        }
+
+            // GET: Multas/Details/5
+            public IActionResult Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var multa = _context.Multa.Include(m => m.CNH).Include(c => c.CNH.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
+            var multa = _context.Multa.Include(m => m.CNH).Include(c => c.CNH.Clientes).Include(l => l.CNH.Clientes.Localidades).Where(x => x.LocalizadorHash == id).FirstOrDefault();
             if (multa == null)
             {
                 return NotFound();
@@ -121,6 +165,8 @@ namespace SOSTransito.Controllers
             var MultUser = _context.Multa.Any(x => x.NAIT == multa.NAIT);
             if (MultUser == false)
             {
+                var veiculo = _context.Veiculo.Find(Convert.ToInt32(multa.Veiculo));
+                multa.Veiculo = veiculo.Placa;
                 multa.StatusSistema = "Ativo";
                 multa.LocalizadorHash = Repositories.Md5Hash.CalculaHash(Convert.ToString(randNum.Next()) + System.DateTime.Now);
                 if (ModelState.IsValid)

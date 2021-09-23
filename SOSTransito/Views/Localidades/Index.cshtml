@@ -20,11 +20,13 @@
     </div>
 }
 
+<hr />
+
 @section Styles
 {
     <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
-<table id="Table" class="table table-hover">
+<table id="Table" class="table table-hover text-center">
     <thead>
         <tr>
             <th>
@@ -33,7 +35,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.StatusSistema)
             </th>
-            <th class="text-center" width="5%">
+            <th width="5%">
                 Ações
             </th>
         </tr>
@@ -57,7 +59,7 @@
                         <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
                     </td>
                 }
-                <td class="text-center" width="5%">
+                <td width="5%">
                     <a style="color:#000000" href="@Url.Action("Edit", "Localidades", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
                     <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
                 </td>
@@ -65,7 +67,7 @@
         }
     </tbody>
 </table>
-
+<br />
 <div class="container-fluid">
     <div class="row">
         <div class="toggle_content">

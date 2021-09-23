@@ -30,15 +30,17 @@
     }
 }
 
+<hr />
+
 @section Styles
 {
     <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
 
-<table id="Table" class="table table-hover">
+<table id="Table" class="table table-hover text-center">
     <thead>
         <tr>
-            <th calss="text-center" width="2%">
+            <th width="2%">
                 <i class="fas fa-tasks"></i>
             </th>
             <th>
@@ -50,7 +52,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.ValidadeCNH)
             </th>
-            <th width="5%" class="text-center">
+            <th width="5%">
                 Ações
             </th>
         </tr>
@@ -59,7 +61,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td class="text-center" width="2%">
+                <td width="2%">
                     @if (item.NotificationYear == Convert.ToString(ano))
                     {
                         <i class="fas fa-check"></i>
@@ -74,7 +76,7 @@
                 <td>
                     <b> @Html.DisplayFor(modelItem => item.ValidadeCNH)</b>
                 </td>
-                <td width="5%" class="text-center">
+                <td width="5%">
                     <a href="#" style="color:#000000" class="whats" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#whatsModal" id="@item.LocalizadorHash" title="Enviar Menssagem whatsapp"> <i class="fab fa-whatsapp"></i></a>
                     <a href="#" style="color:#000000" class="mail" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#MailModal" id="@item.LocalizadorHash" title="Enviar Menssagem e-mail"> <i class="fas fa-mail-bulk"></i></a>
                 </td>
@@ -82,7 +84,7 @@
         }
     </tbody>
 </table>
-
+<br />
 <div class="container-fluid">
     <div class="row">
         <div class="toggle_content">
