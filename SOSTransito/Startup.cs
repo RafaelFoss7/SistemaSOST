@@ -30,22 +30,14 @@ namespace SOSTransito
             services.AddDbContext<Context>(opcoes => opcoes.UseSqlServer(Configuration.GetConnectionString("ConexaoBD")));
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => {
+                .AddCookie(options =>
+                {
                     options.LoginPath = "/login";
                     options.AccessDeniedPath = "/denied";
                     options.Events = new CookieAuthenticationEvents()
                     {
                         OnSigningIn = async context =>
                         {
-                            //var principal = context.Principal;
-                            //if(principal.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
-                            //{
-                            //    if(principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == "bob")
-                            //    {
-                            //        var claimsIdentity = principal.Identity as ClaimsIdentity;
-                            //        claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "Administrador(a)"));
-                            //    }
-                            //}
                             await Task.CompletedTask;
                         },
                         OnSignedIn = async context =>
@@ -57,7 +49,7 @@ namespace SOSTransito
                             await Task.CompletedTask;
                         }
                     };
-                    });
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

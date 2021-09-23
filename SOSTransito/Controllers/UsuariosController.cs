@@ -89,6 +89,7 @@ namespace SOSTransito.Controllers
             {
                 return NotFound();
             }
+
             usuario.Senha = "";
             return View(usuario);
         }

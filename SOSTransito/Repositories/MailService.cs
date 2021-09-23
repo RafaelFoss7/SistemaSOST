@@ -21,7 +21,7 @@ namespace SOSTransito.Repositories
                 mail.Timeout = 90000;
                 mail.DeliveryMethod = SmtpDeliveryMethod.Network;
                 mail.UseDefaultCredentials = false;
-                mail.Credentials = new System.Net.NetworkCredential("admin@fretare.com.br", "#RafaelFoss7");
+                mail.Credentials = new System.Net.NetworkCredential("admin@fretare.com.br", "#AdmFretare7");
                 //Informações do e-mail
                 objeto_mail.From = new MailAddress("admin@fretare.com.br");
                 objeto_mail.To.Add(new MailAddress(email));

@@ -7,7 +7,15 @@
 <h1>Cadastrar</h1>
 
 <h4>Veículo - @ViewBag.Cliente <i class="fas fa-file-alt"></i></h4>
-<strong class="text-warning"> @TempData["message"]</strong>
+@if (@TempData["message"] != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["message"]
+    </div>
+}
 
 <hr />
 <div class="row">

@@ -1,0 +1,37 @@
+﻿@model SOSTransito.Models.Usuario
+
+@{
+    ViewData["Title"] = "Alteração de Senha";
+}
+
+<h1><i class="fas fa-unlock-alt"></i> Alteração de Senha - @ViewBag.Nome</h1>
+<hr />
+<form asp-action="EfetuarNovaSenha" method="post">
+    <input type="hidden" asp-for="UsuarioID" />
+    <input type="hidden" asp-for="Nome" />
+    <input type="hidden" asp-for="Tipo" />
+    <input type="hidden" asp-for="Email" />
+    <input type="hidden" asp-for="StatusSistema" />
+    <input type="hidden" asp-for="LocalizadorHash" />
+    <div class="input-group col-md-6">
+        <div class="input-group-prepend">
+            <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-key"></i></div>
+        </div>
+        <input class="form-control" type="password" asp-for="Senha" placeholder="Digite uma nova senha..." />
+    </div>
+    <br />
+    <div class="input-group col-md-6">
+        <div class="input-group-prepend">
+            <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-key"></i></div>
+        </div>
+        <input class="form-control" type="password" name="ConfirmSenha" placeholder="Confirme a nova senha..." />
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-success save"><i class="fas fa-save"></i> Confirmar</button>
+        </div>
+    </div>
+</form>
+<hr />
+

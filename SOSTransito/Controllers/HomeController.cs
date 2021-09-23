@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -37,35 +40,43 @@ namespace SOSTransito.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Validate(string email, string senha, string returnUrl, string manterLogado)
         {
-            var usuario = _context.Usuario.Where(x => x.Email == email).FirstOrDefault();
-            var password = Md5Hash.CalculaHash(Convert.ToString(senha));
-
-            if (email == usuario.Email && password == usuario.Senha)
+            if (email != null || senha != null)
             {
-                var claims = new List<Claim>();
-                claims.Add(new Claim("E-mail", email));
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, usuario.Nome));
-                claims.Add(new Claim(ClaimTypes.Name, usuario.Nome));
-                claims.Add(new Claim(ClaimTypes.Role, usuario.Tipo));
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                await HttpContext.SignInAsync(claimsPrincipal);
+                var usuario = _context.Usuario.Where(x => x.Email == email).FirstOrDefault();
+                var password = Md5Hash.CalculaHash(Convert.ToString(senha));
 
-                bool LogVerify = false;
-                if (manterLogado == "on")
-                    LogVerify = true;
+                if (email == usuario.Email && password == usuario.Senha)
+                {
+                    var claims = new List<Claim>();
+                    claims.Add(new Claim("E-mail", email));
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, usuario.Nome));
+                    claims.Add(new Claim(ClaimTypes.Name, usuario.Nome));
+                    claims.Add(new Claim(ClaimTypes.Role, usuario.Tipo));
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                    await HttpContext.SignInAsync(claimsPrincipal);
 
-                await HttpContext.SignInAsync(claimsPrincipal,
-                    new AuthenticationProperties
-                    {
-                        IsPersistent = LogVerify,
-                        ExpiresUtc = DateTime.Now.AddHours(1)
-                    });
+                    bool LogVerify = false;
+                    if (manterLogado == "on")
+                        LogVerify = true;
 
-                return Redirect(returnUrl);
+                    await HttpContext.SignInAsync(claimsPrincipal,
+                        new AuthenticationProperties
+                        {
+                            IsPersistent = LogVerify,
+                            ExpiresUtc = DateTime.Now.AddHours(1)
+                        });
+
+                    return Redirect(returnUrl);
+                }
+            }
+            else
+            {
+                TempData["Error"] = "Digite o e-mail e a senha antes de confirmar!";
+                return RedirectToAction("Index");
             }
             TempData["Error"] = "E-mail ou senha invalidos, por favor, tente novamente!";
-            return View("login");
+            return RedirectToAction("Index");
         }
 
         [Authorize]
@@ -145,7 +156,7 @@ namespace SOSTransito.Controllers
             foreach (var objCNH in cnhs)
             {
                 var UserAno = objCNH.ValidadeCNH.Year;
-                var UserMes = objCNH.ValidadeCNH.Month-1;
+                var UserMes = objCNH.ValidadeCNH.Month - 1;
                 var UserDia = objCNH.ValidadeCNH.Day;
 
                 if (UserAno == AnoAtual && UserMes == MesAtual)
@@ -238,16 +249,154 @@ namespace SOSTransito.Controllers
             return View();
         }
 
-        [Authorize(Roles = "ADM")]
-        public IActionResult Privacy()
+        public IActionResult IndexRecuperarSenha()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult IndexRecuperarSenha(string email)
+        {
+            if (email == null)
+            {
+                TempData["error"] = "true";
+                TempData["message"] = "Digite o e-mail antes de confirmar.";
+                return View();
+            }
+
+            try
+            {
+                if (_context.Usuario.Any(x => x.Email == email) == true)
+                {
+                    //Recuperando o cadastro do usuário pelo e-mail...
+                    var usuario = _context.Usuario.Where(x => x.Email == email).FirstOrDefault();
+
+                    //Definindo recursos para criptografar...
+                    string source = email + DateTime.Now.ToShortTimeString() + usuario.UsuarioID + DateTime.Now.ToLocalTime();
+
+                    //criptografar...
+                    using (MD5 md5Hash = MD5.Create())
+                    {
+                        string hash = GetMd5Hash(md5Hash, source);
+
+                        //salvar a criptografia no lugar da senha do usuario...
+                        usuario.Senha = hash;
+                        _context.Entry(usuario).State = EntityState.Modified;
+                        _context.SaveChanges();
+
+                        //gera uma url criptografada de acesso para enviar ao usuário...
+                        var uri = new Uri("https://localhost:44382/Home/NovaSenha/?test=" + usuario.Senha);
+                        //var authority = uri.GetLeftPart(UriPartial.Authority);
+
+                        //definir informações do e-mail...
+                        var titulo = "Definição de Nova Senha - " + usuario.Nome;
+                        var texto = "Olá " + usuario.Nome + "!<br /><a href='" + uri + "'/>" + " Clique aqui para redefinir sua senha.";
+
+                        //enviar e-mail...
+                        Repositories.MailService.sendMail(email, titulo, texto);
+                    }
+                }
+                else
+                {
+                    TempData["error"] = "true";
+                    TempData["message"] = "O e-mail informado não foi encontrado, por favor tente novamente!";
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["message"] = ex.Message;
+                return View();
+            }
+
+            TempData["message"] = "E-mail enviado com sucesso!";
+            return View();
+        }
+
+        public IActionResult NovaSenha()
+        {
+            string hash = Request.Query["test"];
+            var usuario = _context.Usuario.SingleOrDefault(x => x.Senha == hash);
+            ViewBag.Nome = usuario.Nome;
+            ViewBag.UsuarioId = usuario.LocalizadorHash;
+
+            return View(usuario);
+        }
+
+        [HttpPost]
+        public IActionResult EfetuarNovaSenha(string ConfirmSenha, Usuario usuario)
+        {
+            if (usuario.Senha != null && ConfirmSenha != null)
+            {
+                if (usuario.Senha == ConfirmSenha)
+                {
+                    try
+                    {
+                        usuario.Senha = Repositories.Md5Hash.CalculaHash(usuario.Senha);
+                        _context.Update(usuario);
+                        _context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["message"] = ex.Message;
+                        return View(usuario);
+                    }
+                }
+                else
+                {
+                    TempData["message"] = "Senha e confirmação de senha incorretas.";
+                    return View(usuario);
+                }
+            }
+
+            TempData["message"] = "Muito bem! Sua senha foi alterada com sucesso!";
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        static string GetMd5Hash(MD5 md5Hash, string input)
+        {
+
+            // Convert the input string to a byte array and compute the hash.
+            byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+            // Create a new Stringbuilder to collect the bytes
+            // and create a string.
+            StringBuilder sBuilder = new StringBuilder();
+
+            // Loop through each byte of the hashed data 
+            // and format each one as a hexadecimal string.
+            for (int i = 0; i < data.Length; i++)
+            {
+                sBuilder.Append(data[i].ToString("x2"));
+            }
+
+            // Return the hexadecimal string.
+            return sBuilder.ToString();
+        }
+
+        // Verify a hash against a string.
+        static bool VerifyMd5Hash(MD5 md5Hash, string input, string hash)
+        {
+            // Hash the input.
+            string hashOfInput = GetMd5Hash(md5Hash, input);
+
+            // Create a StringComparer an compare the hashes.
+            StringComparer comparer = StringComparer.OrdinalIgnoreCase;
+
+            if (0 == comparer.Compare(hashOfInput, hash))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

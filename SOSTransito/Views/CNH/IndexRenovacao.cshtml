@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Lista de Renovações";
     var error = TempData["error"];
+    var ano = System.DateTime.Now.Year;
 }
 
 <h1><i class="far fa-id-card"></i> Lista de Próximas Renovações de CNH</h1>
@@ -12,14 +13,18 @@
     if (error == null)
     {
         <div class="alert alert-dismissible alert-success">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
             @TempData["msg"]
         </div>
     }
     else
     {
         <div class="alert alert-dismissible alert-warning">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
             @TempData["msg"]
         </div>
     }
@@ -30,9 +35,12 @@
     <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
 
-<table id="Table" class="table">
+<table id="Table" class="table table-hover">
     <thead>
         <tr>
+            <th calss="text-center" width="2%">
+                <i class="fas fa-tasks"></i>
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Clientes.Nome)
             </th>
@@ -51,6 +59,12 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td class="text-center" width="2%">
+                    @if (item.NotificationYear == Convert.ToString(ano))
+                    {
+                        <i class="fas fa-check"></i>
+                    }
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Clientes.Nome)
                 </td>
@@ -79,6 +93,9 @@
     </div>
 
     <div class="row">
+        <div class="col-lg-4 zoom">
+            <i class="fas fa-check"></i> <label class="label-primary"> Cliente Notificado </label>
+        </div>
         <div class="col-lg-4 zoom">
             <i class="fab fa-whatsapp"></i> <label class="label-primary"> Enviar Whatsapp </label>
         </div>

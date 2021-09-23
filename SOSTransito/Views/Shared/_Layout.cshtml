@@ -6,7 +6,8 @@
     <title>@ViewData["Title"] - Vatate SOSTransito</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link href="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css" rel="stylesheet" />
+    @*<link href="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css" rel="stylesheet" />*@
+    <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css" rel="stylesheet" />
     @RenderSection("Styles", required: false)
 </head>
@@ -55,10 +56,11 @@
                                     </div>
                                 </li>
                             }
+                         
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-cog"></i> Olá @User.Identity.Name</a>
                                 <div class="dropdown-menu" data-bs-popper="none">
-                                    <a class="dropdown-item" asp-controller="#" asp-action="#"><i class="fas fa-key"></i> Alterar Senha</a>
+                                    @*<a class="dropdown-item" href="@Url.Action("ChangePassword", "Usuarios", new { id = "" })"><i class="fas fa-key"></i> Alterar Senha</a>*@
                                     <a class="dropdown-item" asp-controller="Home" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> Sair</a>
                                 </div>
                             </li>
