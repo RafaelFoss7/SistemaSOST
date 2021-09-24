@@ -1,31 +1,29 @@
-﻿@model SOSTransito.Models.Multa
+﻿@model SOSTransito.Models.ProcessoCNH
 
 @{
     ViewData["Title"] = "Finalizar Processo";
 }
 
 <div class="modal-header">
-    <h5 class="modal-title"><i class="fas fa-balance-scale-right"></i> Finalizar Processo - Multa - @ViewBag.Multa</h5>
+    <h5 class="modal-title"><i class="fas fa-balance-scale-right"></i> Finalizar Processo da CNH - @ViewBag.CNH</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
 
-@using (Html.BeginForm("FinalizarProcesso", "Multas", FormMethod.Post, new { id = "myform" }))
+@using (Html.BeginForm("FinalizarProcesso", "ProcessoCNHs", FormMethod.Post, new { id = "myform" }))
 {
     <div class="modal-body">
-        <input type="hidden" asp-for="MultaId" />
+        <input type="hidden" asp-for="ProcessoCNHId" />
         <input type="hidden" asp-for="CNHId" />
-        <input type="hidden" asp-for="OrgAtuador" />
-        <input type="hidden" asp-for="Veiculo" />
-        <input type="hidden" asp-for="NAIT" />
-        <input type="hidden" asp-for="Pontuacao" />
-        <input type="hidden" asp-for="DataInfracao" />
+        <input type="hidden" asp-for="StatusCNH" />
+        <input type="hidden" asp-for="Prazo" />
+        <input type="hidden" asp-for="De" />
+        <input type="hidden" asp-for="Ate" />
         <input type="hidden" asp-for="StatusSistema" />
         <input type="hidden" asp-for="LocalizadorHash" />
-        <input type="hidden" asp-for="Arquivo" />
 
-        <input style="display:none" value="@ViewBag.MultaId" id="id" name="id" />
+        <input style="display:none" value="@ViewBag.ProcessoCNHId" id="id" name="id" />
 
         <div class="form-group">
             <label asp-for="Processo" class="control-label"></label>
@@ -48,5 +46,3 @@
         <button type="submit" class="btn btn-success save"><i class="far fa-check-circle"></i> Confirmar</button>
     </div>
 }
-
-

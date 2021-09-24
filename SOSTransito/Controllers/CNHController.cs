@@ -152,48 +152,6 @@ namespace SOSTransito.Controllers
             return RedirectToAction("IndexRenovacao");
         }
 
-        public IActionResult NextProcess(string id)
-        {
-            var cnh = _context.CNH.Include(x => x.Clientes).Where(x => x.LocalizadorHash == id).FirstOrDefault();
-            ViewBag.CNH = cnh.RegistroCNH;
-            ViewBag.CNHId = cnh.LocalizadorHash;
-            return PartialView(cnh);
-        }
-
-        [HttpPost]
-        public IActionResult ChangeProcess(string id, CNH cnh)
-        {
-            if (id != cnh.LocalizadorHash)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    TempData["message"] = "Muito bem! Alteração do processo da CNH " + cnh.RegistroCNH + " realizado com sucesso!";
-                    _context.Update(cnh);
-                    _context.SaveChanges();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CNHExists(cnh.CNHId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewBag.CNH = cnh.RegistroCNH;
-            ViewBag.CNHId = cnh.LocalizadorHash;
-            return PartialView(cnh);
-        }
-
         // GET: CNH/Details/5
         public IActionResult Details(string id)
         {
@@ -223,7 +181,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,StatusCNH,Processo,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] CNH cnh)
+        public async Task<IActionResult> Create([Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] CNH cnh)
         {
             var cliente = _context.Cliente.Find(cnh.ClienteId);
             var CNHUser = _context.CNH.Any(x => x.ClienteId == cnh.ClienteId);
@@ -231,8 +189,6 @@ namespace SOSTransito.Controllers
             {
                 cnh.StatusSistema = "Ativo";
                 cnh.LocalizadorHash = Repositories.Md5Hash.CalculaHash(Convert.ToString(randNum.Next()) + System.DateTime.Now);
-                if (cnh.Processo == null)
-                    cnh.Processo = "Em Andamento...";
                 if (ModelState.IsValid)
                 {
                     _context.Add(cnh);
@@ -275,7 +231,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,StatusCNH,Processo,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] CNH cnh)
+        public async Task<IActionResult> Edit(string id, [Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] CNH cnh)
         {
             var cliente = _context.Cliente.Find(cnh.ClienteId);
             if (id != cnh.LocalizadorHash)

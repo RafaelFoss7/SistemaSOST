@@ -1,7 +1,7 @@
-﻿@model SOSTransito.Models.CNH
+﻿@model SOSTransito.Models.ProcessoCNH
 
 @{
-    ViewData["Title"] = "Processo da CNH";
+    ViewData["Title"] = "Alterar Processo";
 }
 
 <div class="modal-header">
@@ -11,20 +11,20 @@
     </button>
 </div>
 
-@using (Html.BeginForm("ChangeProcess", "CNH", FormMethod.Post, new { id = "myform" }))
+@using (Html.BeginForm("ChangeProcess", "ProcessoCNHs", FormMethod.Post, new { id = "myform" }))
 {
     <div class="modal-body">
         <div class="col-md-12">
+            <input type="hidden" asp-for="ProcessoCNHId" />
             <input type="hidden" asp-for="CNHId" />
-            <input type="hidden" asp-for="ClienteId" />
-            <input type="hidden" asp-for="LocalizadorHash" />
-            <input type="hidden" asp-for="RegistroCNH" />
-            <input type="hidden" asp-for="Categoria" />
-            <input type="hidden" asp-for="ValidadeCNH" />
             <input type="hidden" asp-for="StatusCNH" />
+            <input type="hidden" asp-for="Prazo" />
+            <input type="hidden" asp-for="De" />
+            <input type="hidden" asp-for="Ate" />
+            <input type="hidden" asp-for="LocalizadorHash" />
             <input type="hidden" asp-for="StatusSistema" />
 
-            <input style="display:none" value="@ViewBag.CNHId" id="id" name="id" />
+            <input style="display:none" value="@ViewBag.ProcessoCNHId" id="id" name="id" />
 
             <div class="form-group">
                 <label asp-for="Processo" class="control-label"></label>

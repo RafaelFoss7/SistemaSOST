@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SOSTransito.Migrations
 {
-    public partial class NotYear : Migration
+    public partial class processoCNH : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -112,8 +112,6 @@ namespace SOSTransito.Migrations
                     RegistroCNH = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
                     Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ValidadeCNH = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StatusCNH = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Processo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NotificationYear = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -182,6 +180,32 @@ namespace SOSTransito.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProcessoCNH",
+                columns: table => new
+                {
+                    ProcessoCNHId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StatusCNH = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Processo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Prazo = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    De = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Ate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CNHId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProcessoCNH", x => x.ProcessoCNHId);
+                    table.ForeignKey(
+                        name: "FK_ProcessoCNH_CNH_CNHId",
+                        column: x => x.CNHId,
+                        principalTable: "CNH",
+                        principalColumn: "CNHId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Atribuicao_Localidade_LocalidadeId",
                 table: "Atribuicao_Localidade",
@@ -213,6 +237,11 @@ namespace SOSTransito.Migrations
                 column: "CNHId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProcessoCNH_CNHId",
+                table: "ProcessoCNH",
+                column: "CNHId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Veiculo_ClienteId",
                 table: "Veiculo",
                 column: "ClienteId");
@@ -225,6 +254,9 @@ namespace SOSTransito.Migrations
 
             migrationBuilder.DropTable(
                 name: "Multa");
+
+            migrationBuilder.DropTable(
+                name: "ProcessoCNH");
 
             migrationBuilder.DropTable(
                 name: "Veiculo");

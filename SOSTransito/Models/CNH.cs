@@ -29,13 +29,6 @@ namespace SOSTransito.Models
         public DateTime ValidadeCNH { get; set; }
 
         //Informações de controle...
-        [DisplayName("Status CNH")]
-        [Required]
-        public string StatusCNH { get; set; }
-
-        [DisplayName("Processo CNH")]
-        public string Processo { get; set; }
-
         [DisplayName("Status de Controle")]
         public string StatusSistema { get; set; }
 
@@ -48,5 +41,6 @@ namespace SOSTransito.Models
         public int ClienteId { get; set; }
 
         public virtual ICollection<Multa> Multas { get; set; }
+        public virtual ICollection<ProcessoCNH> ProcessoCNHs { get; set; }
     }
 }

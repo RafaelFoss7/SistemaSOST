@@ -103,12 +103,12 @@ namespace SOSTransito.Controllers
                 return NotFound();
             }
 
+            multa.StatusSistema = "Finalizado";
             if (ModelState.IsValid)
             {
                 try
                 {
                     TempData["message"] = "Muito bem! Finalização do processo da multa " + multa.NAIT + " realizado com sucesso!";
-                    multa.StatusSistema = "Finalizado";
                     _context.Update(multa);
                     _context.SaveChanges();
                 }

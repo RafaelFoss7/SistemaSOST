@@ -20,6 +20,7 @@ namespace SOSTransito.Data
         public DbSet<SOSTransito.Models.CNH> CNH { get; set; }
         public DbSet<SOSTransito.Models.Multa> Multa { get; set; }
         public DbSet<SOSTransito.Models.Veiculo> Veiculo { get; set; }
+        public DbSet<SOSTransito.Models.ProcessoCNH> ProcessoCNH { get; set; }
 
     }
 }

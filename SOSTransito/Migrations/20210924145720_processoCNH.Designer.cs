@@ -10,8 +10,8 @@ using SOSTransito.Data;
 namespace SOSTransito.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20210916171949_NotYear")]
-    partial class NotYear
+    [Migration("20210924145720_processoCNH")]
+    partial class processoCNH
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,17 +69,10 @@ namespace SOSTransito.Migrations
                     b.Property<string>("NotificationYear")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Processo")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("RegistroCNH")
                         .IsRequired()
                         .HasMaxLength(9)
                         .HasColumnType("nvarchar(9)");
-
-                    b.Property<string>("StatusCNH")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StatusSistema")
                         .HasColumnType("nvarchar(max)");
@@ -222,6 +215,46 @@ namespace SOSTransito.Migrations
                     b.ToTable("Multa");
                 });
 
+            modelBuilder.Entity("SOSTransito.Models.ProcessoCNH", b =>
+                {
+                    b.Property<int>("ProcessoCNHId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Ate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CNHId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("De")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LocalizadorHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Prazo")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Processo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatusCNH")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatusSistema")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProcessoCNHId");
+
+                    b.HasIndex("CNHId");
+
+                    b.ToTable("ProcessoCNH");
+                });
+
             modelBuilder.Entity("SOSTransito.Models.Usuario", b =>
                 {
                     b.Property<int>("UsuarioID")
@@ -353,6 +386,17 @@ namespace SOSTransito.Migrations
                     b.Navigation("CNH");
                 });
 
+            modelBuilder.Entity("SOSTransito.Models.ProcessoCNH", b =>
+                {
+                    b.HasOne("SOSTransito.Models.CNH", "CNH")
+                        .WithMany("ProcessoCNHs")
+                        .HasForeignKey("CNHId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CNH");
+                });
+
             modelBuilder.Entity("SOSTransito.Models.Veiculo", b =>
                 {
                     b.HasOne("SOSTransito.Models.Cliente", "Clientes")
@@ -367,6 +411,8 @@ namespace SOSTransito.Migrations
             modelBuilder.Entity("SOSTransito.Models.CNH", b =>
                 {
                     b.Navigation("Multas");
+
+                    b.Navigation("ProcessoCNHs");
                 });
 
             modelBuilder.Entity("SOSTransito.Models.Cliente", b =>

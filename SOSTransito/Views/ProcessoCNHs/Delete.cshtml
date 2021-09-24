@@ -1,41 +1,29 @@
-﻿@model SOSTransito.Models.CNH
+﻿@model SOSTransito.Models.ProcessoCNH
 
 @{
-    ViewData["Title"] = "Excluir";
+    ViewData["Title"] = "Excluir Processo CNH";
 }
 
 <h1>Excluir</h1>
 
-<h3>Deseja realmente excluir essa CNH?</h3>
+<h3>Deseja realmente excluir esse processo da CNH?</h3>
 <div>
-    <h4>CNH <i class="fas fa-id-card"></i></h4>
+    <h4>Processo CNH <i class="fas fa-file-powerpoint"></i></h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Clientes.Nome)
+            @Html.DisplayNameFor(model => model.CNH.Clientes.Nome)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Clientes.Nome)
+            @Html.DisplayFor(model => model.CNH.Clientes.Nome)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RegistroCNH)
+            @Html.DisplayNameFor(model => model.CNH.RegistroCNH)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RegistroCNH)
+            @Html.DisplayFor(model => model.CNH.RegistroCNH)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Categoria)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Categoria)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ValidadeCNH)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ValidadeCNH)
-        </dd>
-        @*<dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StatusCNH)
         </dt>
         <dd class="col-sm-10">
@@ -46,7 +34,13 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Processo)
-        </dd>*@
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Prazo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Prazo)
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StatusSistema)
         </dt>
@@ -54,10 +48,10 @@
             @Html.DisplayFor(model => model.StatusSistema)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
-        <input type="hidden" asp-for="CNHId" />
-        <a href="/CNH/Index" class="btn btn-danger"><i class="far fa-times-circle"></i> Cancelar</a>
+        <input type="hidden" asp-for="ProcessoCNHId" />
+        <a href="/ProcessoCNHs/Index" class="btn btn-danger"><i class="far fa-times-circle"></i> Cancelar</a>
         <button type="submit" value="Delete" class="btn btn-success save"><i class="fas fa-save"></i> Confirmar</button>
     </form>
 </div>

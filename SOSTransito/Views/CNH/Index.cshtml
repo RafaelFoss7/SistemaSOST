@@ -33,10 +33,7 @@
                 @Html.DisplayNameFor(model => model.RegistroCNH)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StatusCNH)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Processo)
+                @Html.DisplayNameFor(model => model.Categoria)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.StatusSistema)
@@ -57,10 +54,7 @@
                     <b>@Html.DisplayFor(modelItem => item.RegistroCNH)</b>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StatusCNH)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Processo)
+                    @Html.DisplayFor(modelItem => item.Categoria)
                 </td>
                 @if (item.StatusSistema == "Ativo")
                 {
@@ -74,14 +68,8 @@
                         <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
                     </td>
                 }
-                @if (item.StatusSistema == "Finalizado")
-                {
-                    <td class="text-info">
-                        <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
-                    </td>
-                }
                 <td width="15%">
-                    <a href="#" style="color:#000000" class="nextProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalNextProcess" id="@item.LocalizadorHash" title="Alterar Processo CNH"> <i class="fas fa-balance-scale-right"></i></a>
+                    <a style="color:#000000" href="@Url.Action("Create", "ProcessoCNHs", new { id = item.LocalizadorHash })" title="Cadastrar Processo da CNH"><i class="fas fa-file-powerpoint"></i></a>
                     <a style="color:#000000" href="@Url.Action("Create", "Multas", new { id = item.LocalizadorHash })" title="Cadastrar Multa"><i class="fas fa-file-excel"></i></a>
                     <a style="color:#000000" href="@Url.Action("Edit", "CNH", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
                     <a style="color:#000000" href="@Url.Action("Details", "CNH", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
@@ -103,7 +91,7 @@
 
     <div class="row">
         <div class="col-lg-4 zoom">
-            <i class="fas fa-balance-scale-right"></i> <label class="label-primary"> Alterar Processo CNH </label>
+            <i class="fas fa-file-powerpoint"></i> <label class="label-primary"> Cadastrar Processo da CNH </label>
         </div>
         <div class="col-lg-4 zoom">
             <i class="fas fa-file-excel"></i> <label class="label-primary"> Cadastrar Multa </label>
@@ -120,15 +108,6 @@
     </div>
 </div>
 
-@*MODAL*@
-<div class="modal" id="modalNextProcess" role="dialog" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div id="conteudoModal"></div>
-        </div>
-    </div>
-</div>
-
 @section Scripts
 {
     <script src="~/lib/datatables.net/jquery.dataTables.js"></script>
@@ -137,15 +116,5 @@
         $(document).ready(function () {
             $('#Table').DataTable();
         });
-    </script>
-    <script>
-        $(function () {
-            $(".nextProcess").click(function () {
-                var id = $(this).attr("id");
-                $("#conteudoModal").load("/CNH/NextProcess/" + id, function () {
-                    $("#NextProcess").modal('show');
-                });
-            });
-        })
     </script>
 }

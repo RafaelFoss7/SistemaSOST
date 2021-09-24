@@ -45,7 +45,7 @@ namespace SOSTransito.Controllers
                 var usuario = _context.Usuario.Where(x => x.Email == email).FirstOrDefault();
                 var password = Md5Hash.CalculaHash(Convert.ToString(senha));
 
-                if (email == usuario.Email && password == usuario.Senha)
+                if (email == usuario.Email && password == usuario.Senha && usuario.StatusSistema == "Ativo")
                 {
                     var claims = new List<Claim>();
                     claims.Add(new Claim("E-mail", email));
@@ -68,6 +68,11 @@ namespace SOSTransito.Controllers
                         });
 
                     return Redirect(returnUrl);
+                }
+                if (usuario.StatusSistema == "Inativo")
+                {
+                    TempData["Error"] = "O tempo de uso do software expirou, por favor, entre em contato com o desenvolvedor para verificação e liberação.";
+                    return RedirectToAction("Index");
                 }
             }
             else

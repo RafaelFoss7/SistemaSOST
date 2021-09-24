@@ -1,10 +1,10 @@
-﻿@model IEnumerable<SOSTransito.Models.Multa>
+﻿@model IEnumerable<SOSTransito.Models.ProcessoCNH>
 
 @{
-    ViewData["Title"] = "Lista de Multas Cadastradas";
+    ViewData["Title"] = "Lista de Processos de CNH";
 }
 
-<h1><i class="fas fa-file-excel"></i> Lista de Multas Cadastradas</h1>
+<h1><i class="fas fa-file-powerpoint"></i> Lista de Processos da CNH</h1>
 
 @if (@TempData["message"] != null)
 {
@@ -21,8 +21,6 @@
     <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
 
-<hr />
-
 <table id="Table" class="table table-hover text-center">
     <thead>
         <tr>
@@ -30,13 +28,13 @@
                 @Html.DisplayNameFor(model => model.CNH.RegistroCNH)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NAIT)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrgAtuador)
+                @Html.DisplayNameFor(model => model.StatusCNH)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Processo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prazo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.StatusSistema)
@@ -54,10 +52,7 @@
                     @Html.DisplayFor(modelItem => item.CNH.RegistroCNH)
                 </td>
                 <td>
-                    <b>@Html.DisplayFor(modelItem => item.NAIT)</b>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrgAtuador)
+                    <b>@Html.DisplayFor(modelItem => item.StatusCNH)</b>
                 </td>
                 @if (item.Processo == "Deferido")
                 {
@@ -77,6 +72,9 @@
                         @Html.DisplayFor(modelItem => item.Processo)
                     </td>
                 }
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prazo)
+                </td>
                 @if (item.StatusSistema == "Ativo")
                 {
                     <td class="text-success">
@@ -95,19 +93,23 @@
                         <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
                     </td>
                 }
-                <td width="15%">
-                    @if (item.StatusSistema != "Finalizado")
-                    {
-                        <a href="#" style="color:#000000" class="nextProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalNextProcess" id="@item.LocalizadorHash" title="Alterar Processo da Multa"> <i class="fas fa-balance-scale-right"></i></a>
-                        <a href="#" style="color:#000000" class="finalProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalFinalProcess" id="@item.LocalizadorHash" title="Finalizar Processo da Multa"> <i class="fas fa-arrow-alt-circle-down"></i></a>
-                        <a style="color:#000000" href="@Url.Action("Edit", "Multas", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
-                    }
-                    <a style="color:#000000" href="@Url.Action("Details", "Multas", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
-                    @if (item.StatusSistema != "Finalizado")
-                    {
-                        <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
-                    }
-                </td>
+            <td width="15%">
+                @if (item.StatusCNH == "Suspensa")
+                {
+                    <a href="#" style="color:#000000" class="periodo" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalPeriodo" id="@item.LocalizadorHash" title="Adicionar Periodo de Suspensão"> <i class="fas fa-calendar-plus"></i></a>
+                }
+                @if (item.StatusSistema != "Finalizado")
+                {
+                    <a href="#" style="color:#000000" class="nextProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalNextProcess" id="@item.LocalizadorHash" title="Alterar Processo CNH"> <i class="fas fa-balance-scale-right"></i></a>
+                    <a href="#" style="color:#000000" class="finalProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalFinalProcess" id="@item.LocalizadorHash" title="Finalizar Processo da CNH"> <i class="fas fa-arrow-alt-circle-down"></i></a>
+                    <a style="color:#000000" href="@Url.Action("Edit", "ProcessoCNHs", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
+                }
+                <a style="color:#000000" href="@Url.Action("Details", "ProcessoCNHs", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
+                @if (item.StatusSistema != "Finalizado")
+                {
+                    <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                }
+            </td>
             </tr>
         }
     </tbody>
@@ -121,22 +123,24 @@
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col-lg-4 zoom">
-            <i class="fas fa-balance-scale-right"></i> <label class="label-primary"> Avançar Processo </label>
+            <i class="fas fa-calendar-plus"></i> <label class="label-primary"> Adicionar Periodo Suspensão </label>
+        </div>
+        <div class="col-lg-4 zoom">
+            <i class="fas fa-balance-scale-right"></i> <label class="label-primary"> Alterar Processo </label>
         </div>
         <div class="col-lg-4 zoom">
             <i class="fas fa-arrow-alt-circle-down"></i> <label class="label-primary"> Finalizar Processo </label>
         </div>
         <div class="col-lg-4 zoom">
-            <i class='fas fa-edit'></i> <label class="label-primary"> Editar Multa </label>
+            <i class='fas fa-edit'></i> <label class="label-primary"> Editar Processo </label>
         </div>
         <div class="col-lg-4 zoom">
-            <i class="fas fa-bars"></i> <label class="label-primary"> Detalhes da Multa </label>
+            <i class="fas fa-bars"></i> <label class="label-primary"> Detalhes do Processo </label>
         </div>
         <div class="col-lg-4 zoom">
-            <i class="fas fa-trash-alt"></i> <label class="label-primary"> Excluir Multa </label>
+            <i class="fas fa-trash-alt"></i> <label class="label-primary"> Excluir Processo </label>
         </div>
     </div>
 </div>
@@ -149,11 +153,17 @@
         </div>
     </div>
 </div>
-
 <div class="modal" id="modalFinalProcess" role="dialog" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div id="conteudoModal2"></div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modalPeriodo" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="conteudoModal3"></div>
         </div>
     </div>
 </div>
@@ -171,17 +181,24 @@
         $(function () {
             $(".nextProcess").click(function () {
                 var id = $(this).attr("id");
-                $("#conteudoModal1").load("/Multas/NextProcess/" + id, function () {
+                $("#conteudoModal1").load("/ProcessoCNHs/NextProcess/" + id, function () {
                     $("#NextProcess").modal('show');
                 });
             });
         })
-
         $(function () {
             $(".finalProcess").click(function () {
                 var id = $(this).attr("id");
-                $("#conteudoModal2").load("/Multas/FinalProcess/" + id, function () {
+                $("#conteudoModal2").load("/ProcessoCNHs/FinalProcess/" + id, function () {
                     $("#FinalProcess").modal('show');
+                });
+            });
+        })
+        $(function () {
+            $(".periodo").click(function () {
+                var id = $(this).attr("id");
+                $("#conteudoModal3").load("/ProcessoCNHs/Periodo/" + id, function () {
+                    $("#Periodo").modal('show');
                 });
             });
         })
