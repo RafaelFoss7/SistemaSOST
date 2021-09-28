@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SOSTransito.Migrations
 {
-    public partial class processoCNH : Migration
+    public partial class newdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -82,6 +82,7 @@ namespace SOSTransito.Migrations
                     ClienteId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    RG = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
                     CPF = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
                     DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Endereco = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
@@ -112,6 +113,8 @@ namespace SOSTransito.Migrations
                     RegistroCNH = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
                     Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ValidadeCNH = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SenhaDETRAN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Prazo = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NotificationYear = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -135,6 +138,7 @@ namespace SOSTransito.Migrations
                     VeiculoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Placa = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: false),
+                    Tipo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RENAVAN = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -164,6 +168,7 @@ namespace SOSTransito.Migrations
                     Veiculo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Pontuacao = table.Column<int>(type: "int", nullable: false),
                     Processo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Prazo = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Arquivo = table.Column<string>(type: "nvarchar(max)", nullable: true),

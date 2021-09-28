@@ -25,16 +25,18 @@
             <div class="form-group">
                 <select asp-for="ClienteId" hidden class="form-control" asp-items="ViewBag.ClienteId"></select>
             </div>
+
             <div class="form-group">
                 <label asp-for="RegistroCNH" class="control-label"></label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-id-card"></i></div>
                     </div>
-                    <input asp-for="RegistroCNH" class="form-control" placeholder="Nº de registro CNH ..." />
+                    <input asp-for="RegistroCNH" class="form-control" placeholder="Nº de registro CNH..." />
                 </div>
                 <span asp-validation-for="RegistroCNH" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Categoria" class="control-label"></label>
                 <div class="input-group">
@@ -56,6 +58,7 @@
                 </div>
                 <span asp-validation-for="Categoria" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="ValidadeCNH" class="control-label"></label>
                 <div class="input-group">
@@ -66,7 +69,18 @@
                 </div>
                 <span asp-validation-for="ValidadeCNH" class="text-danger"></span>
             </div>
-           
+
+            <div class="form-group">
+                <label asp-for="SenhaDETRAN" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-id-card"></i></div>
+                    </div>
+                    <input asp-for="SenhaDETRAN" class="form-control" placeholder="Digite a senha do DETRAN..." />
+                </div>
+                <span asp-validation-for="SenhaDETRAN" class="text-danger"></span>
+            </div>
+
             <br />
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">

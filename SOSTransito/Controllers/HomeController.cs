@@ -69,11 +69,6 @@ namespace SOSTransito.Controllers
 
                     return Redirect(returnUrl);
                 }
-                if (usuario.StatusSistema == "Inativo")
-                {
-                    TempData["Error"] = "O tempo de uso do software expirou, por favor, entre em contato com o desenvolvedor para verificação e liberação.";
-                    return RedirectToAction("Index");
-                }
             }
             else
             {
@@ -116,8 +111,8 @@ namespace SOSTransito.Controllers
             var DiaAtual = System.DateTime.Now.Day;
 
             //alertas de aniversário...
-            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId).ToList();
-            var listClientes = _context.Cliente.Include(x => x.Localidades).ToList();
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId && X.StatusSistema == "Ativo").ToList();
+            var listClientes = _context.Cliente.Include(x => x.Localidades).Where(x => x.StatusSistema == "Ativo").ToList();
             List<Cliente> Clientes = new List<Cliente>();
 
             foreach (var objLoc in listLocalidades)
@@ -144,7 +139,7 @@ namespace SOSTransito.Controllers
             }
 
             //alertas de CNH...
-            var listCNH = _context.CNH.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).ToList();
+            var listCNH = _context.CNH.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).Where(x => x.StatusSistema == "Ativo").ToList();
             List<CNH> cnhs = new List<CNH>();
 
             foreach (var objLoc in listLocalidades)
@@ -171,7 +166,7 @@ namespace SOSTransito.Controllers
             }
 
             //alertas de licenciamentos...
-            var listVeiculos = _context.Veiculo.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).ToList();
+            var listVeiculos = _context.Veiculo.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).Where(x => x.StatusSistema == "Ativo").ToList();
             List<Veiculo> Veiculos = new List<Veiculo>();
 
             foreach (var objLoc in listLocalidades)
@@ -189,67 +184,163 @@ namespace SOSTransito.Controllers
             {
                 var placa = objVeic.Placa.Substring(objVeic.Placa.Length - 1, 1);
 
-                if (Convert.ToInt32(placa) == 1 || Convert.ToInt32(placa) == 2 || Convert.ToInt32(placa) == 3)
+                if (objVeic.Tipo == "Automóvel")
                 {
-                    if (MesAtual == 3)
+                    if (Convert.ToInt32(placa) == 1)
                     {
-                        licenciamentos++;
+                        if (MesAtual == 4)
+                        {
+                            licenciamentos++;
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 2)
+                    {
+                        if (MesAtual == 5)
+                        {
+                            licenciamentos++;
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 3)
+                    {
+                        if (MesAtual == 6)
+                        {
+                            licenciamentos++;
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 4)
+                    {
+                        if (MesAtual == 7)
+                        {
+                            licenciamentos++;
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 5 || Convert.ToInt32(placa) == 6)
+                    {
+                        if (MesAtual == 8)
+                        {
+                            licenciamentos++;
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 7)
+                    {
+                        if (MesAtual == 9)
+                        {
+                            licenciamentos++;
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 8)
+                    {
+                        if (MesAtual == 10)
+                        {
+                            licenciamentos++;
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 9)
+                    {
+                        if (MesAtual == 11)
+                        {
+                            licenciamentos++;
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 0)
+                    {
+                        if (MesAtual == 12)
+                        {
+                            licenciamentos++;
+                        }
                     }
                 }
-                if (Convert.ToInt32(placa) == 4)
+                else
                 {
-                    if (MesAtual == 4)
+                    if (Convert.ToInt32(placa) == 1 || Convert.ToInt32(placa) == 2)
                     {
-                        licenciamentos++;
+                        if (MesAtual == 9)
+                        {
+                            licenciamentos++;
+                        }
                     }
-                }
-                if (Convert.ToInt32(placa) == 5)
-                {
-                    if (MesAtual == 5)
+                    if (Convert.ToInt32(placa) == 3 || Convert.ToInt32(placa) == 4 || Convert.ToInt32(placa) == 5)
                     {
-                        licenciamentos++;
+                        if (MesAtual == 10)
+                        {
+                            licenciamentos++;
+                        }
                     }
-                }
-                if (Convert.ToInt32(placa) == 6)
-                {
-                    if (MesAtual == 6)
+                    if (Convert.ToInt32(placa) == 6 || Convert.ToInt32(placa) == 7 || Convert.ToInt32(placa) == 8)
                     {
-                        licenciamentos++;
+                        if (MesAtual == 11)
+                        {
+                            licenciamentos++;
+                        }
                     }
-                }
-                if (Convert.ToInt32(placa) == 7)
-                {
-                    if (MesAtual == 7)
+                    if (Convert.ToInt32(placa) == 9 || Convert.ToInt32(placa) == 0)
                     {
-                        licenciamentos++;
-                    }
-                }
-                if (Convert.ToInt32(placa) == 8)
-                {
-                    if (MesAtual == 8)
-                    {
-                        licenciamentos++;
-                    }
-                }
-                if (Convert.ToInt32(placa) == 9)
-                {
-                    if (MesAtual == 9)
-                    {
-                        licenciamentos++;
-                    }
-                }
-                if (Convert.ToInt32(placa) == 0)
-                {
-                    if (MesAtual == 10)
-                    {
-                        licenciamentos++;
+                        if (MesAtual == 12)
+                        {
+                            licenciamentos++;
+                        }
                     }
                 }
             }
 
+            //Alertas prazo CNH...
+            var listProcessoCNH = _context.ProcessoCNH.Include(x => x.CNH).Include(y => y.CNH.Clientes).Include(c => c.CNH.Clientes.Localidades).Where(x => x.StatusSistema == "Ativo").ToList();
+            List<ProcessoCNH> processoCNH = new List<ProcessoCNH>();
+
+            foreach (var objLoc in listLocalidades)
+            {
+                foreach (var objPCNH in listProcessoCNH)
+                {
+                    if (objLoc.LocalidadeId == objPCNH.CNH.Clientes.LocalidadeId)
+                    {
+                        processoCNH.Add(_context.ProcessoCNH.Find(objPCNH.ProcessoCNHId));
+                    }
+                }
+            }
+
+            int PrazoCNH = 0;
+            foreach (var objPCNH in processoCNH)
+            {
+                DateTime prazo = objPCNH.Prazo.AddDays(-7);
+                var dataAtual = DateTime.Now.Date;
+                if (prazo <= dataAtual)
+                {
+                    PrazoCNH++;
+                }
+            }
+
+            //Alertas prazo de multas...
+            var listMultas = _context.Multa.Include(x => x.CNH).Include(y => y.CNH.Clientes).Include(c => c.CNH.Clientes.Localidades).Where(x => x.StatusSistema == "Ativo").ToList();
+            List<Multa> multas = new List<Multa>();
+
+            foreach (var objLoc in listLocalidades)
+            {
+                foreach (var objMulta in listMultas)
+                {
+                    if (objLoc.LocalidadeId == objMulta.CNH.Clientes.LocalidadeId)
+                    {
+                        multas.Add(_context.Multa.Find(objMulta.MultaId));
+                    }
+                }
+            }
+
+            int PrazoMulta = 0;
+            foreach (var objMulta in multas)
+            {
+                DateTime prazo = objMulta.Prazo.AddDays(-7);
+                var dataAtual = DateTime.Now.Date;
+                if (prazo <= dataAtual)
+                {
+                    PrazoMulta++;
+                }
+            }
+
+           
             ViewBag.ANIVERSARIANTES = aniversariantes;
             ViewBag.LICENCIAMENTOS = licenciamentos;
             ViewBag.RENOVACOES = renovacoes;
+            ViewBag.PRAZOMULTA = PrazoMulta;
+            ViewBag.PRAZOCNH = PrazoCNH;
 
             return View();
         }

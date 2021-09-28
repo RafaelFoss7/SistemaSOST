@@ -56,69 +56,111 @@ namespace SOSTransito.Controllers
             var DiaAtual = System.DateTime.Now.Day;
 
             //alertas de CNH...
-            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId).ToList();
-            var listVeiculos = _context.Veiculo.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).ToList();
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId && X.StatusSistema == "Ativo").ToList();
+            var listVeiculos = _context.Veiculo.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).Where(x => x.StatusSistema == "Ativo").ToList();
+            
             List<Veiculo> veiculos = new List<Veiculo>();
-
             List<Veiculo> licenciamentos = new List<Veiculo>();
+            
             foreach (var objVeic in listVeiculos)
             {
                 var placa = objVeic.Placa.Substring(objVeic.Placa.Length - 1, 1);
 
-                if (Convert.ToInt32(placa) == 1 || Convert.ToInt32(placa) == 2 || Convert.ToInt32(placa) == 3)
+                if (objVeic.Tipo == "Automóvel")
                 {
-                    if (MesAtual == 3)
+                    if (Convert.ToInt32(placa) == 1)
                     {
-                        licenciamentos.Add(objVeic);
+                        if (MesAtual == 4)
+                        {
+                            licenciamentos.Add(objVeic);
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 2)
+                    {
+                        if (MesAtual == 5)
+                        {
+                            licenciamentos.Add(objVeic);
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 3)
+                    {
+                        if (MesAtual == 6)
+                        {
+                            licenciamentos.Add(objVeic);
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 4)
+                    {
+                        if (MesAtual == 7)
+                        {
+                            licenciamentos.Add(objVeic);
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 5 || Convert.ToInt32(placa) == 6)
+                    {
+                        if (MesAtual == 8)
+                        {
+                            licenciamentos.Add(objVeic);
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 7)
+                    {
+                        if (MesAtual == 9)
+                        {
+                            licenciamentos.Add(objVeic);
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 8)
+                    {
+                        if (MesAtual == 10)
+                        {
+                            licenciamentos.Add(objVeic);
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 9)
+                    {
+                        if (MesAtual == 11)
+                        {
+                            licenciamentos.Add(objVeic);
+                        }
+                    }
+                    if (Convert.ToInt32(placa) == 0)
+                    {
+                        if (MesAtual == 12)
+                        {
+                            licenciamentos.Add(objVeic);
+                        }
                     }
                 }
-                if (Convert.ToInt32(placa) == 4)
+                else
                 {
-                    if (MesAtual == 4)
+                    if (Convert.ToInt32(placa) == 1 || Convert.ToInt32(placa) == 2)
                     {
-                        licenciamentos.Add(objVeic);
+                        if (MesAtual == 9)
+                        {
+                            licenciamentos.Add(objVeic);
+                        }
                     }
-                }
-                if (Convert.ToInt32(placa) == 5)
-                {
-                    if (MesAtual == 5)
+                    if (Convert.ToInt32(placa) == 3 || Convert.ToInt32(placa) == 4 || Convert.ToInt32(placa) == 5)
                     {
-                        licenciamentos.Add(objVeic);
+                        if (MesAtual == 10)
+                        {
+                            licenciamentos.Add(objVeic);
+                        }
                     }
-                }
-                if (Convert.ToInt32(placa) == 6)
-                {
-                    if (MesAtual == 6)
+                    if (Convert.ToInt32(placa) == 6 || Convert.ToInt32(placa) == 7 || Convert.ToInt32(placa) == 8)
                     {
-                        licenciamentos.Add(objVeic);
+                        if (MesAtual == 11)
+                        {
+                            licenciamentos.Add(objVeic);
+                        }
                     }
-                }
-                if (Convert.ToInt32(placa) == 7)
-                {
-                    if (MesAtual == 7)
+                    if (Convert.ToInt32(placa) == 9 || Convert.ToInt32(placa) == 0)
                     {
-                        licenciamentos.Add(objVeic);
-                    }
-                }
-                if (Convert.ToInt32(placa) == 8)
-                {
-                    if (MesAtual == 8)
-                    {
-                        licenciamentos.Add(objVeic);
-                    }
-                }
-                if (Convert.ToInt32(placa) == 9)
-                {
-                    if (MesAtual == 9)
-                    {
-                        licenciamentos.Add(objVeic);
-                    }
-                }
-                if (Convert.ToInt32(placa) == 0)
-                {
-                    if (MesAtual == 10)
-                    {
-                        licenciamentos.Add(objVeic);
+                        if (MesAtual == 12)
+                        {
+                            licenciamentos.Add(objVeic);
+                        }
                     }
                 }
             }
@@ -203,7 +245,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("VeiculoId,Placa,RENAVAN,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] Veiculo veiculo)
+        public async Task<IActionResult> Create([Bind("VeiculoId,Placa,Tipo,RENAVAN,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] Veiculo veiculo)
         {
             var cliente = _context.Cliente.Find(veiculo.ClienteId);
             var VeiculoUser = _context.Veiculo.Any(x => x.ClienteId == veiculo.ClienteId && x.Placa == veiculo.Placa);
@@ -251,7 +293,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("VeiculoId,Placa,RENAVAN,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] Veiculo veiculo)
+        public async Task<IActionResult> Edit(string id, [Bind("VeiculoId,Placa,Tipo,RENAVAN,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] Veiculo veiculo)
         {
             var cliente = _context.Cliente.Find(veiculo.ClienteId);
             if (id != veiculo.LocalizadorHash)

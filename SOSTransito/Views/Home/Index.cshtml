@@ -50,6 +50,16 @@
                         Próximas renovações CNH
                         <span class="badge bg-primary badge-pill">@ViewBag.RENOVACOES</span>
                     </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a asp-controller="ProcessoCNHs" asp-action="IndexPrazoCNH"><i class="fas fa-search"></i></a>
+                        Prazo de processos CNH
+                        <span class="badge bg-primary badge-pill">@ViewBag.PRAZOCNH</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a asp-controller="Multas" asp-action="IndexPrazoMulta"><i class="fas fa-search"></i></a>
+                        Prazo de processos das multas
+                        <span class="badge bg-primary badge-pill">@ViewBag.PRAZOMULTA</span>
+                    </li>
                 </ul>
             </div>
         </div>

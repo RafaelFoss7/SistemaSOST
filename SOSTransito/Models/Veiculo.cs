@@ -19,6 +19,10 @@ namespace SOSTransito.Models
         [StringLength(7, ErrorMessage = "O campo nome precisa ter de 6 caracteres", MinimumLength = 7)]
         public string Placa { get; set; }
 
+        [DisplayName("Tipo")]
+        [Required(ErrorMessage = "O campo tipo é obrigatório.")]
+        public string Tipo { get; set; }
+
         [DisplayName("RENAVAN")]
         [Required(ErrorMessage = "O campo RENAVAN é obrigatório.")]
         [StringLength(11, ErrorMessage = "O campo RENAVAN precisa ter 11 caracteres", MinimumLength = 11)]

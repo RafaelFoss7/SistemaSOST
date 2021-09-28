@@ -11,7 +11,7 @@ using SOSTransito.Models;
 
 namespace SOSTransito.Controllers
 {
-    [Authorize(Roles = "ADM, SCT")]
+    [Authorize(Roles = "ADM")]
     public class LocalidadesController : Controller
     {
         private readonly Context _context;

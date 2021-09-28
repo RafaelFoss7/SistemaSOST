@@ -82,6 +82,23 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Processo)
         </dd>
+        @{
+            if (Model.StatusCNH == "Suspensa")
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.De)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.De)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Ate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Ate)
+                </dd>
+            }
+        }
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Prazo)
         </dt>

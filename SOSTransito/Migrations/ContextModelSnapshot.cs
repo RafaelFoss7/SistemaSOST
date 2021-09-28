@@ -67,10 +67,16 @@ namespace SOSTransito.Migrations
                     b.Property<string>("NotificationYear")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("Prazo")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("RegistroCNH")
                         .IsRequired()
                         .HasMaxLength(9)
                         .HasColumnType("nvarchar(9)");
+
+                    b.Property<string>("SenhaDETRAN")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StatusSistema")
                         .HasColumnType("nvarchar(max)");
@@ -118,6 +124,11 @@ namespace SOSTransito.Migrations
 
                     b.Property<string>("NotificationYear")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RG")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("StatusSistema")
                         .HasColumnType("nvarchar(max)");
@@ -194,6 +205,9 @@ namespace SOSTransito.Migrations
 
                     b.Property<int>("Pontuacao")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("Prazo")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Processo")
                         .IsRequired()
@@ -316,6 +330,10 @@ namespace SOSTransito.Migrations
                         .HasColumnType("nvarchar(11)");
 
                     b.Property<string>("StatusSistema")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("VeiculoId");

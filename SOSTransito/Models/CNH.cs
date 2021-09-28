@@ -28,6 +28,13 @@ namespace SOSTransito.Models
         [Required(ErrorMessage = "O campo Nº registro da CNH é obrigatório.")]
         public DateTime ValidadeCNH { get; set; }
 
+        [DisplayName("Senha DETRAN")]
+        public string SenhaDETRAN { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayName("Prazo")]
+        public DateTime Prazo { get; set; }
+
         //Informações de controle...
         [DisplayName("Status de Controle")]
         public string StatusSistema { get; set; }

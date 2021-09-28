@@ -23,10 +23,56 @@ namespace SOSTransito.Controllers
         }
 
         // GET: ProcessoCNHs
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var context = _context.ProcessoCNH.Include(p => p.CNH);
-            return View(await context.ToListAsync());
+            var userId = User.Identity.Name;
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId).ToList();
+            var listProcessoCNH = _context.ProcessoCNH.Include(x => x.CNH).Include(y => y.CNH.Clientes).Include(c => c.CNH.Clientes.Localidades).ToList();
+            List<ProcessoCNH> processoCNH = new List<ProcessoCNH>();
+            
+            foreach (var objLoc in listLocalidades)
+            {
+                foreach (var objPCNH in listProcessoCNH)
+                {
+                    if (objLoc.LocalidadeId == objPCNH.CNH.Clientes.LocalidadeId)
+                    {
+                        processoCNH.Add(_context.ProcessoCNH.Find(objPCNH.ProcessoCNHId));
+                    }
+                }
+            }
+
+            return View(processoCNH.ToList());
+        }
+
+        public IActionResult IndexPrazoCNH()
+        {
+            var userId = User.Identity.Name;
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId && X.StatusSistema == "Ativo").ToList();
+            var listProcessoCNH = _context.ProcessoCNH.Include(x => x.CNH).Include(y => y.CNH.Clientes).Include(c => c.CNH.Clientes.Localidades).Where(x => x.StatusSistema == "Ativo").ToList();
+            List<ProcessoCNH> processoCNH = new List<ProcessoCNH>();
+
+            foreach (var objLoc in listLocalidades)
+            {
+                foreach (var objPCNH in listProcessoCNH)
+                {
+                    if (objLoc.LocalidadeId == objPCNH.CNH.Clientes.LocalidadeId)
+                    {
+                        processoCNH.Add(_context.ProcessoCNH.Find(objPCNH.ProcessoCNHId));
+                    }
+                }
+            }
+
+            List<ProcessoCNH> pCNH = new List<ProcessoCNH>();
+            foreach (var objPCNH in processoCNH)
+            {
+                DateTime prazo = objPCNH.Prazo.AddDays(-7);
+                var dataAtual = DateTime.Now.Date;
+                if (prazo <= dataAtual)
+                {
+                    pCNH.Add(objPCNH);
+                }
+            }
+            return View(pCNH.ToList());
         }
 
         // GET: ProcessoCNHs/Details/5
@@ -188,7 +234,7 @@ namespace SOSTransito.Controllers
         public IActionResult Create(string id)
         {
             var cnh = _context.CNH.Where(x => x.LocalizadorHash == id).FirstOrDefault();
-            ViewData["CNHId"] = new SelectList(_context.CNH.Where(x => x.LocalizadorHash == id), "CNHId", "RegistroCNH");
+            ViewData["CNHId"] = new SelectList(_context.CNH.Where(x => x.LocalizadorHash == id).OrderBy(x => x.RegistroCNH), "CNHId", "RegistroCNH");
             ViewBag.CNH = cnh.RegistroCNH;
             return View();
         }
@@ -211,7 +257,7 @@ namespace SOSTransito.Controllers
                 TempData["message"] = "Muito bem! Cadastro do processo da CNH " + cnh.RegistroCNH + " realizado com sucesso!";
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CNHId"] = new SelectList(_context.CNH.Where(x => x.LocalizadorHash == processoCNH.CNH.LocalizadorHash), "CNHId", "RegistroCNH");
+            ViewData["CNHId"] = new SelectList(_context.CNH.Where(x => x.LocalizadorHash == processoCNH.CNH.LocalizadorHash).OrderBy(x => x.RegistroCNH), "CNHId", "RegistroCNH");
             ViewBag.CNH = processoCNH.CNH.RegistroCNH;
             return View(processoCNH);
         }
@@ -229,7 +275,7 @@ namespace SOSTransito.Controllers
             {
                 return NotFound();
             }
-            ViewData["CNHId"] = new SelectList(_context.CNH, "CNHId", "Categoria", processoCNH.CNHId);
+            ViewData["CNHId"] = new SelectList(_context.CNH.OrderBy(x => x.RegistroCNH), "CNHId", "Categoria", processoCNH.CNHId);
             return View(processoCNH);
         }
 
@@ -267,7 +313,7 @@ namespace SOSTransito.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CNHId"] = new SelectList(_context.CNH, "CNHId", "Categoria", processoCNH.CNHId);
+            ViewData["CNHId"] = new SelectList(_context.CNH.OrderBy(x => x.RegistroCNH), "CNHId", "Categoria", processoCNH.CNHId);
             return View(processoCNH);
         }
 

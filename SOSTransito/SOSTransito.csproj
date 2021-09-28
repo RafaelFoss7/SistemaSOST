@@ -40,6 +40,10 @@
     <Compile Remove="Migrations\20210916171949_NotYear.Designer.cs" />
     <Compile Remove="Migrations\20210924142750_processoCNH.cs" />
     <Compile Remove="Migrations\20210924142750_processoCNH.Designer.cs" />
+    <Compile Remove="Migrations\20210924145720_processoCNH.cs" />
+    <Compile Remove="Migrations\20210924145720_processoCNH.Designer.cs" />
+    <Compile Remove="Migrations\20210927141514_new-data.cs" />
+    <Compile Remove="Migrations\20210927141514_new-data.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -21,6 +21,8 @@
     <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
 }
 
+<hr />
+
 <table id="Table" class="table table-hover text-center">
     <thead>
         <tr>
@@ -93,23 +95,23 @@
                         <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
                     </td>
                 }
-            <td width="15%">
-                @if (item.StatusCNH == "Suspensa")
-                {
-                    <a href="#" style="color:#000000" class="periodo" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalPeriodo" id="@item.LocalizadorHash" title="Adicionar Periodo de Suspensão"> <i class="fas fa-calendar-plus"></i></a>
-                }
-                @if (item.StatusSistema != "Finalizado")
-                {
-                    <a href="#" style="color:#000000" class="nextProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalNextProcess" id="@item.LocalizadorHash" title="Alterar Processo CNH"> <i class="fas fa-balance-scale-right"></i></a>
-                    <a href="#" style="color:#000000" class="finalProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalFinalProcess" id="@item.LocalizadorHash" title="Finalizar Processo da CNH"> <i class="fas fa-arrow-alt-circle-down"></i></a>
-                    <a style="color:#000000" href="@Url.Action("Edit", "ProcessoCNHs", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
-                }
-                <a style="color:#000000" href="@Url.Action("Details", "ProcessoCNHs", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
-                @if (item.StatusSistema != "Finalizado")
-                {
-                    <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
-                }
-            </td>
+                <td width="15%">
+                    @if (item.StatusCNH == "Suspensa")
+                    {
+                        <a href="#" style="color:#000000" class="periodo" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalPeriodo" id="@item.LocalizadorHash" title="Adicionar Periodo de Suspensão"> <i class="fas fa-calendar-plus"></i></a>
+                    }
+                    @if (item.StatusSistema != "Finalizado")
+                    {
+                        <a href="#" style="color:#000000" class="nextProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalNextProcess" id="@item.LocalizadorHash" title="Alterar Processo CNH"> <i class="fas fa-balance-scale-right"></i></a>
+                        <a href="#" style="color:#000000" class="finalProcess" data-content="@item.LocalizadorHash" data-toggle="modal" data-target="#modalFinalProcess" id="@item.LocalizadorHash" title="Finalizar Processo da CNH"> <i class="fas fa-arrow-alt-circle-down"></i></a>
+                        <a style="color:#000000" href="@Url.Action("Edit", "ProcessoCNHs", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
+                    }
+                    <a style="color:#000000" href="@Url.Action("Details", "ProcessoCNHs", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
+                    @if (item.StatusSistema != "Finalizado")
+                    {
+                        <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                    }
+                </td>
             </tr>
         }
     </tbody>

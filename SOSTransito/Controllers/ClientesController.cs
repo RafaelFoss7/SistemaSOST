@@ -55,8 +55,8 @@ namespace SOSTransito.Controllers
             var DiaAtual = System.DateTime.Now.Day;
             //alertas de aniversário...
             var userId = User.Identity.Name;
-            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId).ToList();
-            var listClientes = _context.Cliente.Include(x => x.Localidades).ToList();
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId && X.StatusSistema == "Ativo").ToList();
+            var listClientes = _context.Cliente.Include(x => x.Localidades).Where(x => x.StatusSistema == "Ativo").ToList();
             List<Cliente> Clientes = new List<Cliente>();
 
             foreach (var objLoc in listLocalidades)
@@ -180,7 +180,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClienteId,Nome,CPF,DataNascimento,Endereco,Telefone,email,StatusSistema,LocalizadorHash,NotificationYear,LocalidadeId")] Cliente cliente)
+        public async Task<IActionResult> Create([Bind("ClienteId,Nome,CPF,RG,DataNascimento,Endereco,Telefone,email,StatusSistema,LocalizadorHash,NotificationYear,LocalidadeId")] Cliente cliente)
         {
             var ClienteUser = _context.Cliente.Any(x => x.CPF == cliente.CPF);
             if (ClienteUser == false)
@@ -227,7 +227,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ClienteId,Nome,CPF,DataNascimento,Endereco,Telefone,email,StatusSistema,LocalizadorHash,NotificationYear,LocalidadeId")] Cliente cliente)
+        public async Task<IActionResult> Edit(string id, [Bind("ClienteId,Nome,CPF,RG,DataNascimento,Endereco,Telefone,email,StatusSistema,LocalizadorHash,NotificationYear,LocalidadeId")] Cliente cliente)
         {
             if (id != cliente.LocalizadorHash)
             {

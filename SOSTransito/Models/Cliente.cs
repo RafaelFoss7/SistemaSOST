@@ -19,6 +19,11 @@ namespace SOSTransito.Models
         [StringLength(100, ErrorMessage = "O campo nome precisa ter de 6 a 60 caracteres", MinimumLength = 6)]
         public string Nome { get; set; }
 
+        [DisplayName("RG")]
+        [Required(ErrorMessage = "O campo RG é obrigatório.")]
+        [StringLength(12, ErrorMessage = "O campo RG precisa ter 12 caracteres", MinimumLength = 12)]
+        public string RG { get; set; }
+
         [DisplayName("CPF")]
         [Required(ErrorMessage = "O campo CPF é obrigatório.")]
         [StringLength(14, ErrorMessage = "O campo CPF precisa ter de 11 caracteres", MinimumLength = 14)]
@@ -27,7 +32,6 @@ namespace SOSTransito.Models
         [DataType(DataType.Date)]
         [DisplayName("Data de Nascimento")]
         [Required(ErrorMessage = "O campo data de nascimento é obrigatório.")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataNascimento { get; set; }
 
         [DisplayName("Endereço")]

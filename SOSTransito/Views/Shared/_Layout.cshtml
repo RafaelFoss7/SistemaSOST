@@ -6,7 +6,6 @@
     <title>@ViewData["Title"] - Vatate SOSTransito</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    @*<link href="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css" rel="stylesheet" />*@
     <link href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css" rel="stylesheet" />
     @RenderSection("Styles", required: false)
@@ -15,7 +14,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@*<i class="fas fa-car"></i>*@ <img src="~/images/VatateSOSTransitoSemFundo.png" width="50" height="50" title="Página Inicial - Vatate Trânsito" /> Vatate Trânsito</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img src="~/images/VatateSOSTransitoSemFundo.png" width="50" height="50" title="Página Inicial - Vatate Trânsito" /> Vatate Trânsito</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -29,13 +28,13 @@
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-tie"></i> Administrativo</a>
                                     <div class="dropdown-menu" data-bs-popper="none">
                                         <a class="dropdown-item" asp-controller="Usuarios" asp-action="Index"><i class="fas fa-users"></i> Usuários</a>
+                                        <a class="dropdown-item" asp-controller="Localidades" asp-action="Index"><i class="fas fa-globe-americas"></i> Localidades</a>
                                         <a class="dropdown-item" asp-controller="Atribuicao_Localidade" asp-action="Index"><i class="fas fa-street-view"></i> Atribuições</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-clock"></i> Atendimento</a>
                                     <div class="dropdown-menu" data-bs-popper="none">
-                                        <a class="dropdown-item" asp-controller="Localidades" asp-action="Index"><i class="fas fa-globe-americas"></i> Localidades</a>
                                         <a class="dropdown-item" asp-controller="Clientes" asp-action="Index"><i class="fas fa-user-friends"></i> Clientes</a>
                                         <a class="dropdown-item" asp-controller="CNH" asp-action="Index"><i class="fas fa-id-card"></i> CNH</a>
                                         <a class="dropdown-item" asp-controller="Veiculos" asp-action="Index"><i class="fas fa-car-alt"></i> Veículos</a>
@@ -49,7 +48,6 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-clock"></i> Atendimento</a>
                                     <div class="dropdown-menu" data-bs-popper="none">
-                                        <a class="dropdown-item" asp-controller="Localidades" asp-action="Index"><i class="fas fa-globe-americas"></i> Localidades</a>
                                         <a class="dropdown-item" asp-controller="Clientes" asp-action="Index"><i class="fas fa-user-friends"></i> Clientes</a>
                                         <a class="dropdown-item" asp-controller="CNH" asp-action="Index"><i class="fas fa-id-card"></i> CNH</a>
                                         <a class="dropdown-item" asp-controller="Veiculos" asp-action="Index"><i class="fas fa-car-alt"></i> Veículos</a>
@@ -62,7 +60,6 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-cog"></i> Olá @User.Identity.Name</a>
                                 <div class="dropdown-menu" data-bs-popper="none">
-                                    @*<a class="dropdown-item" href="@Url.Action("ChangePassword", "Usuarios", new { id = "" })"><i class="fas fa-key"></i> Alterar Senha</a>*@
                                     <a class="dropdown-item" asp-controller="Home" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> Sair</a>
                                 </div>
                             </li>

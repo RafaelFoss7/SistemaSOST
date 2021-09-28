@@ -33,6 +33,9 @@
                 @Html.DisplayNameFor(model => model.Placa)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Tipo)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.RENAVAN)
             </th>
             <th>
@@ -54,6 +57,9 @@
                     @Html.DisplayFor(modelItem => item.Placa)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Tipo)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.RENAVAN)
                 </td>
                 @if (item.StatusSistema == "Ativo")
@@ -68,11 +74,11 @@
                         <b>  @Html.DisplayFor(modelItem => item.StatusSistema)</b>
                     </td>
                 }
-            <td width="5%">
-                <a style="color:#000000" href="@Url.Action("Edit", "Veiculos", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
-                <a style="color:#000000" href="@Url.Action("Details", "Veiculos", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
-                <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
-            </td>
+                <td width="5%">
+                    <a style="color:#000000" href="@Url.Action("Edit", "Veiculos", new { id = item.LocalizadorHash })" title="Editar"><i class="fas fa-edit"></i></a>
+                    <a style="color:#000000" href="@Url.Action("Details", "Veiculos", new { id = item.LocalizadorHash })" title="Detalhes"><i class="fas fa-bars"></i></a>
+                    <a style="color:#000000" asp-action="Delete" asp-route-id="@item.LocalizadorHash" title="Excluir"><i class="fas fa-trash-alt"></i></a>
+                </td>
             </tr>
         }
     </tbody>

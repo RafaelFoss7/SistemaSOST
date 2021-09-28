@@ -45,6 +45,40 @@ namespace SOSTransito.Controllers
             return View(multas.ToList());
         }
 
+        public IActionResult IndexPrazoMulta()
+        {
+            var userId = User.Identity.Name;
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId && X.StatusSistema == "Ativo").ToList();
+            var listMultas = _context.Multa.Include(x => x.CNH).Include(y => y.CNH.Clientes).Include(z => z.CNH.Clientes.Localidades).Where(x => x.StatusSistema == "Ativo").ToList();
+
+            List<Multa> multas = new List<Multa>();
+
+            foreach (var objLoc in listLocalidades)
+            {
+                foreach (var objMulta in listMultas)
+                {
+                    if (objLoc.LocalidadeId == objMulta.CNH.Clientes.LocalidadeId)
+                    {
+                        multas.Add(_context.Multa.Find(objMulta.MultaId));
+                    }
+                }
+            }
+
+            List<Multa> multasPrazo = new List<Multa>();
+
+            foreach (var objMulta in multas)
+            {
+                DateTime prazo = objMulta.Prazo.AddDays(-7);
+                var dataAtual = DateTime.Now.Date;
+                if (prazo <= dataAtual)
+                {
+                    multasPrazo.Add(objMulta);
+                }
+            }
+
+            return View(multasPrazo.ToList());
+        }
+
         public IActionResult NextProcess(string id)
         {
             var multas = _context.Multa.Include(x => x.CNH).Where(x => x.LocalizadorHash == id).FirstOrDefault();
@@ -151,7 +185,7 @@ namespace SOSTransito.Controllers
         public IActionResult Create(string id)
         {
             ViewData["CNHId"] = new SelectList(_context.CNH.Where(x => x.LocalizadorHash == id), "CNHId", "RegistroCNH");
-            ViewData["Veiculo"] = new SelectList(_context.Veiculo, "VeiculoId", "Placa");
+            ViewData["Veiculo"] = new SelectList(_context.Veiculo.OrderBy(x => x.Placa), "VeiculoId", "Placa");
             return View();
         }
 
@@ -160,7 +194,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MultaId,OrgAtuador,NAIT,DataInfracao,Veiculo,Pontuacao,Processo,StatusSistema,LocalizadorHash,Arquivo,CNHId")] Multa multa)
+        public async Task<IActionResult> Create([Bind("MultaId,OrgAtuador,NAIT,DataInfracao,Veiculo,Pontuacao,Processo,Prazo,StatusSistema,LocalizadorHash,Arquivo,CNHId")] Multa multa)
         {
             var MultUser = _context.Multa.Any(x => x.NAIT == multa.NAIT);
             if (MultUser == false)
@@ -181,11 +215,11 @@ namespace SOSTransito.Controllers
             {
                 TempData["message"] = "Atenção! Essa multa já encontra-se registrado no sistema.";
                 ViewData["CNHId"] = new SelectList(_context.CNH, "CNHId", "RegistroCNH", multa.CNHId);
-                ViewData["Veiculo"] = new SelectList(_context.Veiculo, "VeiculoId", "Placa");
+                ViewData["Veiculo"] = new SelectList(_context.Veiculo.OrderBy(x => x.Placa), "VeiculoId", "Placa");
                 return View(multa);
             }
             ViewData["CNHId"] = new SelectList(_context.CNH, "CNHId", "RegistroCNH", multa.CNHId);
-            ViewData["Veiculo"] = new SelectList(_context.Veiculo, "VeiculoId", "Placa");
+            ViewData["Veiculo"] = new SelectList(_context.Veiculo.OrderBy(x => x.Placa), "VeiculoId", "Placa");
             return View(multa);
         }
 
@@ -203,7 +237,7 @@ namespace SOSTransito.Controllers
                 return NotFound();
             }
             ViewData["CNHId"] = new SelectList(_context.CNH, "CNHId", "Categoria", multa.CNHId);
-            ViewData["Veiculo"] = new SelectList(_context.Veiculo, "VeiculoId", "Placa");
+            ViewData["Veiculo"] = new SelectList(_context.Veiculo.OrderBy(x => x.Placa), "VeiculoId", "Placa");
             return View(multa);
         }
 
@@ -212,7 +246,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("MultaId,OrgAtuador,NAIT,DataInfracao,Veiculo,Pontuacao,Processo,StatusSistema,LocalizadorHash,Arquivo,CNHId")] Multa multa)
+        public async Task<IActionResult> Edit(string id, [Bind("MultaId,OrgAtuador,NAIT,DataInfracao,Veiculo,Pontuacao,Processo,Prazo,StatusSistema,LocalizadorHash,Arquivo,CNHId")] Multa multa)
         {
             if (id != multa.LocalizadorHash)
             {
@@ -241,7 +275,7 @@ namespace SOSTransito.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CNHId"] = new SelectList(_context.CNH, "CNHId", "Categoria", multa.CNHId);
-            ViewData["Veiculo"] = new SelectList(_context.Veiculo, "VeiculoId", "Placa");
+            ViewData["Veiculo"] = new SelectList(_context.Veiculo.OrderBy(x => x.Placa), "VeiculoId", "Placa");
             return View(multa);
         }
 

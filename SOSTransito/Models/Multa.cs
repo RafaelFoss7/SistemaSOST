@@ -39,6 +39,10 @@ namespace SOSTransito.Models
         [Required(ErrorMessage = "O campo processo da multa é obrigatório.")]
         public string Processo { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayName("Prazo")]
+        public DateTime Prazo { get; set; }
+
         //Informações de controle...
         [DisplayName("Status de Controle")]
         public string StatusSistema { get; set; }

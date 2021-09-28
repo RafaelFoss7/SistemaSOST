@@ -57,8 +57,8 @@ namespace SOSTransito.Controllers
             var DiaAtual = System.DateTime.Now.Day;
 
             //alertas de CNH...
-            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId).ToList();
-            var listCNH = _context.CNH.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).ToList();
+            var listLocalidades = _context.Atribuicao_Localidade.Where(X => X.Usuario.Nome == userId && X.StatusSistema == "Ativo").ToList();
+            var listCNH = _context.CNH.Include(x => x.Clientes).Include(y => y.Clientes.Localidades).Where(c => c.StatusSistema == "Ativo").ToList();
             List<CNH> cnhs = new List<CNH>();
 
             foreach (var objLoc in listLocalidades)
@@ -181,7 +181,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] CNH cnh)
+        public async Task<IActionResult> Create([Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,SenhaDETRAN,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] CNH cnh)
         {
             var cliente = _context.Cliente.Find(cnh.ClienteId);
             var CNHUser = _context.CNH.Any(x => x.ClienteId == cnh.ClienteId);
@@ -231,7 +231,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] CNH cnh)
+        public async Task<IActionResult> Edit(string id, [Bind("CNHId,RegistroCNH,Categoria,ValidadeCNH,SenhaDETRAN,StatusSistema,LocalizadorHash,NotificationYear,ClienteId")] CNH cnh)
         {
             var cliente = _context.Cliente.Find(cnh.ClienteId);
             if (id != cnh.LocalizadorHash)

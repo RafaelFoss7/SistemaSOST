@@ -24,6 +24,7 @@
             <div class="form-group">
                 <select asp-for="CNHId" hidden class="form-control" asp-items="ViewBag.CNHId"></select>
             </div>
+
             <div class="form-group">
                 <label asp-for="OrgAtuador" class="control-label"></label>
                 <div class="input-group">
@@ -41,6 +42,7 @@
                 </div>
                 <span asp-validation-for="OrgAtuador" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="NAIT" class="control-label"></label>
                 <div class="input-group">
@@ -51,6 +53,7 @@
                 </div>
                 <span asp-validation-for="NAIT" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="DataInfracao" class="control-label"></label>
                 <div class="input-group">
@@ -61,16 +64,20 @@
                 </div>
                 <span asp-validation-for="DataInfracao" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Veiculo" class="control-label"></label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-car"></i></div>
                     </div>
-                    <select asp-for="Veiculo" class="form-control" asp-items="ViewBag.Veiculo"></select>
+                    <select asp-for="Veiculo" class="form-control" asp-items="ViewBag.Veiculo">
+                        <option disabled selected>Selecione o veículo...</option>
+                    </select>
                 </div>
                 <span asp-validation-for="Veiculo" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Pontuacao" class="control-label"></label>
                 <div class="input-group">
@@ -81,6 +88,7 @@
                 </div>
                 <span asp-validation-for="Pontuacao" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Processo" class="control-label"></label>
                 <div class="input-group">
@@ -96,6 +104,18 @@
                 </div>
                 <span asp-validation-for="Processo" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Prazo" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-calendar-check"></i></div>
+                    </div>
+                    <input asp-for="Prazo" class="form-control" placeholder="Selecione a data prazo..." />
+                </div>
+                <span asp-validation-for="Prazo" class="text-danger"></span>
+            </div>
+
             <br />
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
