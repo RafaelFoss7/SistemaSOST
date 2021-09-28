@@ -11,8 +11,9 @@ namespace SOSTransito.Data
     {
         public Context(DbContextOptions<Context> opcoes) : base(opcoes)
         {
-
+            //Database.EnsureCreated();
         }
+
         public DbSet<SOSTransito.Models.Usuario> Usuario { get; set; }
         public DbSet<SOSTransito.Models.Localidade> Localidade { get; set; }
         public DbSet<SOSTransito.Models.Atribuicao_Localidade> Atribuicao_Localidade { get; set; }

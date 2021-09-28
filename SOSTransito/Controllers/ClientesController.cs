@@ -180,7 +180,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClienteId,Nome,CPF,RG,DataNascimento,Endereco,Telefone,email,StatusSistema,LocalizadorHash,NotificationYear,LocalidadeId")] Cliente cliente)
+        public async Task<IActionResult> Create([Bind("ClienteId,Nome,CPF,RG,DataNascimento,Endereco,Telefone,email,StatusSistema,LocalizadorHash,NotificationYear,whatsapp,LocalidadeId")] Cliente cliente)
         {
             var ClienteUser = _context.Cliente.Any(x => x.CPF == cliente.CPF);
             if (ClienteUser == false)
@@ -227,7 +227,7 @@ namespace SOSTransito.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ClienteId,Nome,CPF,RG,DataNascimento,Endereco,Telefone,email,StatusSistema,LocalizadorHash,NotificationYear,LocalidadeId")] Cliente cliente)
+        public async Task<IActionResult> Edit(string id, [Bind("ClienteId,Nome,CPF,RG,DataNascimento,Endereco,Telefone,email,StatusSistema,LocalizadorHash,NotificationYear,whatsapp,LocalidadeId")] Cliente cliente)
         {
             if (id != cliente.LocalizadorHash)
             {

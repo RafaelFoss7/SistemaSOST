@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SOSTransito.Migrations
 {
-    public partial class newdatabase : Migration
+    public partial class whtpp : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -91,6 +91,7 @@ namespace SOSTransito.Migrations
                     StatusSistema = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LocalizadorHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NotificationYear = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    whatsapp = table.Column<bool>(type: "bit", nullable: false),
                     LocalidadeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

@@ -56,6 +56,9 @@ namespace SOSTransito.Models
 
         public string NotificationYear { get; set; }
 
+        [DisplayName("Whatsapp")]
+        public bool whatsapp { get; set; }
+
         //Relacionamentos...
         public virtual Localidade Localidades { get; set; }
         public int LocalidadeId { get; set; }

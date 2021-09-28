@@ -10,8 +10,8 @@ using SOSTransito.Data;
 namespace SOSTransito.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20210927153433_new-database")]
-    partial class newdatabase
+    [Migration("20210928174417_whtpp")]
+    partial class whtpp
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -142,6 +142,9 @@ namespace SOSTransito.Migrations
                     b.Property<string>("email")
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
+
+                    b.Property<bool>("whatsapp")
+                        .HasColumnType("bit");
 
                     b.HasKey("ClienteId");
 

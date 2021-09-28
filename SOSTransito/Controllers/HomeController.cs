@@ -45,29 +45,38 @@ namespace SOSTransito.Controllers
                 var usuario = _context.Usuario.Where(x => x.Email == email).FirstOrDefault();
                 var password = Md5Hash.CalculaHash(Convert.ToString(senha));
 
-                if (email == usuario.Email && password == usuario.Senha && usuario.StatusSistema == "Ativo")
+                if (usuario != null)
                 {
-                    var claims = new List<Claim>();
-                    claims.Add(new Claim("E-mail", email));
-                    claims.Add(new Claim(ClaimTypes.NameIdentifier, usuario.Nome));
-                    claims.Add(new Claim(ClaimTypes.Name, usuario.Nome));
-                    claims.Add(new Claim(ClaimTypes.Role, usuario.Tipo));
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                    await HttpContext.SignInAsync(claimsPrincipal);
 
-                    bool LogVerify = false;
-                    if (manterLogado == "on")
-                        LogVerify = true;
+                    if (email == usuario.Email && password == usuario.Senha && usuario.StatusSistema == "Ativo")
+                    {
+                        var claims = new List<Claim>();
+                        claims.Add(new Claim("E-mail", email));
+                        claims.Add(new Claim(ClaimTypes.NameIdentifier, usuario.Nome));
+                        claims.Add(new Claim(ClaimTypes.Name, usuario.Nome));
+                        claims.Add(new Claim(ClaimTypes.Role, usuario.Tipo));
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                        await HttpContext.SignInAsync(claimsPrincipal);
 
-                    await HttpContext.SignInAsync(claimsPrincipal,
-                        new AuthenticationProperties
-                        {
-                            IsPersistent = LogVerify,
-                            ExpiresUtc = DateTime.Now.AddHours(1)
-                        });
+                        bool LogVerify = false;
+                        if (manterLogado == "on")
+                            LogVerify = true;
 
-                    return Redirect(returnUrl);
+                        await HttpContext.SignInAsync(claimsPrincipal,
+                            new AuthenticationProperties
+                            {
+                                IsPersistent = LogVerify,
+                                ExpiresUtc = DateTime.Now.AddHours(1)
+                            });
+
+                        return Redirect(returnUrl);
+                    }
+                }
+                else
+                {
+                    TempData["Error"] = "Registro do usuário não encontrado no sistema.";
+                    return RedirectToAction("Index");
                 }
             }
             else
@@ -335,7 +344,7 @@ namespace SOSTransito.Controllers
                 }
             }
 
-           
+
             ViewBag.ANIVERSARIANTES = aniversariantes;
             ViewBag.LICENCIAMENTOS = licenciamentos;
             ViewBag.RENOVACOES = renovacoes;

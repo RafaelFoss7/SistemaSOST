@@ -141,6 +141,9 @@ namespace SOSTransito.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
+                    b.Property<bool>("whatsapp")
+                        .HasColumnType("bit");
+
                     b.HasKey("ClienteId");
 
                     b.HasIndex("LocalidadeId");
