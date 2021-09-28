@@ -84,11 +84,18 @@
 
             <div class="form-group">
                 <label asp-for="Telefone" class="control-label"></label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-phone"></i></div>
+                <div class="input-group mb-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text" id="btnGroupAddon"><i class="fas fa-mobile-alt"></i></div>
+                        </div>
+                        <input asp-for="Telefone" id="telefone" class="form-control" placeholder="Digite o celular..." />
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" asp-for="whatsapp" aria-label="Chebox para permitir input text" title="Confirmar Whatsapp">
+                            </div>
+                        </div>
                     </div>
-                    <input asp-for="Telefone" id="telefone" class="form-control" placeholder="Digite o celular (00)00000-0000..." />
                 </div>
                 <span asp-validation-for="Telefone" class="text-danger"></span>
             </div>
